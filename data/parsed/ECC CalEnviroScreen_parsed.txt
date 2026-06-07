@@ -1,0 +1,142 @@
+Notebook: ECC CalEnviroScreen.ipynb
+Title: [El Camino College] Notebook: CalEnviroScreen Exploration
+
+=== HEADINGS ===
+
+--- Item 1 ---
+[El Camino College] Notebook: CalEnviroScreen Exploration
+
+--- Item 2 ---
+Learning Objectives
+
+--- Item 3 ---
+Table of Contents
+
+--- Item 4 ---
+1. Introduction
+
+--- Item 5 ---
+2. Exploring by Region
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+# Learning Objectives
+
+In this notebook, you will learn about:
+- *insert learning objectives*
+
+### Table of Contents
+   
+1. [Introduction](#0) <br>
+
+-------------------------------------------------------------------
+
+--- Item 2 ---
+- *insert learning objectives*
+
+### Table of Contents
+   
+1. [Introduction](#0) <br>
+
+-------------------------------------------------------------------
+
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# [El Camino College] Notebook: CalEnviroScreen Exploration
+
+**This notebook will put together everything you've learned so far and include new ways of interpreting data .**
+
+# Learning Objectives
+
+In this notebook, you will learn about:
+- *insert learning objectives*
+
+### Table of Contents
+   
+1. [Introduction](#0) <br>
+
+-------------------------------------------------------------------
+
+--- Item 2 ---
+## 1. Introduction <a id='0'></a>
+
+--- Item 3 ---
+→ Explore the data, observe how many rows/columns and what they correspond to \
+→ Subset different LA census tracts including El Camino's (create interactive graph they can play around with) \
+→ Local rates of (asthma, pollution ) , LA wide rates, Cal  state wide (ex. compare local to higher level state averages)
+
+--- Item 4 ---
+Let's take a look at El Camino College's census tract data. Their tract # is **6037603702**.
+
+--- Item 5 ---
+## 2. Exploring by Region <a id='1'></a>
+
+--- Item 6 ---
+→ Split data into different neighborhoods of LA \
+→ Focus subsetting health outcomes (PM2.5, lead, groundwater threats, pollution burden, asthma), particularly in lower-income neighborhoods
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import numpy as np
+import pandas as pd
+
+--- Item 2 ---
+enviro = pd.read_csv('cal_enviro_screen.csv')
+enviro
+
+--- Item 3 ---
+ecc = enviro[enviro['Census Tract'] == 6037603702]
+ecc
+
+--- Item 4 ---
+
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import numpy as np
+
+--- Item 2 ---
+import pandas as pd
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Learning Objectives → Introduction
+
+6 markdown cells and 4 code cells. Major sections include: [El Camino College] Notebook: CalEnviroScreen Exploration, Learning Objectives, 1. Introduction, 2. Exploring by Region.

@@ -1,0 +1,7 @@
+# Optional dependencies for Notebook Copilot (semantic embeddings)
+# Install: pip install -r requirements-copilot.txt
+#
+# Without these, notebook_copilot.py uses TF-IDF embeddings (numpy only).
+
+numpy>=1.20
+sentence-transformers>=2.2.0
