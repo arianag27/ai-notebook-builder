@@ -1,0 +1,816 @@
+Notebook: ecc-biology__mrsa__MRSA Data Analysis copy.ipynb
+Title: [MCB 50] MRSA Data Analysis
+
+=== HEADINGS ===
+
+--- Item 1 ---
+[MCB 50] MRSA Data Analysis
+
+--- Item 2 ---
+Professor Robert Beatty
+
+--- Item 3 ---
+Table of Contents
+
+--- Item 4 ---
+1. Intro to Jupyter
+
+--- Item 5 ---
+1.1 Types of Cells
+
+--- Item 6 ---
+Text Cells
+
+--- Item 7 ---
+Code Cells
+
+--- Item 8 ---
+Running Cells
+
+--- Item 9 ---
+How to save your work
+
+--- Item 10 ---
+1.2 Common errors and how to fix them
+
+--- Item 11 ---
+1.3 Where to get help - Peer consultants
+
+--- Item 12 ---
+2. Introduction to Python
+
+--- Item 13 ---
+Example of an Expression
+
+--- Item 14 ---
+Example of a Variable
+
+--- Item 15 ---
+Python Power!
+
+--- Item 16 ---
+3. Intro to MRSA
+
+--- Item 17 ---
+Discussion Question 1:
+
+--- Item 18 ---
+4. Intro to Data
+
+--- Item 19 ---
+4.1 Reading in Data Sets
+
+--- Item 20 ---
+4.2 Understanding the Data
+
+--- Item 21 ---
+4.3 Breaking down the table
+
+--- Item 22 ---
+4.3.1 Rows
+
+--- Item 23 ---
+4.3.2. Columns
+
+--- Item 24 ---
+Discussion Question 2:
+
+--- Item 25 ---
+5. Comparing Infection Rates Over Time
+
+--- Item 26 ---
+Discussion Question 3:
+
+--- Item 27 ---
+6. Comparing County Infection Rates with County Populations
+
+--- Item 28 ---
+6.1 Infection rate by county per year
+
+--- Item 29 ---
+Discussion Question 4:
+
+--- Item 30 ---
+6.2 Infection rate across counties by year
+
+--- Item 31 ---
+Discussion Question 5:
+
+--- Item 32 ---
+6.3 California Counties Colored by Infection Rate (number of infections/population)
+
+--- Item 33 ---
+Discussion Question 6:
+
+--- Item 34 ---
+[OPTIONAL] 7. Bonus Challenge
+
+--- Item 35 ---
+8. Submit Your Work
+
+--- Item 36 ---
+Feedback Form
+
+--- Item 37 ---
+Data Science Opportunities
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+Today we will be examining a dataset (ie. a table) and a few graphs on the MRSA bacterial infection. This notebook will challenge you to analyze data and use your knowledge of immunity and disease to form conclusions about MRSA. The notebook will also serve as a gentle introduction to Jupyter Notebooks (the platform you are currently using)  and Python (a coding language).
+
+### Table of Contents
+1. [Intro to Jupyter](#0) <br>
+1. [Intro to Python](#1) <br>
+1. [Intro to MRSA](#2) <br>
+1. [Intro to Dataset](#3) <br>
+1. [Comparing Infection Rates Over Time](#4) <br>
+1. [Comparing County Infection Rates with County Populations](#5) <br>
+1. [Bonus Challenge](#6)
+1. [Submit Your Work](#7)
+
+--- Item 2 ---
+1. [Intro to Dataset](#3) <br>
+1. [Comparing Infection Rates Over Time](#4) <br>
+1. [Comparing County Infection Rates with County Populations](#5) <br>
+1. [Bonus Challenge](#6)
+1. [Submit Your Work](#7)
+
+--- Item 3 ---
+This webpage is a Jupyter Notebook. Jupyter Notebooks run on the Python coding language and provides an interactive interface for students. We will use this notebook to analyze a dataset on MRSA bloodstream infections in California hospitals. Jupyter Notebooks are composed of both regular text and code cells. Code cells have a gray background. In order to run a code cell, click the cell and press Shift + Enter while the cell is selected or hit the ▶| Run button in the toolbar at the top. You can also save your work using the button on the top left hand corner.
+
+An example of a code cell is shown below. The contents of this cell set up the notebook by importing pre-written Python packages that we will be using to read in, clean, analyze, and model our data. Run it, and once it is done, you
+
+--- Item 4 ---
+We will be analyzing is the Methicillin-resistant Staphylococcus aureus (MRSA) bloodstream infections (BSI) in California Hospitals data from the [California Health and Human Services Agency](https://data.chhs.ca.gov/dataset/methicillin-resistant-staphylococcus-aureus-mrsa-bloodstream-infections-bsi-in-california-hospitals). 
+
+> California Health and Safety Code section 1288.55(a)(1) requires general acute care hospitals to report all cases of Methicillin-resistant Staphylococcus aureus (MRSA) bloodstream infections (BSI) identified in their facilities to the California Department of Public Health (CDPH). MRSA BSI data are submitted by hospitals to the Centers for Disease Control and Prevention National Healthcare Safety Network (NHSN). CDPH downloads California hospital MRSA BSI data fro
+
+--- Item 5 ---
+Let's visualize the raw data of MRSA Reports in 2013. Data is usually recorded in a dataset (or table) format with rows and columns. Each row represents a distinct observation and each column represents a feature/variable. Run the code cell below to see the dataset. You can scroll horizontally to see all of the columns that are included.
+
+Shown above are the first five rows of the the data table. As you can see, there are a lot of columns as well as a lot of missing information in some of the columns. We have cleaned the data for you by removing any unncessary features and renaming the columns to make their purpose more clear. Run the code cell below to see the cleaned data set from MRSA Reports in 2013 below. 
+
+---
+
+### 4.3 Breaking down the table
+
+#### 4.3.1 Rows
+
+Let's take a look at t
+
+--- Item 6 ---
+Let's take a look at the first row of the dataset for MRSA Reports in 2013. 
+
+This particular row in our data represents a 2013 report representing the number of MRSA infections recorded in the Adventist Medical Center, Reedley in the Fresno County.
+
+Therefore, in general, every row in our dataset represents a distinct MRSA report from a California hospital in 2013.
+
+Try analyzing another row, just change the number `0` in the above code cell to see that numbered row. Since there are only 352 rows in our table, be sure your number is less than 352. 
+
+#### 4.3.2. Columns
+Run the code cell below to see the list of the columns in our dataset.
+
+Take a look at the columns names of the table listed above. Most of the columns should be pretty self-explanatory. For those that aren't, 
+- **HAI:**
+
+--- Item 7 ---
+Therefore, in general, every row in our dataset represents a distinct MRSA report from a California hospital in 2013.
+
+Try analyzing another row, just change the number `0` in the above code cell to see that numbered row. Since there are only 352 rows in our table, be sure your number is less than 352. 
+
+#### 4.3.2. Columns
+Run the code cell below to see the list of the columns in our dataset.
+
+Take a look at the columns names of the table listed above. Most of the columns should be pretty self-explanatory. For those that aren't, 
+- **HAI:** Hospital Acquired Infection. This refers to MRSA infections in hospital patients only. 
+- **Facility1:** the name of the specific medical center/hospital.
+- **Facility1_ID:** a unique number identifier for the medical facility.
+
+### Discussion Questio
+
+--- Item 8 ---
+Run the code cell below to see the list of the columns in our dataset.
+
+Take a look at the columns names of the table listed above. Most of the columns should be pretty self-explanatory. For those that aren't, 
+- **HAI:** Hospital Acquired Infection. This refers to MRSA infections in hospital patients only. 
+- **Facility1:** the name of the specific medical center/hospital.
+- **Facility1_ID:** a unique number identifier for the medical facility.
+
+### Discussion Question 2:
+**Of the questions we asked about MRSA, which are actually answerable given this dataset? Which questions could be answerable with a different dataset? And which would be hard to answer with the data we gave you?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run
+
+--- Item 9 ---
+**Of the questions we asked about MRSA, which are actually answerable given this dataset? Which questions could be answerable with a different dataset? And which would be hard to answer with the data we gave you?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+--- Item 10 ---
+Previously, we were looking at the MRSA infections in hospitals in 2013. Now, we combined multiple datasets for MRSA Reports from 2013 - 2018. Our goal in analyzing this dataset is to see how the infection rates have changed over time across counties.
+
+Use the plot widget to answer the discussion question below. Run the code cell below and toggle through the drop-down menu to look at infection counts for different counties.
+
+### Discussion Question 3:
+**Choose one urban county (e.g. Los Angeles) and one rural county (e.g. Sonoma) to evaluate. What trends can you identify? What outliers do you see? Make a general statement on how MRSA infections have changed over time in these two counties.**
+
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response
+
+--- Item 11 ---
+Run the code cell below to load the data that we will be using for analysis.
+
+### 4.2 Understanding the Data
+
+Let's visualize the raw data of MRSA Reports in 2013. Data is usually recorded in a dataset (or table) format with rows and columns. Each row represents a distinct observation and each column represents a feature/variable. Run the code cell below to see the dataset. You can scroll horizontally to see all of the columns that are included.
+
+Shown above are the first five rows of the the data table. As you can see, there are a lot of columns as well as a lot of missing information in some of the columns. We have cleaned the data for you by removing any unncessary features and renaming the columns to make their purpose more clear. Run the code cell below to see the cleaned data set fr
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# [MCB 50] MRSA Data Analysis
+### Professor Robert Beatty
+
+--- Item 2 ---
+**Estimated Time**: 30-40 minutes <br>
+**Databook created by**: Rucha Kelkar, Harry Li, Elias Saravia
+**Modified by**: Ariana Ghimire
+
+--- Item 3 ---
+Today we will be examining a dataset (ie. a table) and a few graphs on the MRSA bacterial infection. This notebook will challenge you to analyze data and use your knowledge of immunity and disease to form conclusions about MRSA. The notebook will also serve as a gentle introduction to Jupyter Notebooks (the platform you are currently using)  and Python (a coding language).
+
+--- Item 4 ---
+### Table of Contents
+1. [Intro to Jupyter](#0) <br>
+1. [Intro to Python](#1) <br>
+1. [Intro to MRSA](#2) <br>
+1. [Intro to Dataset](#3) <br>
+1. [Comparing Infection Rates Over Time](#4) <br>
+1. [Comparing County Infection Rates with County Populations](#5) <br>
+1. [Bonus Challenge](#6)
+1. [Submit Your Work](#7)
+
+--- Item 5 ---
+# 1. Intro to Jupyter <a id='0'></a>
+
+This webpage is a Jupyter Notebook. Jupyter Notebooks run on the Python coding language and provides an interactive interface for students. We will use this notebook to analyze a dataset on MRSA bloodstream infections in California hospitals. Jupyter Notebooks are composed of both regular text and code cells. Code cells have a gray background. In order to run a code cell, click the cell and press Shift + Enter while the cell is selected or hit the ▶| Run button in the toolbar at the top. You can also save your work using the button on the top left hand corner.
+
+An example of a code cell is shown below. The contents of this cell set up the notebook by importing pre-written Python packages that we will be using to read in, clean, analyze, and model our data. Run it, and once it is done, you should see "Done!" printed underneath the cell. 
+
+--- Item 6 ---
+### 1.1 Types of Cells
+
+--- Item 7 ---
+#### Text Cells
+Text cells (like this one) can be edited by double-clicking on them. They're written in a simple format called Markdown to add formatting and section headings. You don't need to learn Markdown, but know the difference between Text Cells and Code Cells.
+
+--- Item 8 ---
+#### Code Cells 
+Other cells contain code in the Python 3 language. Don't worry -- you are not expected to write your own code for this notebook. Be sure to review, however, how to **run** a code cell! 
+
+--- Item 9 ---
+#### Running Cells
+"Running a cell" is equivalent to pressing "Enter" on a calculator once you've typed in the expression you want to evaluate: it produces an output. When you run a text cell, it outputs clean, organized writing. When you run a code cell, it computes all of the expressions you want to evaluate, and can output the result of the computation.
+
+--- Item 10 ---
+To run the code in a code cell, first click on that cell to activate it.  It'll be highlighted with a little green or blue rectangle.  Next, you can either press the <code><b> ▶|</b> Run </code> button above or press <b><code>Shift + Return</code></b> or <b><code>Shift + Enter</code></b>. This will run the current cell and select the next one.
+
+
+--- Item 11 ---
+*For this class, you are not expected to write any code. You will be looking at plots generated by pre-written widgets. Your job is to write up your discussions and observations in the provided text cells.*
+
+--- Item 12 ---
+#### How to save your work
+Click on the leftmost icon in the tool bar (left of the plus icon).
+Alternatively, you can hit Ctrl+S on a PC or Command+Enter on a Mac.
+
+--- Item 13 ---
+<br><br>
+### 1.2 Common errors and how to fix them
+
+##### Accidentally deleted something in a cell? 
+Double click on that cell and press Ctrl+Z or Command+Z until you recover the deleted information. Otherwise, ask your GSI for help. 
+
+##### Getting a really long error message? 
+This could be a result of deleting code somewhere in the notebook in a code cell. If you remember which cell you deleted code from, double click on that cell and press Ctrl+Z or Command+Z until the code is as it was originally. Otherwise, raise your hand and ask for help from your GSI. 
+
+##### Getting the error 'data_frame' not present? 
+Make sure you have all of the relevant data files in your datahub home. Download the .csv files. Upload them into datahub in the folder where you see this notebook is stored. 
+
+##### Something is running for too long? 
+Try restarting the kernel. Sometimes Jupyter might be overloaded with the simplest of commands. Don't worry, just save your work and restart the kernel. 
+
+##### Getting multiple plots in the widgets below?
+This happened because you ran the line `from datascience import *`  before working with the plot widgets. Try restarting the kernel and making sure you finish your work with the plot widgets BEFORE running the code cell with the aforementioned line.
+
+--- Item 14 ---
+<br><br>
+### 1.3 Where to get help - Peer consultants
+
+This class as well as the Division of Computing, Data Science, and Society has many resources to help you gain the most out of this assignment. The Division is hosting virtual [data science office hours](https://data.berkeley.edu/academics/resources/peer-consulting) where you can drop by and ask for help with your notebook. 
+
+--- Item 15 ---
+---
+
+--- Item 16 ---
+# 2. Introduction to Python <a id='1'></a>
+
+Python is a popular programming language used by many; with Python, people create software  to analyze quantitative data, develop websites, manage finances, etc. In Python, you can create **expressions**, **functions**, or **variables** that help you work with and understand the data you are using.
+
+--- Item 17 ---
+### Example of an Expression
+
+--- Item 18 ---
+### Example of a Variable
+An important type of variable is a **string**. Strings are sequences of characters, such as words or sentences. Strings are always surrounded by quotes.
+
+--- Item 19 ---
+### Python Power!
+
+Python is used all the time in the field of immunity and disease! Check out this [Towards Data Science](https://towardsdatascience.com/modelling-the-coronavirus-epidemic-spreading-in-a-city-with-python-babd14d82fa2) article, which models and simulates the spread of COVID-19 in the city of Yerevan. Using Python in this manner is really helpful because it outlines potential outcomes of this pandemic, without actually having to witness them.
+
+--- Item 20 ---
+---
+
+--- Item 21 ---
+# 3. Intro to MRSA <a id='2'></a>
+
+
+--- Item 22 ---
+MRSA, or methicillin resistant S. auereus, is one example of a bacteria that is highly resistant to antibiotics. It is usually a hospital acquired infection though it can also be spread through the community. A review of 15 studies showed that 13-74% of all *S. aureus* infections are MRSA. Managing this infection requires careful indentification of the MRSA strain and source of infection, proper choice of antibiotics, and robust prevention strategies. Active surveillance of personnel and disinfection of healthcare equipment and rooms is critical for prevention. For more information on MRSA, refer back to you professor's lecture slides on this topic. 
+
+--- Item 23 ---
+### Discussion Question 1: 
+**From what you know about MRSA, where do you think the majority of MRSA cases are located in California (urban counties vs. rural counties)? Why might this difference in population density be significant in the total number of MRSA infections?**
+
+--- Item 24 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 25 ---
+---
+
+--- Item 26 ---
+# 4. Intro to Data <a id='3'></a>
+
+--- Item 27 ---
+### 4.1 Reading in Data Sets
+
+We will be analyzing is the Methicillin-resistant Staphylococcus aureus (MRSA) bloodstream infections (BSI) in California Hospitals data from the [California Health and Human Services Agency](https://data.chhs.ca.gov/dataset/methicillin-resistant-staphylococcus-aureus-mrsa-bloodstream-infections-bsi-in-california-hospitals). 
+
+> California Health and Safety Code section 1288.55(a)(1) requires general acute care hospitals to report all cases of Methicillin-resistant Staphylococcus aureus (MRSA) bloodstream infections (BSI) identified in their facilities to the California Department of Public Health (CDPH). MRSA BSI data are submitted by hospitals to the Centers for Disease Control and Prevention National Healthcare Safety Network (NHSN). CDPH downloads California hospital MRSA BSI data from NHSN and analyzes the data to describe prevention progress in an annual public report of healthcare-associated infections. CDPH publishes annual MRSA BSI data reported by each California hospital in the datasets below.
+
+Run the code cell below to load the data that we will be using for analysis.
+
+--- Item 28 ---
+### 4.2 Understanding the Data
+
+--- Item 29 ---
+Let's visualize the raw data of MRSA Reports in 2013. Data is usually recorded in a dataset (or table) format with rows and columns. Each row represents a distinct observation and each column represents a feature/variable. Run the code cell below to see the dataset. You can scroll horizontally to see all of the columns that are included.
+
+--- Item 30 ---
+Shown above are the first five rows of the the data table. As you can see, there are a lot of columns as well as a lot of missing information in some of the columns. We have cleaned the data for you by removing any unncessary features and renaming the columns to make their purpose more clear. Run the code cell below to see the cleaned data set from MRSA Reports in 2013 below. 
+
+--- Item 31 ---
+---
+
+--- Item 32 ---
+### 4.3 Breaking down the table
+
+--- Item 33 ---
+#### 4.3.1 Rows
+
+Let's take a look at the first row of the dataset for MRSA Reports in 2013. 
+
+--- Item 34 ---
+This particular row in our data represents a 2013 report representing the number of MRSA infections recorded in the Adventist Medical Center, Reedley in the Fresno County.
+
+Therefore, in general, every row in our dataset represents a distinct MRSA report from a California hospital in 2013.
+
+Try analyzing another row, just change the number `0` in the above code cell to see that numbered row. Since there are only 352 rows in our table, be sure your number is less than 352. 
+
+--- Item 35 ---
+#### 4.3.2. Columns
+Run the code cell below to see the list of the columns in our dataset.
+
+--- Item 36 ---
+Take a look at the columns names of the table listed above. Most of the columns should be pretty self-explanatory. For those that aren't, 
+- **HAI:** Hospital Acquired Infection. This refers to MRSA infections in hospital patients only. 
+- **Facility1:** the name of the specific medical center/hospital.
+- **Facility1_ID:** a unique number identifier for the medical facility.
+
+--- Item 37 ---
+### Discussion Question 2:
+**Of the questions we asked about MRSA, which are actually answerable given this dataset? Which questions could be answerable with a different dataset? And which would be hard to answer with the data we gave you?**
+
+--- Item 38 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 39 ---
+---
+
+--- Item 40 ---
+# 5. Comparing Infection Rates Over Time <a id='4'></a>
+
+Previously, we were looking at the MRSA infections in hospitals in 2013. Now, we combined multiple datasets for MRSA Reports from 2013 - 2018. Our goal in analyzing this dataset is to see how the infection rates have changed over time across counties.
+
+Use the plot widget to answer the discussion question below. Run the code cell below and toggle through the drop-down menu to look at infection counts for different counties.
+
+--- Item 41 ---
+### Discussion Question 3:
+**Choose one urban county (e.g. Los Angeles) and one rural county (e.g. Sonoma) to evaluate. What trends can you identify? What outliers do you see? Make a general statement on how MRSA infections have changed over time in these two counties.**
+
+
+--- Item 42 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 43 ---
+---
+
+--- Item 44 ---
+# 6. Comparing County Infection Rates with County Populations <a id='5'></a>
+
+
+--- Item 45 ---
+### 6.1 Infection rate by county per year
+
+We can use the same data to compare the infection rates based on the population within a county. A question we can ask is: What is the trend over the years of total population against infection counts? 
+
+The following code cell displays a widget that plots a regression (best fit) line over these two variables. See if you can catch an interesting trend.
+
+--- Item 46 ---
+### Discussion Question 4: 
+
+**Look at the same two urban and rural counties that you chose for the previous question. What information can you draw from the above graph for those two counties?** 
+
+--- Item 47 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 48 ---
+---
+
+--- Item 49 ---
+### 6.2 Infection rate across counties by year 
+
+The last portion of our analysis will be to look at infection counts across all counties each year. We calculate a "best fit" regression line to estimate the rate of infection. 
+
+Run the code cell below to load the widget. Feel free to select different years to see the change in slopes.
+
+--- Item 50 ---
+### Discussion Question 5: 
+
+**Select different years in the graph above. What do you notice about the slope across different years? What information can you draw from the graph above?** 
+
+--- Item 51 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 52 ---
+---
+
+--- Item 53 ---
+### 6.3 California Counties Colored by Infection Rate (number of infections/population)
+
+We can also use maps to gain more insight from the data. 
+
+A choropleth map (from Greek χῶρος "area/region" and πλῆθος "multitude") is a type of thematic map in which areas are shaded or patterned in proportion to a statistical variable that represents an aggregate summary of a geographic characteristic within each area, such as population density or per-capita income.
+
+Below is a a **chloropleth map**, which is similar to a heat map where color schemes in areas communicate high values with bright colors and low values with darker colors. For example, a [weather map](https://www.google.com/search?q=weather+map&hl=en&source=lnms&tbm=isch&sa=X&ved=2ahUKEwjdhcDEhbLoAhWM4J4KHX2aCLoQ_AUoAXoECA0QAw&biw=1440&bih=821#imgrc=OmR67PwUq48WEM) shows high temperature in red and colder temperature in blue. This map shows each California County and the rate of infection per unit of population (100,000 people). The darker red the county, the higher its MRSA infection rate is. The colorbar on the right side of the map shows the range of infection rates. Take a look at the map below and use it to answer the discussion question below. 
+
+--- Item 54 ---
+<img src="ca_map.png" style="width: 1200px;"/>
+
+--- Item 55 ---
+### Discussion Question 6:
+**Having looked at the chloropleth map of California counties above, what trends/outliers do you see? Find your two chosen urban and rural counties from previous questions. Are the MRSA infection rates (denoted by color) consistent with what you originally thought? What would you say overall about the relationship between infection rates and population?**
+
+--- Item 56 ---
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 57 ---
+---
+
+--- Item 58 ---
+### [OPTIONAL] 7. Bonus Challenge <a id='6'></a>
+
+--- Item 59 ---
+**BONUS CHALLENGE** (for folks who have taken Data-8 or beyond): Our data sets also have variables we didn’t use, including population split into race and sex subcategories. Try to alter the given code in the file *widgets.py* OR write your own code to build new plots and compare two new variables. What patterns do you see?
+
+
+
+--- Item 60 ---
+**Provided below is a table containing California Census population data. This data is grouped by Year and County. Each row contains information on the Total Population as well as subsets of each population by race and sex.**
+
+--- Item 61 ---
+*Note: To insert more code cells to work in, click on this text once, select 'Insert' in the toolbar above and choose 'Insert Cell Below'*
+
+--- Item 62 ---
+WRITE YOUR OBSERVATIONS HERE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--- Item 63 ---
+---
+
+--- Item 64 ---
+# 8. Submit Your Work <a id='7'></a>
+
+Run the code cell below convert your answers to the discussion question into a pdf. Be sure to follow instructions for submitting this assignment.
+- After running the cell, you can click `Download it here!` to create a PDF.
+- After running the cell, you can also right-click on `Download it here!` then click `Save Link As...` to save it as a PDF.
+
+--- Item 65 ---
+<br><br>
+## Feedback Form
+
+Please fill out [TODO - update form]() to give us valuable feedback for later notebooks!
+
+--- Item 66 ---
+<br><br>
+## Data Science Opportunities
+
+---
+
+Data Science Modules: http://data.berkeley.edu/education/modules
+
+Data Science Offerings at Berkeley: https://data.berkeley.edu/academics/undergraduate-programs/data-science-offerings
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+## DO NOT DELETE ANYTHING IN THIS CELL ##
+
+# import utilities
+from otter import Notebook
+import numpy as np
+import pandas as pd
+
+print("Done!")
+
+--- Item 2 ---
+20+20
+
+--- Item 3 ---
+# String
+"Immunity"
+
+--- Item 4 ---
+# This cell will read in the necessary data sets. Run it and take a look at the dataframes below!
+mrsa_merged = pd.read_csv('data/mrsa_merged.csv') #merged mrsa data
+infec_pop_merge = pd.read_csv('data/infec_pop_merge.csv') #combined mrsa and population data
+
+print("Done!")
+
+--- Item 5 ---
+mrsa_2013_raw = pd.read_csv('data/mrsa-in-hospitals-2013.csv') #raw data
+mrsa_2013_raw.head()
+
+--- Item 6 ---
+mrsa_2013 = pd.read_csv('data/mrsa_2013.csv') #cleaned data
+mrsa_2013.head()
+
+--- Item 7 ---
+mrsa_2013.take([0])
+
+--- Item 8 ---
+mrsa_2013.columns.tolist()
+
+--- Item 9 ---
+from widgets import infection_rates_per_county
+infection_rates_per_county()
+
+--- Item 10 ---
+from widgets import population_v_infection_by_county
+population_v_infection_by_county()
+
+--- Item 11 ---
+from widgets import population_vs_infection_by_year
+population_vs_infection_by_year()
+
+--- Item 12 ---
+# import Data 8 python package 
+from datascience import *
+
+--- Item 13 ---
+# re-import necessary datasets so you can work with Data 8 Table commands. 
+
+mrsa_merged = Table.read_table('data/mrsa_merged.csv') #merged mrsa data
+infec_pop_merge = Table.read_table('data/infec_pop_merge.csv') #combined mrsa and population data
+
+census_bonus = Table.read_table('data/census_bonus.csv').group(["Year", "County"], sum)
+census_bonus.show(5)
+
+--- Item 14 ---
+# run this cell to convert your work to a pdf for submission
+Notebook.export("MRSA Data Analysis.ipynb", filter_type='tags')
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+from otter import Notebook
+
+--- Item 2 ---
+import numpy as np
+
+--- Item 3 ---
+import pandas as pd
+
+--- Item 4 ---
+from widgets import infection_rates_per_county
+
+--- Item 5 ---
+from widgets import population_v_infection_by_county
+
+--- Item 6 ---
+from widgets import population_vs_infection_by_year
+
+--- Item 7 ---
+from datascience import *
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Otter autograder checks present in code cells]
+
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Discussion Question 1: 
+**From what you know about MRSA, where do you think the majority of MRSA cases are located in California (urban counties vs. rural counties)? Why might this difference in population density be significant in the total number of MRSA infections?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+# 4. Intro to Data <a id='3'></a>
+
+### 4.1 Reading in Data Sets
+
+We will be analyzing is the Methicillin-resistant Staphylococcus aureus (MRSA) bloodstream infections (BSI) in California H
+
+--- Item 2 ---
+Discussion Question 2:
+**Of the questions we asked about MRSA, which are actually answerable given this dataset? Which questions could be answerable with a different dataset? And which would be hard to answer with the data we gave you?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+# 5. Comparing Infection Rates Over Time <a id='4'></a>
+
+Previously, we were looking at the MRSA infections in hospitals in 2013. Now, we combined multiple datasets for MRSA Reports from 2013 - 2018. Our goal in analyzing
+
+--- Item 3 ---
+discussion question below. Run the code cell below and toggle through the drop-down menu to look at infection counts for different counties.
+
+### Discussion Question 3:
+**Choose one urban county (e.g. Los Angeles) and one rural county (e.g. Sonoma) to evaluate. What trends can you identify? What outliers do you see? Make a general statement on how MRSA infections have changed over time in these two counties.**
+
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+# 6. Comparing County Infection Rates with C
+
+--- Item 4 ---
+Discussion Question 3:
+**Choose one urban county (e.g. Los Angeles) and one rural county (e.g. Sonoma) to evaluate. What trends can you identify? What outliers do you see? Make a general statement on how MRSA infections have changed over time in these two counties.**
+
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+# 6. Comparing County Infection Rates with County Populations <a id='5'></a>
+
+
+### 6.1 Infection rate by county per year
+
+We can use the same data to compare the infection rates based on the
+
+--- Item 5 ---
+Discussion Question 4: 
+
+**Look at the same two urban and rural counties that you chose for the previous question. What information can you draw from the above graph for those two counties?** 
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+### 6.2 Infection rate across counties by year 
+
+The last portion of our analysis will be to look at infection counts across all counties each year. We calculate a "best fit" regression line to estimate the rate of infection. 
+
+Run the code cell below to load the wi
+
+--- Item 6 ---
+Discussion Question 5: 
+
+**Select different years in the graph above. What do you notice about the slope across different years? What information can you draw from the graph above?** 
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+### 6.3 California Counties Colored by Infection Rate (number of infections/population)
+
+We can also use maps to gain more insight from the data. 
+
+A choropleth map (from Greek χῶρος "area/region" and πλῆθος "multitude") is a type of thematic map in which areas are shaded or
+
+--- Item 7 ---
+discussion question below. 
+
+<img src="ca_map.png" style="width: 1200px;"/>
+
+### Discussion Question 6:
+**Having looked at the chloropleth map of California counties above, what trends/outliers do you see? Find your two chosen urban and rural counties from previous questions. Are the MRSA infection rates (denoted by color) consistent with what you originally thought? What would you say overall about the relationship between infection rates and population?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+--
+
+--- Item 8 ---
+Discussion Question 6:
+**Having looked at the chloropleth map of California counties above, what trends/outliers do you see? Find your two chosen urban and rural counties from previous questions. Are the MRSA infection rates (denoted by color) consistent with what you originally thought? What would you say overall about the relationship between infection rates and population?**
+
+REPLACE THIS TEXT WITH YOUR RESPONSE
+<br> [Note: double click on the cell, type in your response, and run the cell to save your work]
+
+---
+
+### [OPTIONAL] 7. Bonus Challenge <a id='6'></a>
+
+**BONUS CHALLENGE** (for fol
+
+--- Item 9 ---
+discussion question into a pdf. Be sure to follow instructions for submitting this assignment.
+- After running the cell, you can click `Download it here!` to create a PDF.
+- After running the cell, you can also right-click on `Download it here!` then click `Save Link As...` to save it as a PDF.
+
+<br><br>
+## Feedback Form
+
+Please fill out [TODO - update form]() to give us valuable feedback for later notebooks!
+
+<br><br>
+## Data Science Opportunities
+
+---
+
+Data Science Modules: http://data.berkeley.edu/education/modules
+
+Data Science Offerings at Berkeley: https://data.berkeley.edu/academics/und
+
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+widgets API
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Analysis → Introduction → Exercise
+
+66 markdown cells and 14 code cells. Major sections include: [MCB 50] MRSA Data Analysis, Professor Robert Beatty, 1. Intro to Jupyter, 1.1 Types of Cells, Text Cells, Code Cells, ....

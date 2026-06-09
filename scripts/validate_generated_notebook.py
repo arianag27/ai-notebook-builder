@@ -3,7 +3,7 @@
 Validate a generated starter notebook before human review.
 
 Checks structure, Python syntax (without running code), and common quality issues.
-Reads expectations from notebook_outline.md when available.
+Reads expectations from llm_notebook_draft.md or notebook_outline.md when available.
 
 Usage:
     python3 scripts/validate_generated_notebook.py
@@ -20,6 +20,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 GENERATED_DIR = PROJECT_ROOT / "data" / "generated"
 NOTEBOOK_PATH = GENERATED_DIR / "starter_notebook.ipynb"
 OUTLINE_PATH = GENERATED_DIR / "notebook_outline.md"
+LLM_DRAFT_PATH = GENERATED_DIR / "llm_notebook_draft.md"
 REPORT_PATH = GENERATED_DIR / "validation_report.md"
 
 # Words that suggest a dataset is required (warn when outline says no dataset)
@@ -44,12 +45,18 @@ GENERIC_PLACEHOLDER_PATTERNS = [
     r"add your first coding activity",
 ]
 
-# Phrases that count as student observation prompts (OK when reflection = no)
+# Phrases that count as student observation prompts after interactive cells
 OBSERVATION_PROMPTS = [
     "try changing",
+    "try adjusting",
     "what do you notice",
     "what happens when",
     "what would you",
+    "how does",
+    "how do",
+    "reflection",
+    "your turn",
+    "observe",
 ]
 
 def is_interactive_code(code: str) -> bool:
@@ -84,12 +91,68 @@ def get_cell_text(cell: dict) -> str:
     return str(source)
 
 
+def detect_notebook_source(cells: list[dict]) -> str:
+    """Return 'llm', 'outline', or 'unknown' based on the export banner."""
+    if not cells:
+        return "unknown"
+    banner = get_cell_text(cells[0]).lower()
+    if "llm_notebook_draft.md" in banner:
+        return "llm"
+    if "notebook_outline.md" in banner or "draft_section.md" in banner:
+        return "outline"
+    if LLM_DRAFT_PATH.exists() and OUTLINE_PATH.exists():
+        if LLM_DRAFT_PATH.stat().st_mtime >= OUTLINE_PATH.stat().st_mtime:
+            return "llm"
+    elif LLM_DRAFT_PATH.exists():
+        return "llm"
+    elif OUTLINE_PATH.exists():
+        return "outline"
+    return "unknown"
+
+
+def load_llm_draft_expectations() -> dict:
+    """Read planning flags from llm_notebook_draft.md if it exists."""
+    expectations = {
+        "uses_dataset": None,
+        "reflection": None,
+        "topic": "",
+        "source": "llm",
+    }
+
+    if not LLM_DRAFT_PATH.exists():
+        return expectations
+
+    text = LLM_DRAFT_PATH.read_text(encoding="utf-8")
+    body = text.split("\n---\n", 1)[-1] if "\n---\n" in text else text
+
+    match = re.search(r"\*\*Topic:\*\*\s*(.+)", text)
+    if match:
+        expectations["topic"] = match.group(1).strip()
+
+    if re.search(r"^##\s+Reflection", body, re.MULTILINE | re.IGNORECASE):
+        expectations["reflection"] = True
+    else:
+        expectations["reflection"] = False
+
+    if re.search(
+        r"dataset|read_csv|load.*data|pd\.read",
+        body,
+        re.IGNORECASE,
+    ):
+        expectations["uses_dataset"] = True
+    else:
+        expectations["uses_dataset"] = False
+
+    return expectations
+
+
 def load_outline_expectations() -> dict:
     """Read planning flags from notebook_outline.md if it exists."""
     expectations = {
         "uses_dataset": None,
         "reflection": None,
         "topic": "",
+        "source": "outline",
     }
 
     if not OUTLINE_PATH.exists():
@@ -114,6 +177,21 @@ def load_outline_expectations() -> dict:
         expectations["topic"] = match.group(1).strip()
 
     return expectations
+
+
+def load_expectations(cells: list[dict]) -> dict:
+    """Load expectations from the source that produced this notebook."""
+    source = detect_notebook_source(cells)
+    if source == "llm":
+        return load_llm_draft_expectations()
+    if source == "outline":
+        return load_outline_expectations()
+    return {
+        "uses_dataset": None,
+        "reflection": None,
+        "topic": "",
+        "source": source,
+    }
 
 
 def strip_ipython_magics(code: str) -> str:
@@ -228,21 +306,58 @@ def validate_code_syntax(cells: list[dict], v: Validator) -> None:
         v.ok(f"All {checked} code cell(s) passed syntax check")
 
 
-def validate_no_generic_placeholders(cells: list[dict], v: Validator) -> None:
-    """Flag leftover TODO/pass starter stubs."""
-    found = []
+def is_exercise_code_cell(cells: list[dict], index: int) -> bool:
+    """True when a code cell follows a guided practice / problem prompt."""
+    if index <= 0:
+        return False
+    prev = get_cell_text(cells[index - 1]).lower()
+    exercise_markers = (
+        "problem ",
+        "guided practice",
+        "your turn",
+        "compute ",
+        "calculate ",
+        "exercise",
+        "practice:",
+    )
+    return any(marker in prev for marker in exercise_markers)
+
+
+def validate_no_generic_placeholders(
+    cells: list[dict],
+    v: Validator,
+    source: str = "unknown",
+) -> None:
+    """Flag leftover TODO/pass starter stubs (allow exercise scaffolds in LLM notebooks)."""
+    stub_errors = []
+    exercise_todos = []
+
     for i, cell in enumerate(cells):
         if cell.get("cell_type") != "code":
             continue
         code = get_cell_text(cell)
-        for pattern in GENERIC_PLACEHOLDER_PATTERNS:
-            if re.search(pattern, code, re.IGNORECASE):
-                found.append(i)
-                break
 
-    if found:
+        is_stub = any(
+            re.search(pattern, code, re.IGNORECASE)
+            for pattern in GENERIC_PLACEHOLDER_PATTERNS
+        )
+        if not is_stub:
+            continue
+
+        if source == "llm" and is_exercise_code_cell(cells, i):
+            if re.search(r"#\s*TODO:", code, re.IGNORECASE) and "pass" not in code.lower():
+                exercise_todos.append(i)
+                continue
+
+        stub_errors.append(i)
+
+    if stub_errors:
         v.fail(
-            f"Generic TODO/pass placeholders in code cell(s): {', '.join(map(str, found))}"
+            f"Generic TODO/pass placeholders in code cell(s): {', '.join(map(str, stub_errors))}"
+        )
+    elif exercise_todos:
+        v.ok(
+            f"Exercise TODO placeholders in guided practice cells ({len(exercise_todos)}) — expected"
         )
     else:
         v.ok("No generic TODO/pass placeholders in code")
@@ -272,15 +387,17 @@ def validate_quality(
         else:
             v.ok("No inappropriate dataset language (outline: no dataset)")
 
-    # Reflection section when reflection = no
-    if expectations.get("reflection") is False:
-        has_reflection_section = bool(
-            re.search(r"^##\s+reflection", all_lower, re.MULTILINE)
-        )
-        if has_reflection_section:
-            v.warn("Reflection section found but outline says reflection = no")
-        else:
-            v.ok("No full reflection section (outline: reflection = no)")
+    # Reflection section vs expectations
+    has_reflection_section = bool(
+        re.search(r"^##\s+reflection", all_lower, re.MULTILINE)
+    )
+    if expectations.get("reflection") is False and has_reflection_section:
+        label = expectations.get("source", "outline")
+        v.warn(f"Reflection section found but {label} says reflection = no")
+    elif expectations.get("reflection") is True and has_reflection_section:
+        v.ok("Has reflection section (as requested)")
+    elif expectations.get("reflection") is False:
+        v.ok("No full reflection section (reflection = no)")
 
     # Count generic customization placeholders in markdown
     placeholder_count = len(re.findall(
@@ -372,6 +489,8 @@ def build_report(
         lines.append(f"**Expected reflection:** {'yes' if expectations['reflection'] else 'no'}")
     if expectations.get("topic"):
         lines.append(f"**Topic:** {expectations['topic']}")
+    if expectations.get("source"):
+        lines.append(f"**Source:** {expectations['source']}")
     lines.append("")
 
     lines.extend(["## Passed Checks", ""])
@@ -443,25 +562,25 @@ def print_summary(v: Validator) -> None:
         print("Result: FAILED")
 
 
-def validate_notebook(notebook_path: Path = NOTEBOOK_PATH) -> Validator:
+def validate_notebook(notebook_path: Path = NOTEBOOK_PATH) -> tuple[Validator, dict]:
     """Run all validation checks and return results."""
     notebook = load_notebook(notebook_path)
     cells = notebook.get("cells", [])
-    expectations = load_outline_expectations()
+    expectations = load_expectations(cells)
 
     v = Validator()
     validate_structure(cells, v)
     validate_code_syntax(cells, v)
-    validate_no_generic_placeholders(cells, v)
+    validate_no_generic_placeholders(cells, v, source=expectations.get("source", "unknown"))
     validate_quality(cells, expectations, v)
 
-    return v
+    return v, expectations
 
 
 def main() -> None:
-    v = validate_notebook()
+    v, expectations = validate_notebook()
 
-    report = build_report(NOTEBOOK_PATH, load_outline_expectations(), v)
+    report = build_report(NOTEBOOK_PATH, expectations, v)
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
     REPORT_PATH.write_text(report, encoding="utf-8")
 

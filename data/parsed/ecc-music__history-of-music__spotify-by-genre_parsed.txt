@@ -1,0 +1,466 @@
+Notebook: ecc-music__history-of-music__spotify-by-genre.ipynb
+Title: How has music changed over time—by genre? (Spotify snapshot)
+
+=== HEADINGS ===
+
+--- Item 1 ---
+How has music changed over time—by genre? (Spotify snapshot)
+
+--- Item 2 ---
+What you’ll practice (no coding required)
+
+--- Item 3 ---
+Quick vocabulary
+
+--- Item 4 ---
+Where the numbers come from
+
+--- Item 5 ---
+Caveats (keep these in mind)
+
+--- Item 6 ---
+Under the hood (automatic)
+
+--- Item 7 ---
+Variables in this dataset (quick guide)
+
+--- Item 8 ---
+Snapshot — how many tracks per year?
+
+--- Item 9 ---
+Notice · Wonder · Limits
+
+--- Item 10 ---
+Chart 1 — Averages for four features by year
+
+--- Item 11 ---
+Notice · Wonder · Limits
+
+--- Item 12 ---
+Chart 2 — Tempo and loudness by year
+
+--- Item 13 ---
+Notice · Wonder · Limits
+
+--- Item 14 ---
+Chart 3 — Every track: energy vs danceability, colored by year
+
+--- Item 15 ---
+Notice · Wonder · Limits
+
+--- Item 16 ---
+Chart 4 — Interactive radar by year (Play or slider)
+
+--- Item 17 ---
+Notice · Wonder · Limits
+
+--- Item 18 ---
+Go deeper (no code)
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+| **Dataset** | A table of information; here, one row per track after cleaning. |
+| **Feature** | One measured column (for example *energy* or *tempo*). These values are **automated estimates** from audio—they are **not** the same as music-theory labels. |
+| **Aggregate** | Combining many songs into one summary (for example an **average** per release year). |
+| **Release year** | The calendar year taken from each track’s **release date** in the file (2015, 2016, …). |
+
+--- Item 2 ---
+Tracks, **genre** labels, and audio features come from a public **Spotify-style analytics export (2015–2025)** on Kaggle: [Spotify Music Analytics Dataset (2015–2025)](https://www.kaggle.com/datasets/rohiteng/spotify-music-analytics-dataset-20152025).
+
+Automated features help compare thousands of songs consistently, but they can miss nuance you would hear in real life.
+
+This activity follows *What’s Going On in This Graph?*: **notice**, **wonder**, and say what the graph **does not** show.
+
+--- Item 3 ---
+- **Genre:** Each row has **one** genre label from the dataset; real artists often span multiple styles.
+- **Features:** This file has **energy, danceability, instrumentalness, tempo, loudness, popularity**, and **explicit**—not the full Spotify API set (there is **no valence / acousticness / speechiness / liveness** here).
+
+### Under the hood (automatic)
+
+The next cell reads **`spotify_2015_2025_85k.parquet`** from the same folder as this notebook (start Jupyter from **`history-of-music/`**). Put the Kaggle export there (Parquet or adjust the path in code to `.csv` if needed).
+
+**Dependencies:** `pip install -r requirements.txt` (**pandas**, **plotly**, **ipywidgets**, **pyarrow**).
+
+--- Item 4 ---
+## Variables in this dataset (quick guide)
+
+Use this as your reference for the charts:
+
+- **Song**: track title
+- **Artist**: performer name
+- **genre**: one genre label provided by the dataset
+- **release_date**: original date field in the file
+- **year**: release year extracted from `release_date` (used in charts)
+- **popularity**: popularity-style score from source data
+- **popularity_scaled**: popularity divided by 100 (0–1 scale for charting)
+- **explicit**: explicit-lyrics flag (0 = no, 1 = yes)
+- **danceability**: dance-friendliness estimate
+- **energy**: intensity/activity estimate
+- **instrumentalness**: likelihood a track is mostly instrumental
+- **tempo**: estimated BPM
+- **loudness**: estimated loudness (dB-style scale)
+
+These are machine-derived metadata/features, so use them
+
+--- Item 5 ---
+- **genre**: one genre label provided by the dataset
+- **release_date**: original date field in the file
+- **year**: release year extracted from `release_date` (used in charts)
+- **popularity**: popularity-style score from source data
+- **popularity_scaled**: popularity divided by 100 (0–1 scale for charting)
+- **explicit**: explicit-lyrics flag (0 = no, 1 = yes)
+- **danceability**: dance-friendliness estimate
+- **energy**: intensity/activity estimate
+- **instrumentalness**: likelihood a track is mostly instrumental
+- **tempo**: estimated BPM
+- **loudness**: estimated loudness (dB-style scale)
+
+These are machine-derived metadata/features, so use them as **comparative indicators** rather than exact musical measurements.
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# How has music changed over time—by genre? (Spotify snapshot)
+
+**How to use this notebook:** run **Run → Run All Cells**, choose a **genre** from the menu when it appears, then scroll: each section explains a chart and shows it **right below** for that genre.
+
+--- Item 2 ---
+## What you’ll practice (no coding required)
+
+- Read charts that summarize **many songs at once** (by **release year**).
+- Describe **patterns** and **uncertainty** in plain language.
+- Compare **genres** with the same chart types and see what changes when you switch the menu.
+
+--- Item 3 ---
+## Quick vocabulary
+
+| Term | In everyday language |
+|------|----------------------|
+| **Dataset** | A table of information; here, one row per track after cleaning. |
+| **Feature** | One measured column (for example *energy* or *tempo*). These values are **automated estimates** from audio—they are **not** the same as music-theory labels. |
+| **Aggregate** | Combining many songs into one summary (for example an **average** per release year). |
+| **Release year** | The calendar year taken from each track’s **release date** in the file (2015, 2016, …). |
+
+--- Item 4 ---
+## Where the numbers come from
+
+Tracks, **genre** labels, and audio features come from a public **Spotify-style analytics export (2015–2025)** on Kaggle: [Spotify Music Analytics Dataset (2015–2025)](https://www.kaggle.com/datasets/rohiteng/spotify-music-analytics-dataset-20152025).
+
+Automated features help compare thousands of songs consistently, but they can miss nuance you would hear in real life.
+
+This activity follows *What’s Going On in This Graph?*: **notice**, **wonder**, and say what the graph **does not** show.
+
+--- Item 5 ---
+## Caveats (keep these in mind)
+
+- **Time range:** The export covers **2015–2025**—a short window, so year-by-year lines may look **noisy** when a year has fewer tracks.
+- **Release year:** We use the **release date** in the spreadsheet—not “when you first heard it” or “when it went viral.”
+- **Genre:** Each row has **one** genre label from the dataset; real artists often span multiple styles.
+- **Features:** This file has **energy, danceability, instrumentalness, tempo, loudness, popularity**, and **explicit**—not the full Spotify API set (there is **no valence / acousticness / speechiness / liveness** here).
+
+--- Item 6 ---
+### Under the hood (automatic)
+
+The next cell reads **`spotify_2015_2025_85k.parquet`** from the same folder as this notebook (start Jupyter from **`history-of-music/`**). Put the Kaggle export there (Parquet or adjust the path in code to `.csv` if needed).
+
+**Dependencies:** `pip install -r requirements.txt` (**pandas**, **plotly**, **ipywidgets**, **pyarrow**).
+
+--- Item 7 ---
+## Variables in this dataset (quick guide)
+
+Use this as your reference for the charts:
+
+- **Song**: track title
+- **Artist**: performer name
+- **genre**: one genre label provided by the dataset
+- **release_date**: original date field in the file
+- **year**: release year extracted from `release_date` (used in charts)
+- **popularity**: popularity-style score from source data
+- **popularity_scaled**: popularity divided by 100 (0–1 scale for charting)
+- **explicit**: explicit-lyrics flag (0 = no, 1 = yes)
+- **danceability**: dance-friendliness estimate
+- **energy**: intensity/activity estimate
+- **instrumentalness**: likelihood a track is mostly instrumental
+- **tempo**: estimated BPM
+- **loudness**: estimated loudness (dB-style scale)
+
+These are machine-derived metadata/features, so use them as **comparative indicators** rather than exact musical measurements.
+
+--- Item 8 ---
+## Snapshot — how many tracks per year?
+
+For the **genre you picked**, the table counts tracks in each **release year** (after cleaning). The second table shows a few **high-popularity** examples per year.
+
+--- Item 9 ---
+### Notice · Wonder · Limits
+
+- **Notice:** Which **year** has the most tracks for this genre in this file?
+- **Wonder:** Would you expect the same pattern on a different streaming service or country?
+- **Limits:** Counts depend on **what made it into this export**, not “all music released.”
+
+--- Item 10 ---
+## Chart 1 — Averages for four features by year
+
+These lines summarize **energy**, **danceability**, **instrumentalness**, and **popularity scaled to 0–1** (popularity ÷ 100):
+
+- **Energy:** intensity / activity  
+- **Danceability:** rhythm suited to dancing  
+- **Instrumentalness:** vocal vs instrumental estimate  
+- **Popularity (÷100):** popularity score scaled to fit the same axis  
+
+Each point is the **average** of all tracks in this **genre** for that **release year**.
+
+--- Item 11 ---
+### Notice · Wonder · Limits
+
+- **What do you notice?** (One or two trends across **years** for this genre.)
+- **What do you wonder?** (Production, subgenres, playlists?)
+- **Limits:** Averages hide individual songs and flatten variety inside the genre label.
+
+--- Item 12 ---
+## Chart 2 — Tempo and loudness by year
+
+- **Tempo** is approximate beats per minute (BPM).  
+- **Loudness** is a decibel-style measure from the export (higher = louder in the model).
+
+--- Item 13 ---
+### Notice · Wonder · Limits
+
+- **Notice:** Where do tempo and loudness move together or apart?
+- **Wonder:** How might mastering and loudness normalization affect what you see?
+- **Limits:** These are **yearly** averages; your favorite track may sit far from the average.
+
+--- Item 14 ---
+## Chart 3 — Every track: energy vs danceability, colored by year
+
+Each dot is one song in this **genre**. **Energy** (horizontal) vs **danceability** (vertical). Color is **release year** (darker/lighter on the scale). Hover for title and artist.
+
+You see **spread**, not only averages.
+
+--- Item 15 ---
+### Notice · Wonder · Limits
+
+- **Notice:** Do some **years** cluster in a corner? Is the cloud wider in some parts of the timeline?
+- **Wonder:** What might explain clusters for this genre?
+- **Limits:** Overlapping dots; popularity is not on the axes.
+
+--- Item 16 ---
+## Chart 4 — Interactive radar by year (Play or slider)
+
+This **radar** connects **average** feature values for this **genre** by **release year**.
+
+Spokes (0–1 where applicable): **Energy**, **Danceability**, **Instrumentalness**, **Explicit**.
+
+**Limits:** Years with **few** tracks jump more; that is small sample noise.
+
+--- Item 17 ---
+### Notice · Wonder · Limits
+
+- **Notice:** Which spokes move the most year to year?
+- **Wonder:** What real-world trends might line up with a jump?
+- **Limits:** Still an **average** of tracks in this file for that year—not all music.
+
+--- Item 18 ---
+## Go deeper (no code)
+
+Pick **two songs** you know from **different years** (or eras), listen carefully, and compare your notes with what these charts suggest for this genre.
+
+Optional: how does **physical sound** relate to **summary statistics** when the computer is only reading numbers?
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import warnings
+from pathlib import Path
+
+import ipywidgets as widgets
+import pandas as pd
+from IPython.display import HTML, display
+
+import utils
+
+warnings.filterwarnings("ignore", category=FutureWarning)
+
+NOTEBOOK_DIR = Path.cwd()
+SPOTIFY_PATH = NOTEBOOK_DIR / "spotify_2015_2025_85k.parquet"
+
+prepared, load_info = utils.load_prepared_spotify(SPOTIFY_PATH)
+display(pd.DataFrame([load_info]).T.rename(columns={0: "value"}))
+
+genre_opts = utils.genre_options(prepared, min_count=200)
+if not genre_opts:
+    raise RuntimeError("No genres meet min_count; lower min_count in utils.genre_options call.")
+
+genre_dd = widgets.Dropdown(
+    options=genre_opts,
+    description="Genre:",
+    layout=widgets.Layout(width="380px"),
+)
+display(HTML("<p><b>Pick a genre</b> — every section below updates when you change this menu.</p>"))
+display(genre_dd)
+
+--- Item 2 ---
+var_info = pd.DataFrame(
+    [
+        ("Song", "Track title"),
+        ("Artist", "Performer name"),
+        ("genre", "Single genre label in this dataset"),
+        ("release_date", "Date field from source file"),
+        ("year", "Release year extracted from release_date"),
+        ("popularity", "Popularity-style score"),
+        ("popularity_scaled", "Popularity divided by 100 (0–1)"),
+        ("explicit", "Explicit-lyrics flag (0/1)"),
+        ("danceability", "Dance-friendliness estimate"),
+        ("energy", "Intensity/activity estimate"),
+        ("instrumentalness", "Likelihood track is mostly instrumental"),
+        ("tempo", "Estimated BPM"),
+        ("loudness", "Estimated loudness (dB-style scale)"),
+    ],
+    columns=["variable", "what_it_means"],
+)
+
+display(var_info)
+
+--- Item 3 ---
+from IPython.display import display
+
+
+def _snapshot(genre: str) -> None:
+    sub = prepared[prepared["genre"] == genre]
+    if sub.empty:
+        print("No rows for this genre.")
+        return
+    display(utils.year_counts_table(sub))
+    display(utils.top_by_year_sample(sub, n=3))
+
+
+display(widgets.interactive_output(_snapshot, {"genre": genre_dd}))
+
+--- Item 4 ---
+from IPython.display import display
+
+
+def _chart1(genre: str) -> None:
+    sub = prepared[prepared["genre"] == genre]
+    if sub.empty:
+        print("No rows for this genre.")
+        return
+    display(utils.plot_mood_features_by_year(sub, title_suffix=genre))
+
+
+display(widgets.interactive_output(_chart1, {"genre": genre_dd}))
+
+--- Item 5 ---
+from IPython.display import display
+
+
+def _chart2(genre: str) -> None:
+    sub = prepared[prepared["genre"] == genre]
+    if sub.empty:
+        print("No rows for this genre.")
+        return
+    display(utils.plot_tempo_loudness_by_year(sub, title_suffix=genre))
+
+
+display(widgets.interactive_output(_chart2, {"genre": genre_dd}))
+
+--- Item 6 ---
+from IPython.display import display
+
+
+def _chart3(genre: str) -> None:
+    sub = prepared[prepared["genre"] == genre]
+    if sub.empty:
+        print("No rows for this genre.")
+        return
+    display(utils.plot_energy_danceability_scatter(sub, title_suffix=genre))
+
+
+display(widgets.interactive_output(_chart3, {"genre": genre_dd}))
+
+--- Item 7 ---
+from IPython.display import display
+
+
+def _chart4(genre: str) -> None:
+    sub = prepared[prepared["genre"] == genre]
+    if sub.empty:
+        print("No rows for this genre.")
+        return
+    display(utils.plot_radar_by_year(sub, title_suffix=genre))
+
+
+display(widgets.interactive_output(_chart4, {"genre": genre_dd}))
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import warnings
+
+--- Item 2 ---
+from pathlib import Path
+
+--- Item 3 ---
+import ipywidgets as widgets
+
+--- Item 4 ---
+import pandas as pd
+
+--- Item 5 ---
+from IPython.display import HTML, display
+
+--- Item 6 ---
+import utils
+
+--- Item 7 ---
+from IPython.display import display
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+scatter plot
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+--- Item 2 ---
+widgets API
+
+--- Item 3 ---
+dropdown widget
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Dataset → Interactive Widget
+
+18 markdown cells and 7 code cells. Major sections include: How has music changed over time—by genre? (Spotify snapshot), What you’ll practice (no coding required), Quick vocabulary, Where the numbers come from, Caveats (keep these in mind), Under the hood (automatic), ....

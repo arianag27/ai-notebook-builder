@@ -1,0 +1,290 @@
+{
+  "repo_url": "https://github.com/ds-modules/ecc-textbook.git",
+  "synced_at": "2026-06-07T19:50:33.454787+00:00",
+  "files": [
+    {
+      "dest_filename": "ecc-ai__chatbot__intro_api_keys_chatbot.ipynb",
+      "source_path": "ecc-ai/chatbot/intro_api_keys_chatbot.ipynb"
+    },
+    {
+      "dest_filename": "ecc-ai__small-models__ElCaminoIntrotoAI.ipynb",
+      "source_path": "ecc-ai/small-models/ElCaminoIntrotoAI.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__Air Quality__environmental-justice.ipynb",
+      "source_path": "ecc-biology/Air Quality/environmental-justice.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__Cancer_Mutations__cancer_mutations.ipynb",
+      "source_path": "ecc-biology/Cancer_Mutations/cancer_mutations.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__Introduction__introduction.ipynb",
+      "source_path": "ecc-biology/Introduction/introduction.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__SARS-CoV2__wastewater_covid_notebook.ipynb",
+      "source_path": "ecc-biology/SARS-CoV2/wastewater_covid_notebook.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__enzymes__enzymes_bioinformatics.ipynb",
+      "source_path": "ecc-biology/enzymes/enzymes_bioinformatics.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__mrsa__MRSA Data Analysis copy.ipynb",
+      "source_path": "ecc-biology/mrsa/MRSA Data Analysis copy.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__mrsa__MRSA Data Analysis.ipynb",
+      "source_path": "ecc-biology/mrsa/MRSA Data Analysis.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__mrsa__MRSA_Data_Analysis_PreNursing.ipynb",
+      "source_path": "ecc-biology/mrsa/MRSA_Data_Analysis_PreNursing.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__mrsa__otter__autograder__MRSA Data Analysis.ipynb",
+      "source_path": "ecc-biology/mrsa/otter/autograder/MRSA Data Analysis.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__mrsa__otter__student__MRSA Data Analysis.ipynb",
+      "source_path": "ecc-biology/mrsa/otter/student/MRSA Data Analysis.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biology__polarity__bond_polarity.ipynb",
+      "source_path": "ecc-biology/polarity/bond_polarity.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biotech__Cancer_Mutations__cancer_mutations.ipynb",
+      "source_path": "ecc-biotech/Cancer_Mutations/cancer_mutations.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biotech__Enzymes and DNA__Mendeley_data__enzyme.ipynb",
+      "source_path": "ecc-biotech/Enzymes and DNA/Mendeley_data/enzyme.ipynb"
+    },
+    {
+      "dest_filename": "ecc-biotech__sba__sba.ipynb",
+      "source_path": "ecc-biotech/sba/sba.ipynb"
+    },
+    {
+      "dest_filename": "ecc-business__marketing-fast-food__marketing_case_study.ipynb",
+      "source_path": "ecc-business/marketing-fast-food/marketing_case_study.ipynb"
+    },
+    {
+      "dest_filename": "ecc-business__sba__sba.ipynb",
+      "source_path": "ecc-business/sba/sba.ipynb"
+    },
+    {
+      "dest_filename": "ecc-calculus__partial_fractions_lesson.ipynb",
+      "source_path": "ecc-calculus/partial_fractions_lesson.ipynb"
+    },
+    {
+      "dest_filename": "ecc-calculus__pfd.ipynb",
+      "source_path": "ecc-calculus/pfd.ipynb"
+    },
+    {
+      "dest_filename": "ecc-calculus__riemann_sum.ipynb",
+      "source_path": "ecc-calculus/riemann_sum.ipynb"
+    },
+    {
+      "dest_filename": "ecc-calculus__sums.ipynb",
+      "source_path": "ecc-calculus/sums.ipynb"
+    },
+    {
+      "dest_filename": "ecc-chemistry__Orbitals.ipynb",
+      "source_path": "ecc-chemistry/Orbitals.ipynb"
+    },
+    {
+      "dest_filename": "ecc-child-development__parental-risk.ipynb",
+      "source_path": "ecc-child-development/parental-risk.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__CIS182__AI_Ethics_in_Data_Science.ipynb",
+      "source_path": "ecc-cis/CIS182/AI_Ethics_in_Data_Science.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__CIS182__ai_trolley_problem_notebook.ipynb",
+      "source_path": "ecc-cis/CIS182/ai_trolley_problem_notebook.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis119__rsa_quantum_lesson.ipynb",
+      "source_path": "ecc-cis/cis119/rsa_quantum_lesson.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis13__AI_in_Information_Systems.ipynb",
+      "source_path": "ecc-cis/cis13/AI_in_Information_Systems.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis13__Intro_to_Databases.ipynb",
+      "source_path": "ecc-cis/cis13/Intro_to_Databases.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis13__Intro_to_Jupyter.ipynb",
+      "source_path": "ecc-cis/cis13/Intro_to_Jupyter.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__Stock_Market_Analysis_Part1.ipynb",
+      "source_path": "ecc-cis/cis26/Stock_Market_Analysis_Part1.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__Stock_Market_Analysis_Part2.ipynb",
+      "source_path": "ecc-cis/cis26/Stock_Market_Analysis_Part2.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Advanced.ipynb",
+      "source_path": "ecc-cis/cis26/excel_to_pandas_zillow/Excel_to_Pandas_Zillow_Advanced.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Basic.ipynb",
+      "source_path": "ecc-cis/cis26/excel_to_pandas_zillow/Excel_to_Pandas_Zillow_Basic.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Exercises.ipynb",
+      "source_path": "ecc-cis/cis26/excel_to_pandas_zillow/Excel_to_Pandas_Zillow_Exercises.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Instructor.ipynb",
+      "source_path": "ecc-cis/cis26/excel_to_pandas_zillow/Excel_to_Pandas_Zillow_Instructor.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ECC CalEnviroScreen.ipynb",
+      "source_path": "ecc-cs9/ECC CalEnviroScreen.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__Modeling_CA_Housing_lab.ipynb",
+      "source_path": "ecc-cs9/Modeling_CA_Housing_lab.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ces__nb-archive__CES1-intro.ipynb",
+      "source_path": "ecc-cs9/ces/nb-archive/CES1-intro.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ces__nb-archive__CES2-CommColl.ipynb",
+      "source_path": "ecc-cs9/ces/nb-archive/CES2-CommColl.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ces__nb-archive__CES_Mapping.ipynb",
+      "source_path": "ecc-cs9/ces/nb-archive/CES_Mapping.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ces__proj1__proj1.ipynb",
+      "source_path": "ecc-cs9/ces/proj1/proj1.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__ces__proj2.ipynb",
+      "source_path": "ecc-cs9/ces/proj2.ipynb"
+    },
+    {
+      "dest_filename": "ecc-cs9__policing__policing.ipynb",
+      "source_path": "ecc-cs9/policing/policing.ipynb"
+    },
+    {
+      "dest_filename": "ecc-ethnic-studies__Incarceration__Incarcerations.ipynb",
+      "source_path": "ecc-ethnic-studies/Incarceration/Incarcerations.ipynb"
+    },
+    {
+      "dest_filename": "ecc-ethnic-studies__Incarceration__otter.ipynb",
+      "source_path": "ecc-ethnic-studies/Incarceration/otter.ipynb"
+    },
+    {
+      "dest_filename": "ecc-ethnic-studies__introduction__introduction.ipynb",
+      "source_path": "ecc-ethnic-studies/introduction/introduction.ipynb"
+    },
+    {
+      "dest_filename": "ecc-ethnic-studies__race-and-health__Health.ipynb",
+      "source_path": "ecc-ethnic-studies/race-and-health/Health.ipynb"
+    },
+    {
+      "dest_filename": "ecc-music__history-of-music__spotify-by-genre.ipynb",
+      "source_path": "ecc-music/history-of-music/spotify-by-genre.ipynb"
+    },
+    {
+      "dest_filename": "ecc-music__history-of-rock__history-of-rock.ipynb",
+      "source_path": "ecc-music/history-of-rock/history-of-rock.ipynb"
+    },
+    {
+      "dest_filename": "ecc-music__jazz-licks__jazz_licks.ipynb",
+      "source_path": "ecc-music/jazz-licks/jazz_licks.ipynb"
+    },
+    {
+      "dest_filename": "ecc-physics__PKA_ATP_SingleMolecule_Kinetics.ipynb",
+      "source_path": "ecc-physics/PKA_ATP_SingleMolecule_Kinetics.ipynb"
+    },
+    {
+      "dest_filename": "ecc-physics__PKA_ATP_SingleMolecule_Kinetics_INSTRUCTOR.ipynb",
+      "source_path": "ecc-physics/PKA_ATP_SingleMolecule_Kinetics_INSTRUCTOR.ipynb"
+    },
+    {
+      "dest_filename": "ecc-psychology__resume__InvJNB-ResumeCallbacks-NameRace-COMPLETE.ipynb",
+      "source_path": "ecc-psychology/resume/InvJNB-ResumeCallbacks-NameRace-COMPLETE.ipynb"
+    },
+    {
+      "dest_filename": "ecc-psychology__resume__InvJNB-ResumeCallbacks-NameRace-STUDENT.ipynb",
+      "source_path": "ecc-psychology/resume/InvJNB-ResumeCallbacks-NameRace-STUDENT.ipynb"
+    },
+    {
+      "dest_filename": "ecc-psychology__soccer__InvJNB-BirthMonthSoccer-COMPLETE.ipynb",
+      "source_path": "ecc-psychology/soccer/InvJNB-BirthMonthSoccer-COMPLETE.ipynb"
+    },
+    {
+      "dest_filename": "ecc-psychology__soccer__InvJNB-BirthMonthSoccer-STUDENT.ipynb",
+      "source_path": "ecc-psychology/soccer/InvJNB-BirthMonthSoccer-STUDENT.ipynb"
+    },
+    {
+      "dest_filename": "ecc-sociology__Incarcerations__Incarcerations.ipynb",
+      "source_path": "ecc-sociology/Incarcerations/Incarcerations.ipynb"
+    },
+    {
+      "dest_filename": "ecc-sociology__environment__environmental-justice.ipynb",
+      "source_path": "ecc-sociology/environment/environmental-justice.ipynb"
+    },
+    {
+      "dest_filename": "ecc-sociology__introduction__introduction.ipynb",
+      "source_path": "ecc-sociology/introduction/introduction.ipynb"
+    },
+    {
+      "dest_filename": "ecc-sociology__race-and-health__Health.ipynb",
+      "source_path": "ecc-sociology/race-and-health/Health.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__anova__anova.ipynb",
+      "source_path": "ecc-statistics/anova/anova.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__confidence_interval__confidence_interval.ipynb",
+      "source_path": "ecc-statistics/confidence_interval/confidence_interval.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__data_representation__Data-Rep-Module.ipynb",
+      "source_path": "ecc-statistics/data_representation/Data-Rep-Module.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__hypothesis_testing__hypothesis_testing.ipynb",
+      "source_path": "ecc-statistics/hypothesis_testing/hypothesis_testing.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__hypothesis_testing__hypothesis_testing_instructor.ipynb",
+      "source_path": "ecc-statistics/hypothesis_testing/hypothesis_testing_instructor.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__linear_regression__linear_regression.ipynb",
+      "source_path": "ecc-statistics/linear_regression/linear_regression.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__linear_regression__linear_regression_instructor.ipynb",
+      "source_path": "ecc-statistics/linear_regression/linear_regression_instructor.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__probability_distribution__Probability-Distributions.ipynb",
+      "source_path": "ecc-statistics/probability_distribution/Probability-Distributions.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__sampling_distribution__sampling_distribution.ipynb",
+      "source_path": "ecc-statistics/sampling_distribution/sampling_distribution.ipynb"
+    },
+    {
+      "dest_filename": "ecc-statistics__sampling_distribution__sampling_distribution_solutions.ipynb",
+      "source_path": "ecc-statistics/sampling_distribution/sampling_distribution_solutions.ipynb"
+    }
+  ]
+}

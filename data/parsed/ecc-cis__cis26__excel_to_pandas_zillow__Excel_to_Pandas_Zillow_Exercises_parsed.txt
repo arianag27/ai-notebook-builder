@@ -1,0 +1,669 @@
+Notebook: ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Exercises.ipynb
+Title: Excel to Pandas (Zillow): Practice Exercises
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Excel to Pandas (Zillow): Practice Exercises
+
+--- Item 2 ---
+Exercise 1: State-Level Filtering and Aggregation
+
+--- Item 3 ---
+Solution: Exercise 1
+
+--- Item 4 ---
+Exercise 2: Pivot Table — Average Home Value by Market Tier and State
+
+--- Item 5 ---
+Solution: Exercise 2
+
+--- Item 6 ---
+Exercise 3: Year-Over-Year Growth Chart
+
+--- Item 7 ---
+Solution: Exercise 3
+
+--- Item 8 ---
+Exercise 4: Buy vs. Rent Analysis
+
+--- Item 9 ---
+Solution: Exercise 4
+
+--- Item 10 ---
+Conclusion
+
+--- Item 11 ---
+Key Takeaways:
+
+--- Item 12 ---
+Why Pandas > Excel for This Kind of Data:
+
+--- Item 13 ---
+Resources:
+
+--- Item 14 ---
+Quick Reference Cheat Sheet
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+✅ **Scalability**: The home_values dataset has 300+ metros × 280+ months = 80,000+ data points — trivial for pandas, painful in Excel
+
+✅ **Reproducibility**: Every transformation is documented in code
+
+✅ **Automation**: Re-run this notebook every month as new data is released with zero manual effort
+
+✅ **Live Data**: Load directly from a URL — no manual downloading required
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Excel to Pandas (Zillow): Practice Exercises
+
+Now that you've worked through the `Excel_to_Pandas_Zillow_Basic.ipynb` and `Excel_to_Pandas_Zillow_Advanced.ipynb` tutorials, you're ready to apply those skills independently. Use the Zillow data below to complete each exercise and reinforce what you've learned.
+
+--- Item 2 ---
+___
+Professor: Khai Lu <br>
+Developer: Rinrada Maneenop <br>
+*Estimated Time: ~20 minutes*
+___
+
+--- Item 3 ---
+Contents:
+- Setup (imports and data loading)
+- Exercise 1: State-Level Filtering and Aggregation
+- Exercise 2: Pivot Table by Market Tier and State
+- Exercise 3: Year-Over-Year Growth Chart
+- Exercise 4: Buy vs. Rent Analysis
+- Conclusion
+
+--- Item 4 ---
+Please run the cell below to import all the necessary libraries so your notebook can run without issues! <br>
+**NOTE:** DO NOT edit the cell below, please only run it.
+
+--- Item 5 ---
+Please run the cell below to import necessary variables we have defined earlier in the `Excel_to_Pandas_Zillow_Basic.ipynb` tutorial.
+
+--- Item 6 ---
+## Exercise 1: State-Level Filtering and Aggregation
+
+Find all metro areas in **Texas (TX)** where the current median home value is above the **national median**. Display the results sorted by home value (descending).
+
+*Hint: Calculate the national median first, then use boolean indexing with two conditions.*
+
+**Guidelines**
+- Compute the national median using `home_values_latest['HomeValue'].median()`.
+- Filter `home_values_latest` to rows where `StateName == 'TX'` and `HomeValue` is greater than the national median.
+- Sort the filtered result by `HomeValue` in descending order.
+- Display a table with `RegionName` and `HomeValue`. 
+
+--- Item 7 ---
+<details>
+<summary><b>HINTS: See our staff solution outline for Exercise #1</b></summary>
+
+```python
+# Solution: Exercise 1
+
+national_median = home_values_latest['HomeValue'].median()
+print(f'National median home value: ${national_median:,.0f}')
+
+tx_above_national = home_values_latest[
+    (home_values_latest['StateName'] == 'TX') &
+    (home_values_latest['HomeValue'] > national_median)
+].sort_values('HomeValue', ascending=False)
+
+print(f"\nTexas metros above national median: {len(tx_above_national)}")
+display(tx_above_national[['RegionName', 'HomeValue']])
+```
+
+
+--- Item 8 ---
+## Exercise 2: Pivot Table — Average Home Value by Market Tier and State
+
+Create a pivot table showing the **average home value** for each **Market Tier** broken down by the **top 8 states** (by metro count). Add row/column margins.
+
+*Hint: Use `latest_home_values_copy` which already has the `MarketTier` column.*
+
+**Guidelines**
+- Count metros per state and select the **top 8** states.
+- Filter `latest_home_values_copy` to rows where `StateName` is in that top-8 list.
+- Use `pivot_table` with:
+  - `values='HomeValue'`
+  - `index='StateName'`
+  - `columns='MarketTier'`
+  - `aggfunc='mean'`
+  - `margins=True` for totals.
+- Optionally round the result for nicer display.
+
+--- Item 9 ---
+<details>
+<summary><b>HINTS: See our staff solution outline for Exercise #2</b></summary>
+
+```python
+# Solution: Exercise 2
+
+top8_states = latest_home_values_copy['StateName'].value_counts().head(8).index
+
+pivot_ex2 = latest_home_values_copy[latest_home_values_copy['StateName'].isin(top8_states)].pivot_table(
+    values='HomeValue',
+    index='StateName',
+    columns='MarketTier',
+    aggfunc='mean',
+    fill_value=0,
+    margins=True
+).round(0)
+
+print('Average home value by state and market tier:')
+display(pivot_ex2)
+```
+
+--- Item 10 ---
+## Exercise 3: Year-Over-Year Growth Chart
+
+Plot the **annual median U.S. home value** as a line chart. Then add a second line showing the **year-over-year percent change**.
+
+*Hint: Use `home_values.groupby('Year')` and `.pct_change()`.*
+
+**Guidelines**
+- Group `home_values` by `Year` and compute the median `HomeValue` for each year.
+- Use `.pct_change()` on that annual series to compute YoY percent change.
+- Create a figure with **two subplots** side by side using `plt.subplots(1, 2, ...)`.
+- Plot the annual median values on the first subplot.
+- Plot the YoY percent change on the second subplot (add a horizontal 0% line for reference).
+- Add titles, axis labels, and grid lines for readability.
+
+--- Item 11 ---
+<details>
+<summary><b>HINTS: See our staff solution outline for Exercise #3</b></summary>
+
+```python
+
+# Solution: Exercise 3
+
+annual_median = home_values.groupby('Year')['HomeValue'].median()
+annual_growth = annual_median.pct_change() * 100
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+annual_median.plot(ax=ax1, marker='o', linewidth=2, color='steelblue')
+ax1.set_title('Annual Median Home Value (U.S., All Metros)', fontweight='bold')
+ax1.set_ylabel('Home Value ($)')
+ax1.grid(True, alpha=0.3)
+
+annual_growth.plot(ax=ax2, marker='o', linewidth=2, color='green', label='YoY growth')
+ax2.axhline(y=0, color='red', linestyle='--', alpha=0.5, label='Zero growth')
+ax2.set_title('Year-Over-Year Growth Rate (U.S., All Metros)', fontweight='bold')
+ax2.set_ylabel('Growth Rate (%)')
+ax2.legend()
+ax2.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+--- Item 12 ---
+## Exercise 4: Buy vs. Rent Analysis
+
+Using `housing_combined`, classify metros into **'Lean Buy'**, **'Neutral'**, or **'Lean Rent'** based on their Price-to-Rent ratio (thresholds: < 15 = Buy, > 20 = Rent). Then create a bar chart showing the **count** of metros in each category, broken down by state (top 6 states by metro count).
+
+*Hint: `housing_combined` already has `Buy_vs_Rent` and `Price_to_Rent` columns.*
+
+**Guidelines**
+- Identify the **top 6 states** by metro count in `housing_combined`.
+- Filter to those states only.
+- Group by `StateName` and `Buy_vs_Rent`, and use `.size()` to count metros in each combination.
+- Use `.unstack()` so the buy/rent categories become columns.
+- Plot the resulting table as a grouped bar chart with a clear title, axis labels, and legend.
+
+--- Item 13 ---
+<details>
+<summary><b>HINTS: See our staff solution outline for Exercise #4</b></summary>
+
+```python
+
+# Solution: Exercise 4
+
+top6 = housing_combined['StateName'].value_counts().head(6).index
+ex4_data = housing_combined[housing_combined['StateName'].isin(top6)]
+
+tier_counts = (
+    ex4_data.groupby(['StateName', 'Buy_vs_Rent'])
+    .size()
+    .unstack(fill_value=0)
+)
+
+plt.figure(figsize=(12, 6))
+tier_counts.plot(kind='bar', width=0.8)
+plt.title('Buy vs. Rent Signal by State', fontsize=14, fontweight='bold')
+plt.xlabel('State')
+plt.ylabel('Number of Metros')
+plt.xticks(rotation=0)
+plt.legend(title='Signal')
+plt.grid(axis='y', alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+--- Item 14 ---
+---
+
+--- Item 15 ---
+# Conclusion
+
+--- Item 16 ---
+Congratulations! You've translated your Excel skills into Pandas using **real Zillow housing market data**. Here's a summary of what you covered:
+
+## Key Takeaways:
+
+1. **Wide → Long format**: `pd.melt()` is Excel's "Unpivot" — essential for time series data like home_values
+2. **VLOOKUP → merge()**: Join datasets with flexible left/inner/outer options
+3. **FILTER → Boolean Indexing**: Filter rows programmatically with `&`, `|`, `.isin()`
+4. **SUMIF/COUNTIF → groupby()**: Aggregate across all groups in one line
+5. **IF Statements → np.where() / apply()**: Create conditional columns at scale
+6. **Pivot Tables → pivot_table()**: Summarize data with row/column/value dimensions
+7. **Charts → matplotlib/seaborn**: Reproducible, annotatable, publication-quality plots
+
+## Why Pandas > Excel for This Kind of Data:
+
+✅ **Scalability**: The home_values dataset has 300+ metros × 280+ months = 80,000+ data points — trivial for pandas, painful in Excel
+
+✅ **Reproducibility**: Every transformation is documented in code
+
+✅ **Automation**: Re-run this notebook every month as new data is released with zero manual effort
+
+✅ **Live Data**: Load directly from a URL — no manual downloading required
+
+## Resources:
+
+- [Pandas Documentation](https://pandas.pydata.org/docs/)
+- [Zillow Research Data](https://www.zillow.com/research/data/)
+- [Python Data Science Handbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
+
+--- Item 17 ---
+## Quick Reference Cheat Sheet
+
+| Excel Function | Pandas Equivalent | Zillow Example |
+|---------------|------------------|----------------|
+| File → Open CSV | `pd.read_csv(url)` | `pd.read_csv(home_values_URL)` |
+| Data → Unpivot | `pd.melt()` | Wide home_values → long format |
+| VLOOKUP | `df.merge()` | Join home_values + rent_values by RegionName |
+| VLOOKUP (1 col) | `series.map(dict)` | Map RegionName → home value |
+| AutoFilter | Boolean indexing | `df[df['StateName'] == 'CA']` |
+| FILTER (multi-value) | `.isin()` | `df[df['State'].isin(['CA','NY'])]` |
+| SUMIF | `groupby().sum()` | Total value by state |
+| AVERAGEIF | `groupby().mean()` | Avg home value by tier |
+| COUNTIF | `value_counts()` | Count of metros per state |
+| IF | `np.where()` | Classify Affordable vs Expensive |
+| Nested IFS | `np.select()` | Multi-tier market classification |
+| IF (complex) | `.apply(func)` | Custom categorization logic |
+| =(B-A)/A | `.pct_change()` | Year-over-year home value growth |
+| PivotTable | `pivot_table()` | Value by state × tier |
+| Insert → Chart | `df.plot()` | Time series, bar charts |
+| AVERAGE | `.mean()` | Mean home value nationally |
+| MAX/MIN | `.max()` / `.min()` | Most/least expensive metro |
+
+--- Item 18 ---
+**Congratulations on completing From Excel to Pandas: Housing Market Edition!** 🎉
+
+You're now equipped to work with large, real-world datasets — the same data used by housing economists, mortgage analysts, and real estate investors. Keep practicing!
+
+*Happy coding!* 🐍📊
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# Import necessary libraries
+import sys
+from pathlib import Path
+import subprocess
+import importlib.util
+
+# Install required packages in this kernel only when missing
+required_packages = ["pandas", "numpy", "matplotlib", "seaborn", "ipywidgets"]
+missing_packages = [pkg for pkg in required_packages if importlib.util.find_spec(pkg) is None]
+if missing_packages:
+    subprocess.run([sys.executable, "-m", "pip", "install", "-q", *missing_packages], check=False)
+
+# Local module interact.py lives next to this notebook — add it to path when cwd differs
+# (e.g. JupyterHub/cloud kernels often start in /tmp or home, not this folder)
+for _p in (
+    Path.cwd(),
+    Path.cwd() / "excel_to_pandas_zillow",
+    Path.cwd() / "cis26" / "excel_to_pandas_zillow",
+):
+    if (_p / "interact.py").exists():
+        sys.path.insert(0, str(_p.resolve()))
+        break
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, HTML, Markdown
+from interact import (
+    explore_data_widget,
+    filter_markets_widget,
+    pivot_table_widget,
+    metro_trends_widget,
+)
+import warnings
+warnings.filterwarnings('ignore')
+
+# Set plot style
+plt.style.use('seaborn-v0_8-darkgrid')
+sns.set_palette("husl")
+
+print("✅ All libraries imported successfully!")
+print("\n📌 Note: This notebook uses interactive widgets (ipywidgets)")
+print("   You'll see dropdowns and sliders throughout — just run each cell and use the controls!")
+
+--- Item 2 ---
+# Load required exercise variables from a reusable helper
+from exercise_setup import load_exercise_data
+
+_data = load_exercise_data(verbose=True)
+
+home_values_wide = _data["home_values_wide"]
+rent_values_wide = _data["rent_values_wide"]
+home_values = _data["home_values"]
+rent_values = _data["rent_values"]
+home_values_latest = _data["home_values_latest"]
+latest_home_values_copy = _data["latest_home_values_copy"]
+housing_combined = _data["housing_combined"]
+
+--- Item 3 ---
+#Your code here
+
+#Step 1: Compute the national median home value
+national_median = home_values_latest[ ... ]
+print(f"National median home value: ${national_median:,.0f}")
+
+#Step 2: Filter to Texas metros with HomeValue above the national median
+tx_above_national = home_values_latest[ ... ]
+
+#Step 3: Sort by HomeValue (descending) and display RegionName and HomeValue
+tx_above_national = tx_above_national.sort_values( ... )
+display(tx_above_national[[ ... ]])
+
+--- Item 4 ---
+# Your code here
+
+# Step 1: Identify the top 8 states by metro count
+top8_states = ...
+
+# Step 2: Filter latest_home_values_copy to only those top-8 states
+filtered = ...
+
+# Step 3: Build a pivot table of average HomeValue by StateName and MarketTier
+pivot_ex2 = filtered.pivot_table(
+    values=...,  # column to aggregate
+    index=...,   # rows
+    columns=..., # columns
+    aggfunc=..., # aggregation function
+    fill_value=0,
+    margins=True,
+)
+
+# Step 4: Optionally round and display the result
+pivot_ex2 = pivot_ex2.round(0)
+display(pivot_ex2)
+
+--- Item 5 ---
+# Your code here
+
+# Step 1: Aggregate to annual median home values
+# annual_median = ...
+
+# Step 2: Compute year-over-year percent change
+# annual_growth = ...
+
+# Step 3: Create a figure with two subplots side by side
+# fig, (ax1, ax2) = plt.subplots(...)
+
+# Step 4: Plot annual_median on the first axis
+# annual_median.plot(ax=ax1, ...)
+# ax1.set_title(...)
+# ax1.set_ylabel(...)
+
+# Step 5: Plot annual_growth on the second axis
+# annual_growth.plot(ax=ax2, ...)
+# ax2.axhline(y=0, ...)
+# ax2.set_title(...)
+# ax2.set_ylabel(...)
+
+# Step 6: Format the layout
+# plt.tight_layout()
+# plt.show()
+
+--- Item 6 ---
+# Your code here
+
+# Step 1: Find the top 6 states by metro count
+top6 = ...
+
+# Step 2: Filter housing_combined to those states
+ex4_data = ...
+
+# Step 3: Group by StateName and Buy_vs_Rent and count metros
+tier_counts = (
+    ex4_data.groupby([ ... ])
+    .size()
+    .unstack(fill_value=0)
+)
+
+# Step 4: Plot the grouped bar chart
+plt.figure(...)
+tier_counts.plot(kind='bar', ...)
+plt.title(...)
+plt.xlabel(...)
+plt.ylabel(...)
+plt.xticks(...)
+plt.legend(...)
+plt.grid(...)
+plt.tight_layout()
+plt.show()
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+from pathlib import Path
+
+--- Item 3 ---
+import subprocess
+
+--- Item 4 ---
+import importlib.util
+
+--- Item 5 ---
+import pandas as pd
+
+--- Item 6 ---
+import numpy as np
+
+--- Item 7 ---
+import matplotlib.pyplot as plt
+
+--- Item 8 ---
+import seaborn as sns
+
+--- Item 9 ---
+from IPython.display import display, HTML, Markdown
+
+--- Item 10 ---
+from interact import (
+
+--- Item 11 ---
+import warnings
+
+--- Item 12 ---
+from exercise_setup import load_exercise_data
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+## Exercise 1: State-Level Filtering and Aggregation
+
+Find all metro areas in **Texas (TX)** where the current median home value is above the **national median**. Display the results sorted by home value (descending).
+
+*Hint: Calculate the national median first, then use boolean indexing with two conditions.*
+
+**Guidelines**
+- Compute the national median using `home_values_latest['HomeValue'].median()`.
+- Filter `home_values_latest` to rows where `StateName == 'TX'` and `HomeValue` is greater t
+
+--- Item 2 ---
+## Exercise 2: Pivot Table — Average Home Value by Market Tier and State
+
+Create a pivot table showing the **average home value** for each **Market Tier** broken down by the **top 8 states** (by metro count). Add row/column margins.
+
+*Hint: Use `latest_home_values_copy` which already has the `MarketTier` column.*
+
+**Guidelines**
+- Count metros per state and select the **top 8** states.
+- Filter `latest_home_values_copy` to rows where `StateName` is in that top-8 list.
+- Use `pivot_table` with:
+
+--- Item 3 ---
+## Exercise 3: Year-Over-Year Growth Chart
+
+Plot the **annual median U.S. home value** as a line chart. Then add a second line showing the **year-over-year percent change**.
+
+*Hint: Use `home_values.groupby('Year')` and `.pct_change()`.*
+
+**Guidelines**
+- Group `home_values` by `Year` and compute the median `HomeValue` for each year.
+- Use `.pct_change()` on that annual series to compute YoY percent change.
+- Create a figure with **two subplots** side by side using `plt.subplots(1, 2, ...)`.
+-
+
+--- Item 4 ---
+## Exercise 4: Buy vs. Rent Analysis
+
+Using `housing_combined`, classify metros into **'Lean Buy'**, **'Neutral'**, or **'Lean Rent'** based on their Price-to-Rent ratio (thresholds: < 15 = Buy, > 20 = Rent). Then create a bar chart showing the **count** of metros in each category, broken down by state (top 6 states by metro count).
+
+*Hint: `housing_combined` already has `Buy_vs_Rent` and `Price_to_Rent` columns.*
+
+**Guidelines**
+- Identify the **top 6 states** by metro count in `housing_combin
+
+
+=== HINTS ===
+
+--- Item 1 ---
+Hint: Calculate the national median first, then use boolean indexing with two conditions.*
+
+--- Item 2 ---
+Hint: Use `latest_home_values_copy` which already has the `MarketTier` column.*
+
+--- Item 3 ---
+Hint: Use `home_values.groupby('Year')` and `.pct_change()`.*
+
+--- Item 4 ---
+Hint: `housing_combined` already has `Buy_vs_Rent` and `Price_to_Rent` columns.*
+
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+# Solution: Exercise 1
+
+national_median = home_values_latest['HomeValue'].median()
+print(f'National median home value: ${national_median:,.0f}')
+
+tx_above_national = home_values_latest[
+    (home_values_latest['StateName'] == 'TX') &
+    (home_values_latest['HomeValue'] > national_median)
+].sort_values('HomeValue', ascending=False)
+
+print(f"\nTexas metros above national median: {len(tx_above_nati
+
+--- Item 2 ---
+# Solution: Exercise 2
+
+top8_states = latest_home_values_copy['StateName'].value_counts().head(8).index
+
+pivot_ex2 = latest_home_values_copy[latest_home_values_copy['StateName'].isin(top8_states)].pivot_table(
+    values='HomeValue',
+    index='StateName',
+    columns='MarketTier',
+    aggfunc='mean',
+    fill_value=0,
+    margins=True
+).round(0)
+
+print('Average home value by state and market tie
+
+--- Item 3 ---
+# Solution: Exercise 3
+
+annual_median = home_values.groupby('Year')['HomeValue'].median()
+annual_growth = annual_median.pct_change() * 100
+
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 5))
+
+annual_median.plot(ax=ax1, marker='o', linewidth=2, color='steelblue')
+ax1.set_title('Annual Median Home Value (U.S., All Metros)', fontweight='bold')
+ax1.set_ylabel('Home Value ($)')
+ax1.grid(True, alpha
+
+--- Item 4 ---
+# Solution: Exercise 4
+
+top6 = housing_combined['StateName'].value_counts().head(6).index
+ex4_data = housing_combined[housing_combined['StateName'].isin(top6)]
+
+tier_counts = (
+    ex4_data.groupby(['StateName', 'Buy_vs_Rent'])
+    .size()
+    .unstack(fill_value=0)
+)
+
+plt.figure(figsize=(12, 6))
+tier_counts.plot(kind='bar', width=0.8)
+plt.title('Buy vs. Rent Signal by State', fontsize=14, fontwe
+
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+seaborn calls
+
+--- Item 3 ---
+pandas/matplotlib .plot()
+
+--- Item 4 ---
+subplots
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Exercise → Analysis → Conclusion → Sources
+
+18 markdown cells and 6 code cells. Major sections include: Excel to Pandas (Zillow): Practice Exercises, Exercise 1: State-Level Filtering and Aggregation, Solution: Exercise 1, Exercise 2: Pivot Table — Average Home Value by Market Tier and State, Solution: Exercise 2, Exercise 3: Year-Over-Year Growth Chart, ....

@@ -1,0 +1,335 @@
+Notebook: ecc-biology__enzymes__enzymes_bioinformatics.ipynb
+Title: Enzyme Variation and Drug Metabolism
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Enzyme Variation and Drug Metabolism
+
+--- Item 2 ---
+**Enzyme Bioinformatics**
+
+--- Item 3 ---
+The Objective:
+
+--- Item 4 ---
+Visualizing Frequency
+
+--- Item 5 ---
+Reflection
+
+--- Item 6 ---
+Congratulations!
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+In this notebook, we will be exploring how genetic variation in CYP2D6 (a liver enzyme) affects how patients metabolize common drugs like codeine or antidepressants. CYP2D6 plays a critical role in metabolizing various drugs. Variations in the CYP2D6 gene can affect how effectively a person processes certain medications. These variations can lead to adverse drug reactions or treatment failures if not accounted for in personalized medicine.
+
+### The Objective:
+
+Explore the genetic variation in the CYP2D6 gene and how it affects drug metabolism, specifically in terms of:
+- Metabolizer phenotypes (e.g., poor metabolizer, extensive metabolizer, ultrarapid metabolizer).
+- Drug metabolism outcomes for patients using drugs like codeine, tamoxifen, or antidepressants.
+
+Run the cell below to import any neccesary libraries for this notebook.
+
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px solid #C9B676">
+
+The data we will be using today is from [PharmGKB](https://www.pharmgkb.org/). PharmGKB (Pharmacogenomics Knowledgebase) is a free, publicly available resource that curates information about how genetic variation affects drug response. It's a key resource for researchers and clinicians working in pharmacogenomics — the study of how genes influence the way people respond to medications.
+
+Today we will be using their database of Variant Associations to study the association between CYP2D6 and drug metabolization. This dataset we are using contains the associations in which the variant affects a drug dose, response, metabolism, etc.
+
+Let's get a better idea of what data we are looking at. 
+
+Here's a short description of the **features** we are going to be focusing on:
+
+- **Gene**: HGNC symbol for the gene involved in the association.
+- **Variant/Haplotypes**: dbSNP rsID or haplotype(s) involved in the association. In some cases, an association is based on a gene phenotype group such as "poor metabolizers" or "intermediate activity". In these cases, the gene pheno
+
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+Today we will be using their database of Variant Associations to study the association between CYP2D6 and drug metabolization. This dataset we are using contains the associations in which the variant affects a drug dose, response, metabolism, etc.
+
+Let's get a better idea of what data we are looking at. 
+
+Here's a short description of the **features** we are going to be focusing on:
+
+- **Gene**: HGNC symbol for the gene involved in the association.
+- **Variant/Haplotypes**: dbSNP rsID or haplotype(s) involved in the association. In some cases, an association is based on a gene phenotype group such as "poor metabolizers" or "intermediate activity". In these cases, the gene phenotype is found in this field.
+- **Drug(s)**: The drug(s) involved in the association. 
+- **Phenotype Category**: O
+
+--- Item 2 ---
+Phenotypes are the "bridge" between genotype and treatment outcomes. A variant alone doesn’t tell you much unless you know how it expresses itself. Each row in our dataset represents a specific association between a genetic variant and a phenotype (observable trait), and the "Phenotype Category" feature classifies what kind of effect or interaction that variant has, particularly in relation to drugs or biological response. 
+
+Here's how each category relates to our dataset.
+- Efficacy: The variant influences how well a drug works for a particular individual.
+- Toxicity: The variant is linked to an increased risk of side effects or adverse reactions.
+- Dosage: The variant affects how much of a drug should be given for safe and effective treatment.
+- Metabolism/PK: The variant affects how th
+
+--- Item 3 ---
+Here's how each category relates to our dataset.
+- Efficacy: The variant influences how well a drug works for a particular individual.
+- Toxicity: The variant is linked to an increased risk of side effects or adverse reactions.
+- Dosage: The variant affects how much of a drug should be given for safe and effective treatment.
+- Metabolism/PK: The variant affects how the body processes the drug — including absorption, distribution, metabolism, or excretion.
+- PD (Pharmacodynamics): The variant changes how the drug interacts with its target in the body, affecting its action.
+
+
+**Question 1:** What is one observation you noticed in the heatmaps for *Population Types* and *Metabolizer Types.* Does this observation change based on the value of *K*? What does this tell you overall about drug met
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Enzyme Variation and Drug Metabolism
+
+**Created and developed by [Suparna Kompalli](https://www.linkedin.com/in/suparna-kompalli-79463b229/) and [Brandon Concepcion](https://www.linkedin.com/in/brandonconcepcion/), with assistance and supervision by [Jonathan Ferrari](https://www.linkedin.com/in/jonathanferrari/), [Professor Darcie McClelland](https://www.linkedin.com/in/darcie-mcclelland-descalzo-56796b1b/), and [Professor Eric Van Dusen](https://www.linkedin.com/in/ericvd/) as part of our work with UC Berkeley's [College of Computing, Data Science and Society](https://cdss.berkeley.edu/) as well as [El Camino College](https://www.elcamino.edu/)**
+
+--- Item 2 ---
+## **Enzyme Bioinformatics**
+
+Welcome! In this notebook, we will be exploring how genetic variation in CYP2D6 (a liver enzyme) affects how patients metabolize common drugs like codeine or antidepressants. CYP2D6 plays a critical role in metabolizing various drugs. Variations in the CYP2D6 gene can affect how effectively a person processes certain medications. These variations can lead to adverse drug reactions or treatment failures if not accounted for in personalized medicine.
+
+### The Objective:
+
+Explore the genetic variation in the CYP2D6 gene and how it affects drug metabolism, specifically in terms of:
+- Metabolizer phenotypes (e.g., poor metabolizer, extensive metabolizer, ultrarapid metabolizer).
+- Drug metabolism outcomes for patients using drugs like codeine, tamoxifen, or antidepressants.
+
+Run the cell below to import any neccesary libraries for this notebook.
+
+--- Item 3 ---
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px solid #C9B676">
+
+--- Item 4 ---
+The data we will be using today is from [PharmGKB](https://www.pharmgkb.org/). PharmGKB (Pharmacogenomics Knowledgebase) is a free, publicly available resource that curates information about how genetic variation affects drug response. It's a key resource for researchers and clinicians working in pharmacogenomics — the study of how genes influence the way people respond to medications.
+
+Today we will be using their database of Variant Associations to study the association between CYP2D6 and drug metabolization. This dataset we are using contains the associations in which the variant affects a drug dose, response, metabolism, etc.
+
+Let's get a better idea of what data we are looking at. 
+
+Here's a short description of the **features** we are going to be focusing on:
+
+- **Gene**: HGNC symbol for the gene involved in the association.
+- **Variant/Haplotypes**: dbSNP rsID or haplotype(s) involved in the association. In some cases, an association is based on a gene phenotype group such as "poor metabolizers" or "intermediate activity". In these cases, the gene phenotype is found in this field.
+- **Drug(s)**: The drug(s) involved in the association. 
+- **Phenotype Category**: Options are "efficacy", "toxicity", "dosage", "metabolism/PK", "PD", "other".
+- **Significance**: The significance of the association as stated by the author; options are [yes, no, not stated].
+- **Alleles**: The basis for comparison in the annotation. In this field, there may be a variant, one or more haplotypes grouped together, one or more genotypes grouped together or one or more diplotypes grouped together. 
+- **Metabolizer types**: This field contains the gene phenotype group, if applicable. I.e., if the association is based on a gene phenotype group such as "poor metabolizers", or if the association is based on individual genotypes that were combined into a gene phenotype group.
+- **Population types**: This field indicates the type of population in which the association was studied. There are m...
+
+--- Item 5 ---
+### Visualizing Frequency
+
+Let's start off by analyzing some **bar charts.** The following bar charts displays the counts for each category within three columns. These help us get a better idea of how our data is *distributed.* Below we can see the top 12 categories for each feature. 
+
+--- Item 6 ---
+The above visuals help us get a better idea of what categories make up the majority of our data. But if we want to see what features are useful in analyzing drug metabolism, we need to see how these features interact with each other.
+
+Heatmaps use color coding to show the distribution across the table visually. In a table, this is useful for highlight patterns, trends, and outliers. The heatmap below tells shows us the distribution for Phenotype Category by Population Types. 
+
+This visualization is *interactive*. You can change the dependent column using the dropdown titles *Feature*. Since some of these columns have many categories, you can use the slider labeled *Top K* to vizualize only the *K* most frequent categories. 
+
+--- Item 7 ---
+Phenotypes are the "bridge" between genotype and treatment outcomes. A variant alone doesn’t tell you much unless you know how it expresses itself. Each row in our dataset represents a specific association between a genetic variant and a phenotype (observable trait), and the "Phenotype Category" feature classifies what kind of effect or interaction that variant has, particularly in relation to drugs or biological response. 
+
+Here's how each category relates to our dataset.
+- Efficacy: The variant influences how well a drug works for a particular individual.
+- Toxicity: The variant is linked to an increased risk of side effects or adverse reactions.
+- Dosage: The variant affects how much of a drug should be given for safe and effective treatment.
+- Metabolism/PK: The variant affects how the body processes the drug — including absorption, distribution, metabolism, or excretion.
+- PD (Pharmacodynamics): The variant changes how the drug interacts with its target in the body, affecting its action.
+
+
+**Question 1:** What is one observation you noticed in the heatmaps for *Population Types* and *Metabolizer Types.* Does this observation change based on the value of *K*? What does this tell you overall about drug metabolism of CYP2D6?
+
+--- Item 8 ---
+Let's now explore how the distribution of *Phenotype Category* changes across *Population Type* in a diffent way. Run the cell below to compare the distribution of Phenotype Category in each population type. 
+
+--- Item 9 ---
+**Question 2:** In the context of drug metabolism of CYP2D6, what is one conclusion you can draw using the above bar charts?
+
+--- Item 10 ---
+Now we are going to build a simple model to see with what accuracy we can predict an association between drug metabolism and CY2PD6 using the above features we explored. 
+
+The model we will be using is a Support Vector Machine (SVM). This model is good at handling high dimensional data with smaller sample sizes. This model is better at handling *sparse* features - these are columns where majority of the values are null or zero. 
+
+Run the cell below to see our accuracy using some of the above features. 
+
+--- Item 11 ---
+**Question 3:** Add or remove feature(s) to the **X** dataframe and run the cell again. How did your change affect the accuracy? Why do you think the change helped/hurt your accuracy?
+
+*Reminder: more features can be found [here](https://www.pharmgkb.org/page/downloadVariantAnnotationsHelp).*
+
+--- Item 12 ---
+### Reflection
+
+--- Item 13 ---
+**Question 4:**
+In the case of CYP2D6, a key enzyme involved in drug metabolism, how might feedback inhibition regulate its activity in response to the accumulation of certain metabolites? Discuss the potential consequences if feedback inhibition was not properly functioning in the context of drug metabolism.
+
+--- Item 14 ---
+**Question 5:** Why is it important for the body to tightly regulate the activity of enzymes like CYP2D6? How would chemical chaos impact a patient's response to drugs if CYP2D6 were overactive or underactive?
+
+--- Item 15 ---
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px solid #C9B676">
+
+--- Item 16 ---
+## Congratulations! 
+
+Leo 🦁 congratulates you on finishing the Enzymes notebook!
+
+<img src="leo.png" style="width: 20%;">
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+from utils import *
+
+--- Item 2 ---
+df = load_data()
+
+--- Item 3 ---
+display_data_counts()
+
+--- Item 4 ---
+display_heatmap()
+
+--- Item 5 ---
+widgets.Textarea(placeholder = "Your answer here")
+
+--- Item 6 ---
+display_population_types()
+
+--- Item 7 ---
+widgets.Textarea(placeholder = "Your answer here")
+
+--- Item 8 ---
+X = df[['Variant/Haplotypes' ,'Drug(s)', 'Phenotype Category', 'Alleles', 'Metabolizer types',
+         'Population types', 'Population Phenotypes or diseases']]
+y = df['Is/Is Not associated']
+
+run_SVM(X, y)
+
+--- Item 9 ---
+widgets.Textarea(placeholder = "Your answer here")
+
+--- Item 10 ---
+widgets.Textarea(placeholder = "Your answer here")
+
+--- Item 11 ---
+widgets.Textarea(placeholder = "Your answer here")
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+from utils import *
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+**Question 1:** What is one observation you noticed in the heatmaps for *Population Types* and *Metabolizer Types.* Does this observation change based on the value of *K*? What does this tell you overall about drug metabolism of CYP2D6?
+
+Let's now explore how the distribution of *Phenotype Category* changes across *Population Type* in a diffent way. Run the cell below to compare the distribution of Phenotype Category in each population type. 
+
+**Question 2:** In the context of drug metabolism o
+
+--- Item 2 ---
+**Question 2:** In the context of drug metabolism of CYP2D6, what is one conclusion you can draw using the above bar charts?
+
+Now we are going to build a simple model to see with what accuracy we can predict an association between drug metabolism and CY2PD6 using the above features we explored. 
+
+The model we will be using is a Support Vector Machine (SVM). This model is good at handling high dimensional data with smaller sample sizes. This model is better at handling *sparse* features - these
+
+--- Item 3 ---
+**Question 3:** Add or remove feature(s) to the **X** dataframe and run the cell again. How did your change affect the accuracy? Why do you think the change helped/hurt your accuracy?
+
+*Reminder: more features can be found [here](https://www.pharmgkb.org/page/downloadVariantAnnotationsHelp).*
+
+### Reflection
+
+**Question 4:**
+In the case of CYP2D6, a key enzyme involved in drug metabolism, how might feedback inhibition regulate its activity in response to the accumulation of certain metabolites?
+
+--- Item 4 ---
+**Question 4:**
+In the case of CYP2D6, a key enzyme involved in drug metabolism, how might feedback inhibition regulate its activity in response to the accumulation of certain metabolites? Discuss the potential consequences if feedback inhibition was not properly functioning in the context of drug metabolism.
+
+**Question 5:** Why is it important for the body to tightly regulate the activity of enzymes like CYP2D6? How would chemical chaos impact a patient's response to drugs if CYP2D6 were over
+
+--- Item 5 ---
+**Question 5:** Why is it important for the body to tightly regulate the activity of enzymes like CYP2D6? How would chemical chaos impact a patient's response to drugs if CYP2D6 were overactive or underactive?
+
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px solid #C9B676">
+
+## Congratulations! 
+
+Leo 🦁 congratulates you on finishing the Enzymes notebook!
+
+<img src="leo.png" style="width: 20%;">
+
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Reflection
+
+**Question 4:**
+In the case of CYP2D6, a key enzyme involved in drug metabolism, how might feedback inhibition regulate its activity in response to the accumulation of certain metabolites? Discuss the potential consequences if feedback inhibition was not properly functioning in the context of drug metabolism.
+
+**Question 5:** Why is it important for the body to tightly regulate the activity of enzymes like CYP2D6? How would chemical chaos impact a patient's response to drugs if CYP2D6 were overactive or underactive?
+
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px sol
+
+--- Item 2 ---
+## Reflection
+
+**Question 4:**
+In the case of CYP2D6, a key enzyme involved in drug metabolism, how might feedback inhibition regulate its activity in response to the accumulation of certain metabolites? Discuss the potential consequences if feedback inhibition was not properly functioning in the context of drug metabolism.
+
+**Question 5:** Why is it important for the body to tightly regulate the activity of enzymes like CYP2D6? How would chemical chaos impact a patient's response to drugs if CYP2D6 were overactive or underactive?
+
+<hr style="border: 2px solid #003262">
+<hr style="border: 2px
+
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+heatmap
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+widgets API
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Visualization → Reflection
+
+16 markdown cells and 11 code cells. Major sections include: Enzyme Variation and Drug Metabolism, **Enzyme Bioinformatics**, The Objective:, Visualizing Frequency, Reflection, Congratulations!.

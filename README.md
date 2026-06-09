@@ -29,24 +29,34 @@ Teams often recreate the same patterns notebook after notebook. **AI Notebook Bu
 - **Draft reusable notebook sections** — create section-level markdown drafts
 - **Export starter `.ipynb` notebooks** — convert outlines or drafts into Jupyter notebooks
 - **Validate generated notebooks** — check structure, syntax, and quality before review
+- **Sync notebooks from GitHub** — pull `ecc-*` folders from the ECC textbook repo
+- **AI notebook generation (RAG)** — retrieve corpus examples and generate drafts with a local Ollama model
 
 ---
 
 ## Project workflow
 
 ```
-notebooks → parser → corpus analysis → retrieval/copilot → outline generator → notebook export → validation
+GitHub repo → sync → parse → analyze → vector search → retrieval → Ollama generation → export → validate
 ```
+
+The rule-based outline generator remains available as an alternative to AI generation.
 
 ```mermaid
 flowchart LR
-    A[data/notebooks] --> B[parse_notebooks.py]
-    B --> C[analyze_corpus.py]
-    C --> D[notebook_copilot.py]
-    D --> E[generate_notebook_outline.py]
-    E --> F[export_to_ipynb.py]
-    F --> G[validate_generated_notebook.py]
-    G --> H[starter_notebook.ipynb]
+    A[ds-modules/ecc-textbook] --> B[sync_notebooks_from_repo.py]
+    B --> C[data/notebooks]
+    C --> D[parse_notebooks.py]
+    D --> E[analyze_corpus.py]
+    D --> F[build_vector_index.py]
+    F --> G[data/vector_store]
+    G --> H[llm_generator.py]
+    H --> I[export_to_ipynb.py --llm]
+    I --> J[validate_generated_notebook.py]
+    J --> K[starter_notebook.ipynb]
+    E --> L[notebook_copilot.py]
+    L --> M[generate_notebook_outline.py]
+    M --> N[export_to_ipynb.py --outline]
 ```
 
 **Typical path:** run the full pipeline with one command, or use individual scripts for search, drafting, and export.
@@ -58,10 +68,13 @@ flowchart LR
 ```
 ai-notebook-builder/
 ├── data/
-│   ├── notebooks/       # Source .ipynb files (read-only for the parser)
+│   ├── source_repos/    # Cloned GitHub repos (e.g. ecc-textbook)
+│   ├── notebooks/       # Synced + manually added .ipynb files
 │   ├── parsed/          # Parsed text, metadata, curriculum report
 │   ├── generated/       # Outlines, drafts, exported notebooks, validation
-│   └── embeddings/      # Local search index for Notebook Copilot
+│   ├── embeddings/      # Local search index for Notebook Copilot
+│   └── vector_store/    # RAG embedding index for AI generation
+├── providers/           # LLM provider plugins (Ollama default, OpenAI optional)
 ├── scripts/             # All pipeline and utility scripts
 └── README.md
 ```
@@ -70,14 +83,107 @@ ai-notebook-builder/
 
 ## Quick start
 
-1. Place reference notebooks in `data/notebooks/`.
-2. Run the full pipeline:
+Run the full pipeline (syncs from the ECC textbook repo by default, then parses and generates):
 
 ```bash
 python3 scripts/run_pipeline.py
 ```
 
-Step 3 asks interactive questions (discipline, topic, dataset, coding level, widgets, reflection, length). The pipeline stops if any required step fails.
+Sync only the `ecc-*` notebooks from GitHub:
+
+```bash
+python3 scripts/sync_notebooks_from_repo.py
+```
+
+Use existing local notebooks without syncing:
+
+```bash
+python3 scripts/run_pipeline.py --skip-sync
+```
+
+Specify a different repo URL:
+
+```bash
+python3 scripts/run_pipeline.py --repo-url https://github.com/ds-modules/ecc-textbook.git
+```
+
+The outline step asks interactive questions (discipline, topic, dataset, coding level, widgets, reflection, length). The pipeline stops if any required step fails.
+
+**Requires:** `git` installed for sync steps.
+
+---
+
+## AI generation setup (Ollama — local, no API key)
+
+### 1. Install and start Ollama
+
+```bash
+brew install ollama
+ollama serve
+```
+
+In another terminal, pull a model:
+
+```bash
+ollama pull qwen3:8b
+# or: ollama pull llama3.1:8b
+```
+
+### 2. Python dependencies
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements-llm.txt
+```
+
+Optional `.env` settings (copy from `.env.example`):
+
+```
+OLLAMA_URL=http://localhost:11434
+OLLAMA_MODEL=qwen3:8b
+```
+
+No API key required. Generation runs entirely on your machine.
+
+### 3. Build index and generate
+
+Build the vector index after parsing notebooks (rebuild whenever you sync new notebooks):
+
+```bash
+python3 scripts/build_vector_index.py
+```
+
+Generate a notebook draft with RAG + Ollama:
+
+```bash
+python3 scripts/llm_generator.py
+python3 scripts/llm_generator.py --model llama3.1:8b
+```
+
+Export the AI draft to a starter notebook:
+
+```bash
+python3 scripts/export_to_ipynb.py --llm
+python3 scripts/validate_generated_notebook.py
+```
+
+The generated draft includes an **Influenced By** section listing corpus notebooks used as context.
+
+### Optional: OpenAI instead of Ollama
+
+```bash
+pip install -r requirements-openai.txt
+```
+
+Add to `.env`:
+
+```
+LLM_PROVIDER=openai
+OPENAI_API_KEY=your_key_here
+```
+
+---
 
 **Outputs:**
 
@@ -90,6 +196,10 @@ Step 3 asks interactive questions (discipline, topic, dataset, coding level, wid
 ## Individual commands
 
 ```bash
+# Sync notebooks from the ECC textbook repo (ecc-* folders only)
+python3 scripts/sync_notebooks_from_repo.py
+python3 scripts/sync_notebooks_from_repo.py --repo-url https://github.com/ds-modules/ecc-textbook.git
+
 # Parse and analyze the corpus
 python3 scripts/parse_notebooks.py
 python3 scripts/analyze_corpus.py
@@ -99,10 +209,16 @@ python3 scripts/notebook_copilot.py build   # first time only
 python3 scripts/notebook_copilot.py "Show me examples of widget usage"
 python3 scripts/notebook_copilot.py --draft "Create a beginner widget section for a calculus notebook on Riemann sums"
 
-# Plan, export, and validate a new notebook
+# Plan, export, and validate a new notebook (rule-based)
 python3 scripts/generate_notebook_outline.py
 python3 scripts/export_to_ipynb.py --outline
 python3 scripts/validate_generated_notebook.py
+
+# AI generation (RAG + Ollama — local, no API key)
+python3 scripts/build_vector_index.py
+python3 scripts/llm_generator.py
+python3 scripts/llm_generator.py --model qwen3:8b
+python3 scripts/export_to_ipynb.py --llm
 ```
 
 On macOS, use `python3` (not `python`).
@@ -126,19 +242,18 @@ The validation report checks structure, Python syntax (without executing code), 
 
 ## Current limitations
 
-- **Rule-based generation** — outlines, drafts, and exports use templates and corpus patterns, not an LLM
-- **Small notebook corpus** — patterns are learned from a limited set of DSEP / El Camino notebooks
-- **No LLM API yet** — retrieval uses local TF-IDF embeddings by default (optional semantic embeddings via `requirements-copilot.txt`)
+- **Two generation modes** — rule-based outlines (fast, offline) and AI generation via local Ollama
 - **Human review still required** — generated notebooks are starters, not finished curriculum
+- **Local hardware** — larger models (8B+) need sufficient RAM; first generation may be slow while the model loads
+- **TF-IDF retrieval** — vector search uses free local embeddings by default; OpenAI embeddings optional with `--openai`
 
 ---
 
 ## Future improvements
 
-- Add LLM / RAG generation for richer outlines and section drafts
 - Add a Streamlit or web interface for non-technical users
+- Ollama embedding models for semantic vector search (e.g. nomic-embed-text)
 - Support more notebook templates (biology EDA, case studies, coding labs, ethics)
-- Improve dataset-aware generation and discipline-specific exports
 - Execute notebooks during validation to catch runtime errors
 - Export separate instructor and student versions
 
@@ -147,12 +262,25 @@ The validation report checks structure, Python syntax (without executing code), 
 ## Requirements
 
 - Python 3.10+
-- **numpy** (Notebook Copilot embeddings)
+- **numpy** (embeddings and Notebook Copilot)
+- **git** (notebook sync)
 
-Optional:
+For AI generation (Ollama):
+
+```bash
+pip install -r requirements-llm.txt
+```
+
+Optional (OpenAI provider instead of Ollama):
+
+```bash
+pip install -r requirements-openai.txt
+```
+
+Optional (Notebook Copilot semantic search):
 
 ```bash
 pip install -r requirements-copilot.txt
 ```
 
-Installs `sentence-transformers` for semantic search in Notebook Copilot.
+Installs `sentence-transformers` for semantic search in Notebook Copilot (separate from the RAG vector store).

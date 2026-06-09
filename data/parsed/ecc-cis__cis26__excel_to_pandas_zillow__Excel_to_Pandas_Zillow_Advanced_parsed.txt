@@ -1,0 +1,514 @@
+Notebook: ecc-cis__cis26__excel_to_pandas_zillow__Excel_to_Pandas_Zillow_Advanced.ipynb
+Title: Excel to Pandas (Zillow) - Advanced Operations
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Excel to Pandas (Zillow) - Advanced Operations
+
+--- Item 2 ---
+PIVOT TABLES → pivot_table() and groupby()
+
+--- Item 3 ---
+Calculating Change Over Time — pct_change() vs Excel Formulas
+
+--- Item 4 ---
+JOINs → merge() with home_values + rent_values
+
+--- Item 5 ---
+Data Visualization
+
+--- Item 6 ---
+Bar Charts
+
+--- Item 7 ---
+Line Charts
+
+--- Item 8 ---
+Quick Reference Cheat Sheet
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Excel to Pandas (Zillow) - Advanced Operations
+
+--- Item 2 ---
+Now that you've completed `Excel_to_Pandas_Zillow_Basic.ipynb`, you're ready to build on those fundamentals in this advanced tutorial with more complex transformations, joins, and visual analysis.
+
+--- Item 3 ---
+___
+Professor: Khai Lu <br>
+Developer: Rinrada Maneenop <br>
+*Estimated Time: ~15 minutes*
+___
+
+--- Item 4 ---
+Contents:
+- Advanced Operations
+    - PIVOT TABLES → `pivot_table()` and `groupby()`
+    - JOINs → `merge()` with home_values + rent_values datasets
+- Data Visualization
+    - Bar Charts
+    - Line Charts
+- Interactive Widgets and Practice
+
+--- Item 5 ---
+Please run the cell below to import necessary variables we have defined earlier in the `Excel_to_Pandas_Zillow_Basic.ipynb` tutorial.
+
+--- Item 6 ---
+## PIVOT TABLES → pivot_table() and groupby()
+
+--- Item 7 ---
+Pivot tables are one of Excel's most powerful features for summarizing data.
+
+**Excel**: Insert → PivotTable → Drag fields  
+**Pandas**: `df.pivot_table()` or `df.groupby()`
+
+--- Item 8 ---
+**Pivot: median home value by market tier**
+- Copy the latest snapshot with `MarketTier` classifications
+- Build a pivot of median `HomeValue` by `MarketTier`
+- Compare results to an equivalent `groupby` aggregation
+
+--- Item 9 ---
+**Advanced pivot: State × Market Tier**
+- Build a 2D pivot counting metros by state and market tier
+- Restrict to states with at least 5 metros for readability
+- Similar to an Excel pivot table with rows, columns, and counts
+
+--- Item 10 ---
+---
+
+## Calculating Change Over Time — pct_change() vs Excel Formulas
+
+**Excel Formula**: `=(B2-A2)/A2` for percent change between two cells  
+**Pandas**: `.pct_change()` — applies the formula across an entire column at once
+
+--- Item 11 ---
+**Year-over-year (YoY) home value change**
+- Calculate YoY change for each metro using current vs prior year values
+- In Excel this would require many repeated formulas
+- In pandas we can compute it for all metros in a few steps
+
+--- Item 12 ---
+---
+
+--- Item 13 ---
+## JOINs → merge() with home_values + rent_values
+
+--- Item 14 ---
+In Excel, you might use VLOOKUP or Power Query to combine tables. In Pandas, we use `merge()` which offers SQL-style joins.
+
+**Types of Joins**:
+- **Left Join**: Keep all rows from the left table, match where possible
+- **Inner Join**: Keep only rows that match in both tables
+- **Outer Join**: Keep all rows from both tables, fill NaN where no match
+
+--- Item 15 ---
+**Prepare snapshots for joins**
+- Filter home_values to the latest date and keep key columns
+- Filter rent_values to the latest date and keep rent information
+- These snapshots will be joined on `RegionName`
+
+--- Item 16 ---
+**Left join: keep all home_values metros**
+- Attach rent data from rent_values where available
+- Metros without rent data will have `NaN` in the `Rent` column
+
+--- Item 17 ---
+**Inner join: metros in both datasets**
+- Join home_values and rent_values only where the metro appears in both
+- Equivalent to Excel or SQL inner join on `RegionName`
+
+--- Item 18 ---
+**After merging, calculate derived metrics**
+- Price-to-Rent Ratio: how many years of rent equals the home value
+- Excel: `=HomeValue / (Rent * 12)`
+- Pandas: compute annual rent and price-to-rent for each metro
+
+--- Item 19 ---
+---
+
+--- Item 20 ---
+# Data Visualization
+
+Excel charts are great for quick visualizations. Pandas + Matplotlib/Seaborn offer much more customization and are fully reproducible!
+
+**Excel**: Select data → Insert → Chart  
+**Pandas**: `df.plot()` or matplotlib/seaborn functions
+
+--- Item 21 ---
+## Bar Charts
+
+--- Item 22 ---
+## Line Charts
+
+--- Item 23 ---
+---
+
+--- Item 24 ---
+## Quick Reference Cheat Sheet
+
+| Excel Feature | Pandas Equivalent | Zillow Example |
+|---------------|------------------|----------------|
+| PivotTable | `pivot_table()` | Median home value by market tier |
+| PivotTable (alt) | `groupby().agg()` | Same summary without pivot UI |
+| Pivot with totals | `margins=True` | Add Grand Total row/column |
+| Pivot with multiple stats | `aggfunc=['mean','median','count']` | Tier-level summary stats |
+| Interactive pivot | `pivot_table()` + widgets | Change rows/cols/metric dynamically |
+| JOIN tables | `merge(..., how='left')` | Keep all home-value metros |
+| Inner join | `merge(..., how='inner')` | Keep metros present in both datasets |
+| Calculated field | New column assignment | Price-to-rent ratio and buy/rent signal |
+| =(B-A)/A | `.pct_change()` | YoY home-value growth |
+| Insert → Bar Chart | `plot(kind='bar')` | State/tier comparisons |
+| Insert → Line Chart | `plot(kind='line')` | Time-series home-value trends |
+| Chart labels/format | `plt.title()`, `plt.grid()`, annotations | Improve readability of Zillow charts |
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# Import necessary libraries
+import sys
+from pathlib import Path
+
+# Install ipywidgets into this kernel — do NOT use bare `pip install` here (NameError: pip is not defined)
+import subprocess
+subprocess.run([sys.executable, "-m", "pip", "install", "-q", "ipywidgets"], check=False)
+
+# Local module interact.py lives next to this notebook — add it to path when cwd differs
+# (e.g. JupyterHub/cloud kernels often start in /tmp or home, not this folder)
+for _p in (
+    Path.cwd(),
+    Path.cwd() / "excel_to_pandas_zillow",
+    Path.cwd() / "cis26" / "excel_to_pandas_zillow",
+):
+    if (_p / "interact.py").exists():
+        sys.path.insert(0, str(_p.resolve()))
+        break
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, HTML, Markdown
+from interact import (
+    explore_data_widget,
+    filter_markets_widget,
+    pivot_table_widget,
+    metro_trends_widget,
+)
+import warnings
+warnings.filterwarnings('ignore')
+
+# Set plot style
+plt.style.use('seaborn-v0_8-darkgrid')
+sns.set_palette("husl")
+
+print("✅ All libraries imported successfully!")
+print("\n📌 Note: This notebook uses interactive widgets (ipywidgets)")
+print("   You'll see dropdowns and sliders throughout — just run each cell and use the controls!")
+
+--- Item 2 ---
+# Recreate core variables from the Basic tutorial so this notebook runs standalone
+from exercise_setup import load_exercise_data
+
+_data = load_exercise_data(verbose=True)
+
+home_values_wide = _data["home_values_wide"]
+rent_values_wide = _data["rent_values_wide"]
+home_values = _data["home_values"]
+rent_values = _data["rent_values"]
+home_values_latest = _data["home_values_latest"]
+latest_home_values_copy = _data["latest_home_values_copy"]
+housing_combined = _data["housing_combined"]
+
+# Used later in YoY section
+latest_date = home_values["Date"].max()
+
+--- Item 3 ---
+home_values_pivot = latest_home_values_copy.copy()
+
+pivot1 = home_values_pivot.pivot_table(
+    values='HomeValue',
+    index='MarketTier',
+    aggfunc='median'
+).round(0)
+
+print("Median home value by market tier:")
+display(pivot1)
+
+# Same result using groupby
+print("\nSame result using groupby:")
+display(home_values_pivot.groupby('MarketTier')['HomeValue'].median().round(0))
+
+--- Item 4 ---
+states_with_many = home_values_pivot['StateName'].value_counts()
+states_to_show = states_with_many[states_with_many >= 5].index
+
+pivot2 = home_values_pivot[home_values_pivot['StateName'].isin(states_to_show)].pivot_table(
+    values='HomeValue',
+    index='StateName',
+    columns='MarketTier',
+    aggfunc='count',   # count of metros in each cell
+    fill_value=0,
+    margins=True       # Add totals (like "Grand Total" row/column in Excel pivot)
+)
+
+print("Count of metros per state × market tier (states with 5+ metros):")
+display(pivot2)
+
+--- Item 5 ---
+# Multiple aggregations: stats on home values by tier
+pivot3 = home_values_pivot.pivot_table(
+    values='HomeValue',
+    index='MarketTier',
+    aggfunc=['min', 'median', 'max', 'count']
+).round(0)
+
+print("Home value statistics by market tier:")
+display(pivot3)
+
+--- Item 6 ---
+# Interactive Pivot Table Builder
+pivot_table_widget(home_values_pivot)
+
+--- Item 7 ---
+# Get the last two years of data
+one_year_ago = latest_date - pd.DateOffset(years=1)
+
+latest_vals = home_values[home_values['Date'] == latest_date][['RegionName', 'StateName', 'HomeValue']].rename(
+    columns={'HomeValue': 'Current'}
+)
+prior_vals = home_values[home_values['Date'] == home_values[home_values['Date'] <= one_year_ago]['Date'].max()][
+    ['RegionName', 'HomeValue']
+].rename(columns={'HomeValue': 'OneYearAgo'})
+
+yoy = latest_vals.merge(prior_vals, on='RegionName', how='inner')
+
+# Excel: =(Current - OneYearAgo) / OneYearAgo
+yoy['YoY_Change_Pct'] = ((yoy['Current'] - yoy['OneYearAgo']) / yoy['OneYearAgo'] * 100).round(2)
+
+print("Top 10 fastest-appreciating markets (YoY):")
+display(yoy.nlargest(10, 'YoY_Change_Pct')[['RegionName', 'StateName', 'Current', 'YoY_Change_Pct']])
+
+print("\nTop 10 declining markets (YoY):")
+display(yoy.nsmallest(10, 'YoY_Change_Pct')[['RegionName', 'StateName', 'Current', 'YoY_Change_Pct']])
+
+--- Item 8 ---
+home_values_snap = home_values[home_values['Date'] == latest_date][['RegionName', 'StateName', 'HomeValue']]
+rent_values_snap = rent_values[rent_values['Date'] == rent_values['Date'].max()][['RegionName', 'Rent']]
+
+print(f"home_values metros: {len(home_values_snap)}")
+print(f"rent_values metros: {len(rent_values_snap)}")
+region_col = 'RegionName'
+print(f"Metros in both: {len(set(home_values_snap[region_col]) & set(rent_values_snap[region_col]))}")
+
+--- Item 9 ---
+left_join = home_values_snap.merge(rent_values_snap, on='RegionName', how='left')
+print(f"LEFT JOIN rows: {len(left_join)} (same as home_values: {len(home_values_snap)})")
+print(f"Metros with rent data: {left_join['Rent'].notna().sum()}")
+display(left_join.sort_values('HomeValue', ascending=False).head(8))
+
+--- Item 10 ---
+inner_join = home_values_snap.merge(rent_values_snap, on='RegionName', how='inner')
+print(f"INNER JOIN rows: {len(inner_join)} (only metros in both datasets)")
+display(inner_join.sort_values('HomeValue', ascending=False).head(8))
+
+--- Item 11 ---
+housing_combined = inner_join.copy()
+housing_combined['Annual_Rent'] = housing_combined['Rent'] * 12
+housing_combined['Price_to_Rent'] = (housing_combined['HomeValue'] / housing_combined['Annual_Rent']).round(1)
+
+# Buy vs Rent signal
+# Rule of thumb: P/R < 15 → better to buy; P/R > 20 → better to rent
+housing_combined['Buy_vs_Rent'] = np.select(
+    [
+        housing_combined['Price_to_Rent'] < 15,
+        housing_combined['Price_to_Rent'] > 20
+    ],
+    ['Lean Buy', 'Lean Rent'],
+    default='Neutral'
+)
+
+print("Buy vs Rent Analysis by Metro:")
+display(housing_combined[['RegionName', 'StateName', 'HomeValue', 'Rent', 'Price_to_Rent', 'Buy_vs_Rent']]
+        .sort_values('Price_to_Rent', ascending=False)
+        .head(12))
+
+print("\nBuy vs Rent signal distribution:")
+print(housing_combined['Buy_vs_Rent'].value_counts())
+
+--- Item 12 ---
+# Bar chart: Median home value by state (top 15 states)
+top_states = (home_values_latest
+              .groupby('StateName')['HomeValue']
+              .median()
+              .nlargest(15)
+              .sort_values(ascending=True))
+
+plt.figure(figsize=(10, 7))
+top_states.plot(kind='barh', color='steelblue')
+plt.title('Top 15 States by Median Home Value', fontsize=16, fontweight='bold')
+plt.xlabel('Median Home Value ($)', fontsize=12)
+plt.ylabel('State', fontsize=12)
+
+# Add value labels — like Excel's data labels
+for i, v in enumerate(top_states):
+    plt.text(v + 5000, i, f'${v/1e6:.2f}M' if v > 1e6 else f'${v/1e3:.0f}K',
+             va='center', fontsize=9)
+
+plt.grid(axis='x', alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+--- Item 13 ---
+# Grouped bar chart: Market tier breakdown for select states
+select_states = ['CA', 'TX', 'FL', 'NY', 'WA']
+tier_by_state = (
+    latest_home_values_copy[latest_home_values_copy['StateName'].isin(select_states)]
+    .groupby(['StateName', 'MarketTier'])
+    .size()
+    .unstack(fill_value=0)
+)
+
+tier_order = ['Affordable', 'Mid-Range', 'Luxury', 'Ultra-Luxury']
+tier_by_state = tier_by_state.reindex(columns=[c for c in tier_order if c in tier_by_state.columns])
+
+plt.figure(figsize=(12, 6))
+tier_by_state.plot(kind='bar', width=0.8)
+plt.title('Market Tier Breakdown by State', fontsize=16, fontweight='bold')
+plt.xlabel('State', fontsize=12)
+plt.ylabel('Number of Metro Areas', fontsize=12)
+plt.legend(title='Market Tier', fontsize=10)
+plt.xticks(rotation=0)
+plt.grid(axis='y', alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+--- Item 14 ---
+# Time series: National median home value over time
+national_trend = home_values.groupby('Date')['HomeValue'].median()
+
+plt.figure(figsize=(14, 6))
+national_trend.plot(kind='line', linewidth=2.5, color='steelblue')
+
+# Annotate key events (just like Excel text boxes)
+plt.axvline(pd.Timestamp('2008-09-01'), color='red', linestyle='--', alpha=0.7, label='2008 Financial Crisis')
+plt.axvline(pd.Timestamp('2020-03-01'), color='orange', linestyle='--', alpha=0.7, label='COVID-19 Pandemic')
+
+plt.title('U.S. National Median Home Value Over Time', fontsize=16, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Median Home Value ($)', fontsize=12)
+plt.legend(fontsize=11)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+--- Item 15 ---
+# Multiple lines: Home value trends for top 5 metros
+top5_metros = home_values_latest.nsmallest(5, 'SizeRank')['RegionName'].tolist()
+print(f"Top 5 metros by market size: {top5_metros}")
+
+metro_trends = home_values[home_values['RegionName'].isin(top5_metros)].copy()
+metro_pivot = metro_trends.pivot(index='Date', columns='RegionName', values='HomeValue')
+
+plt.figure(figsize=(14, 7))
+metro_pivot.plot(ax=plt.gca(), linewidth=2)
+plt.title('Home Value Trends: Top 5 U.S. Metro Markets', fontsize=16, fontweight='bold')
+plt.xlabel('Date', fontsize=12)
+plt.ylabel('Home Value ($)', fontsize=12)
+plt.legend(title='Metro', fontsize=9, loc='upper left')
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+
+--- Item 16 ---
+# Interactive: Pick any metros to compare
+metro_trends_widget(home_values)
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+from pathlib import Path
+
+--- Item 3 ---
+import subprocess
+
+--- Item 4 ---
+import pandas as pd
+
+--- Item 5 ---
+import numpy as np
+
+--- Item 6 ---
+import matplotlib.pyplot as plt
+
+--- Item 7 ---
+import seaborn as sns
+
+--- Item 8 ---
+from IPython.display import display, HTML, Markdown
+
+--- Item 9 ---
+from interact import (
+
+--- Item 10 ---
+import warnings
+
+--- Item 11 ---
+from exercise_setup import load_exercise_data
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+seaborn calls
+
+--- Item 3 ---
+pandas/matplotlib .plot()
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Visualization
+
+24 markdown cells and 16 code cells. Major sections include: Excel to Pandas (Zillow) - Advanced Operations, PIVOT TABLES → pivot_table() and groupby(), Calculating Change Over Time — pct_change() vs Excel Formulas, JOINs → merge() with home_values + rent_values, Data Visualization, Bar Charts, ....

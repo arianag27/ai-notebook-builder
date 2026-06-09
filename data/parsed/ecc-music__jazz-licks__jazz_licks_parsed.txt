@@ -1,0 +1,248 @@
+Notebook: ecc-music__jazz-licks__jazz_licks.ipynb
+Title: Jazz Licks: Hear It, See It, Compare It
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Jazz Licks: Hear It, See It, Compare It
+
+--- Item 2 ---
+What you’ll explore
+
+--- Item 3 ---
+Time period, place, and sources
+
+--- Item 4 ---
+What you’ll do
+
+--- Item 5 ---
+Run this cell first (load data)
+
+--- Item 6 ---
+1) What is a waveform?
+
+--- Item 7 ---
+2) What is a spectrogram?
+
+--- Item 8 ---
+3) Estimated notes, then original vs synthesized
+
+--- Item 9 ---
+Reflection prompts
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+In this lab you listen to short moments from **early jazz recordings** and connect what you hear to **pictures** of the sound. You do not need any music-technology background, just curiosity and your ears.
+
+**What is a lick?** In jazz and popular music, a **lick** is a short, memorable melodic or rhythmic phrase—something you might hum, copy on an instrument, or recognize when it comes back later in a solo or melody. It is a small **building block** musicians learn and vary. (People also say **riff** for catchy repeating phrases; the words overlap a bit, but both point to *small shapes inside bigger music*.)
+
+Each **clip** here is about **twelve seconds** from a longer track: enough to hear a clear idea without sitting through a whole recording.
+
+---
+
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Jazz Licks: Hear It, See It, Compare It
+
+
+--- Item 2 ---
+---
+
+## What you’ll explore
+
+In this lab you listen to short moments from **early jazz recordings** and connect what you hear to **pictures** of the sound. You do not need any music-technology background, just curiosity and your ears.
+
+**What is a lick?** In jazz and popular music, a **lick** is a short, memorable melodic or rhythmic phrase—something you might hum, copy on an instrument, or recognize when it comes back later in a solo or melody. It is a small **building block** musicians learn and vary. (People also say **riff** for catchy repeating phrases; the words overlap a bit, but both point to *small shapes inside bigger music*.)
+
+Each **clip** here is about **twelve seconds** from a longer track: enough to hear a clear idea without sitting through a whole recording.
+
+--- Item 3 ---
+---
+
+## Time period, place, and sources
+
+The recordings in this lab now span the **1910s through 1930s** in early jazz and swing-era recording history. The table below lists **when and where** each recording sits (city/region) plus a short historical note.
+
+**Where did the audio come from?** Source recordings are linked from **Wikimedia Commons** and the **Internet Archive Great 78 Project**, both with file-level documentation so students can trace the original source.
+
+**Copyright and use.** This lab focuses on recordings labeled public domain / historical archive material in the source metadata. **Copyright rules differ by country and change over time.** If you reuse audio outside class, check your institution’s policy and local law.
+
+
+--- Item 4 ---
+---
+
+## What you’ll do
+
+Work through the three parts **in order**:
+
+1. **Waveform** — see loudness and shape over time, and listen to the same clip.
+2. **Spectrogram** — see **frequency** (high vs low energy) over time, and listen again.
+3. **Notes + compare** — see a rough **estimated melody** (as note names) and **compare** the real recording to a simple **synthesized** version built from that estimate. The synthesized sound is *not* the original band; it is a teaching tool to hear **melodic contour** when the old recording is noisy.
+
+Use the **Song** and **Snippet** menus in each part to switch recordings.
+
+--- Item 5 ---
+## Run this cell first (load data)
+
+The next code cell loads two tables used everywhere below: **one row per source recording** (album/single side–style track) and **one row per short lick snippet** cut from those recordings. After it runs, scroll through the tables, then continue to Part 1.
+
+
+--- Item 6 ---
+## 1) What is a waveform?
+
+A **waveform** plots **air pressure wiggles** (loudness) against **time**.
+
+- **X-axis:** time in seconds.
+- **Y-axis:** amplitude—how strong the vibration is at each instant.
+- **Taller** wiggles are usually **louder** (or closer to the microphone on old recordings).
+
+**Try this:** Pick a **Song** and **Snippet**, look at the shape, then press play on the audio under the plot. Can you match a spike or a smooth dip to something you hear?
+
+
+--- Item 7 ---
+## 2) What is a spectrogram?
+
+A **spectrogram** is a kind of **“what pitch is busy right now?”** picture.
+
+- **X-axis:** time.
+- **Y-axis:** frequency from **low** (bottom) to **high** (top).
+- **Brighter** patches mean more energy at that pitch range at that moment.
+
+That helps you **see** brassy brightness, noisy hiss, or syllable-shaped bursts—not only “loud vs quiet.”
+
+**Try this:** Find a moment that looks like a **horizontal band** (a sustained pitch) and listen. Does your ear agree?
+
+
+--- Item 8 ---
+## 3) Estimated notes, then original vs synthesized
+
+This part does two things.
+
+**A graph of estimated notes:** The computer guesses the **single strongest pitch** at short moments and converts that to **note names** (C4, A4, …). On scratchy 1910s recordings it will be **wrong sometimes**—multiple instruments, noise, and vibrato all confuse the guess.
+
+**Two players below the plot:**
+
+1. **Original clip** — what was actually recorded.
+2. **Synthesized “MIDI-like” tone** — a **simple beep-track** built only from the estimated pitch line. It strips away timbre and band noise so you can ask: **Does the contour of ups and downs match the melody you hear?**
+
+If the graph is messy, trust your ears and compare anyway—that mismatch is part of the lesson.
+
+
+--- Item 9 ---
+## Reflection prompts
+
+- **Waveform:** Which snippet has the easiest-to-see repeating “shapes,” and what do you think those shapes are musically (hits, held notes, silence)?
+- **Spectrogram:** Where do you see **horizontal bands** vs fuzzy noise? Which recording sounds the “brightest” to you?
+- **Notes + synthesizer:** When does the simple synthesized line **follow** the tune you hear? When does it **lie**—and what in the recording might explain that (crowded harmony, noise, drums)?
+- **Sources and ethics:** Why does it matter that these files come from **Wikimedia Commons** with linked file pages and rights labels? When would you **not** assume “I can use this anywhere”?
+
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# If the next few cells do not work, please restart the kernel after installing this package.
+# Install imageio-ffmpeg for audio/video display support
+!pip install imageio-ffmpeg
+
+from pathlib import Path
+
+import pandas as pd
+from IPython.display import display
+
+from utils import create_notes_section, create_spectrogram_section, create_waveform_section, load_tables
+
+BASE = Path('.').resolve()
+tracks, examples = load_tables(BASE)
+
+pd.set_option('display.max_colwidth', 50)
+
+tracks_display = tracks.sort_values(['pub_year', 'title'], kind='stable')
+examples_display = examples.sort_values(['title', 'snippet_type', 'start_sec'], kind='stable')
+
+print('Source recordings in this lab (Wikimedia Commons file pages linked below)')
+display(tracks_display)
+
+print('Short lick snippets in this repo (intro / mid / late windows on each recording)')
+display(examples_display)
+
+print(f'({len(tracks_display)} source recordings, {len(examples_display)} snippets.)')
+
+
+--- Item 2 ---
+display(create_waveform_section(BASE, examples))
+
+--- Item 3 ---
+display(create_spectrogram_section(BASE, examples))
+
+--- Item 4 ---
+display(create_notes_section(BASE, examples))
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+from pathlib import Path
+
+--- Item 2 ---
+import pandas as pd
+
+--- Item 3 ---
+from IPython.display import display
+
+--- Item 4 ---
+from utils import create_notes_section, create_spectrogram_section, create_waveform_section, load_tables
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Reflection prompts
+
+- **Waveform:** Which snippet has the easiest-to-see repeating “shapes,” and what do you think those shapes are musically (hits, held notes, silence)?
+- **Spectrogram:** Where do you see **horizontal bands** vs fuzzy noise? Which recording sounds the “brightest” to you?
+- **Notes + synthesizer:** When does the simple synthesized line **follow** the tune you hear? When does it **lie**—and what in the recording might explain that (crowded harmony, noise, drums)?
+- **Sources and ethics:** Why does it matter that these files come from **Wikimedia Commons** with linked file page
+
+--- Item 2 ---
+## Reflection prompts
+
+- **Waveform:** Which snippet has the easiest-to-see repeating “shapes,” and what do you think those shapes are musically (hits, held notes, silence)?
+- **Spectrogram:** Where do you see **horizontal bands** vs fuzzy noise? Which recording sounds the “brightest” to you?
+- **Notes + synthesizer:** When does the simple synthesized line **follow** the tune you hear? When does it **lie**—and what in the recording might explain that (crowded harmony, noise, drums)?
+- **Sources and ethics:** Why does it matter that these files come from **Wikimedia Commons** with linked file p
+
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Analysis → Sources → Reflection
+
+9 markdown cells and 4 code cells. Major sections include: Jazz Licks: Hear It, See It, Compare It, What you’ll explore, Time period, place, and sources, What you’ll do, Run this cell first (load data), 1) What is a waveform?, ....

@@ -1,0 +1,6 @@
+{
+  "method": "tfidf",
+  "model": null,
+  "num_chunks": 5538,
+  "embedding_dim": 7414
+}

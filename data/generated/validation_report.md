@@ -1,32 +1,32 @@
 # Notebook Validation Report
 
 **Notebook:** `starter_notebook.ipynb`
-**Validated:** 2026-06-05 20:16 UTC
-**Status:** PASSED
+**Validated:** 2026-06-08 17:45 UTC
+**Status:** PASSED WITH WARNINGS
 
 **Expected dataset:** no
-**Expected reflection:** no
+**Expected reflection:** yes
 **Topic:** derivatives and integrals
+**Source:** llm
 
 ## Passed Checks
 
-- [x] Has markdown cells (11)
-- [x] Has code cells (5)
+- [x] Has markdown cells (14)
+- [x] Has code cells (8)
 - [x] No empty cells
 - [x] Has a notebook title (# heading)
 - [x] Has learning objectives section
-- [x] Has setup section with import code
-- [x] All 5 code cell(s) passed syntax check
-- [x] No generic TODO/pass placeholders in code
+- [x] Has import code (setup heading not found)
+- [x] All 8 code cell(s) passed syntax check
+- [x] Exercise TODO placeholders in guided practice cells (2) — expected
 - [x] No inappropriate dataset language (outline: no dataset)
-- [x] No full reflection section (outline: reflection = no)
+- [x] Has reflection section (as requested)
 - [x] No excessive generic placeholders
-- [x] Code cells have markdown explanations before them
-- [x] Interactive sections include student observation prompts
 
 ## Warnings
 
-- None
+- [!] Code cell(s) may lack a beginner-friendly explanation in the previous markdown cell: 5
+- [!] Interactive code cell(s) missing student prompts afterward: 13
 
 ## Errors
 
@@ -34,4 +34,4 @@
 
 ## Next Steps
 
-- Notebook looks ready for human review.
+- Review warnings before sharing the notebook with students.

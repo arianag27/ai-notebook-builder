@@ -1,0 +1,681 @@
+Notebook: ecc-cis__cis13__Intro_to_Jupyter.ipynb
+Title: Introduction to Jupyter and Python
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Introduction to Jupyter and Python
+
+--- Item 2 ---
+Setup: Install and Import Packages
+
+--- Item 3 ---
+Section 1: Your First Cell
+
+--- Item 4 ---
+TO-DO 1: Your first print statement
+
+--- Item 5 ---
+Section 2: Python as a Calculator
+
+--- Item 6 ---
+TO-DO 2: Calculate a total cost
+
+--- Item 7 ---
+Section 3: Variables
+
+--- Item 8 ---
+TO-DO 3: Create your own variables
+
+--- Item 9 ---
+Section 4: Lists
+
+--- Item 10 ---
+TO-DO 4: Build a list and find the total
+
+--- Item 11 ---
+Section 5: Introducing `pandas`
+
+--- Item 12 ---
+Viewing the data
+
+--- Item 13 ---
+Selecting a column
+
+--- Item 14 ---
+Creating a new column
+
+--- Item 15 ---
+TO-DO 5: Add a Discount Price column
+
+--- Item 16 ---
+Section 6: Filtering Data
+
+--- Item 17 ---
+Section 7: Your First Chart
+
+--- Item 18 ---
+TO-DO 6: Chart the Revenue column
+
+--- Item 19 ---
+That's it!
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+By the end, you'll be able to load a dataset, do basic calculations on it, and make a chart using Python.
+
+**What you'll practice:**
+- Navigating and running cells in a Jupyter Notebook
+- Writing basic Python: variables, data types, and lists
+- Loading and exploring a dataset using `pandas`
+- Creating a simple chart from data
+
+> **How to run a cell:** Click on any code cell below and press **Shift + Enter** (or click the Run button in the toolbar). The result appears directly below the cell.
+
+---
+
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+By the end, you'll be able to load a dataset, do basic calculations on it, and make a chart using Python.
+
+**What you'll practice:**
+- Navigating and running cells in a Jupyter Notebook
+- Writing basic Python: variables, data types, and lists
+- Loading and exploring a dataset using `pandas`
+- Creating a simple chart from data
+
+> **How to run a cell:** Click on any code cell below and press **Shift + Enter** (or click the Run button in the toolbar). The result appears directly below the cell.
+
+---
+
+--- Item 2 ---
+- Loading and exploring a dataset using `pandas`
+- Creating a simple chart from data
+
+> **How to run a cell:** Click on any code cell below and press **Shift + Enter** (or click the Run button in the toolbar). The result appears directly below the cell.
+
+---
+
+--- Item 3 ---
+Run the cell below to load `pandas` and a small dataset we'll use for the rest of the lab:
+
+### Viewing the data
+
+Just like scrolling through an Excel spreadsheet, pandas gives you several ways to view your data:
+
+### Selecting a column
+
+To select a single column, use the column name in square brackets, the same way you'd click a column header in Excel:
+
+### Creating a new column
+
+In Excel, you'd write a formula like `=B2*C2` and drag it down. In pandas, you define the whole column at once and it applies to every row automatically:
+
+### TO-DO 5: Add a Discount Price column
+
+The store is running a **10% off** promotion. Add a new column called `"Discounted_Price"` that shows each product's unit price after the discount.
+
+*Hint: 10% off means multiply by 0.90.*
+
+**Question 3**
+
+In Excel, ap
+
+--- Item 4 ---
+This lab used a small dataset with 8 rows. Imagine you work for a company with 50,000 product transactions per month. List two things Python/pandas could do with that data that would be difficult or impractical to do manually in Excel.
+
+*Type your answer here.*
+
+---
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Introduction to Jupyter and Python
+
+---
+
+This lab introduces two tools that extend what you can do with data:
+
+- **Jupyter Notebooks**, the interactive environment you're in right now
+- **Python**, a programming language widely used for data analysis, web development, and automation
+
+By the end, you'll be able to load a dataset, do basic calculations on it, and make a chart using Python.
+
+**What you'll practice:**
+- Navigating and running cells in a Jupyter Notebook
+- Writing basic Python: variables, data types, and lists
+- Loading and exploring a dataset using `pandas`
+- Creating a simple chart from data
+
+> **How to run a cell:** Click on any code cell below and press **Shift + Enter** (or click the Run button in the toolbar). The result appears directly below the cell.
+
+--- Item 2 ---
+---
+## Setup: Install and Import Packages
+
+Before we start, run the cell below. It checks whether the required Python packages are already installed and installs any that are missing. This only needs to run once per session.
+
+> **Run this cell first.** Everything else in the lab depends on it.
+
+--- Item 3 ---
+---
+## Section 1: Your First Cell
+
+Jupyter Notebooks are made of **cells**. There are two main types:
+- **Markdown cells** (like this one) display formatted text, images, and instructions
+- **Code cells** (gray background) contain Python code that you can run
+
+Let's run your first code cell. Press **Shift + Enter** on the cell below.
+
+--- Item 4 ---
+You should see `Welcome to CIS 13!` appear below the cell. The number in the brackets `[1]` on the left tells you the order cells were run.
+
+### TO-DO 1: Your first print statement
+
+In the cell below, replace the `...` with a `print()` statement that displays your own name.
+
+*Example:* `print("Alex Rivera")`
+
+--- Item 5 ---
+---
+## Section 2: Python as a Calculator
+
+The simplest thing Python can do is math. Just like typing a formula in Excel's formula bar, you can type an expression and Python evaluates it.
+
+| Excel formula | Python equivalent |
+|---------------|-------------------|
+| `=5+3`        | `5 + 3`           |
+| `=10*2`       | `10 * 2`          |
+| `=9/3`        | `9 / 3`           |
+| `=2^8`        | `2 ** 8`          |
+
+Run the demo cell below to see Python do some arithmetic:
+
+--- Item 6 ---
+### TO-DO 2: Calculate a total cost
+
+A customer buys **15 notebooks** at **\$2.49 each** and **4 pens** at **\$0.99 each**.
+
+In the cell below, write a Python expression that calculates the **total cost**. Replace `...` with your expression.
+
+--- Item 7 ---
+---
+## Section 3: Variables
+
+In Excel, you store a value in a **cell** (like cell B4). In Python, you store a value in a **variable**, which is a named container you create yourself.
+
+```
+Excel:   B4 = 49.99
+Python:  price = 49.99
+```
+
+Variables make your code readable and reusable. Run the demo below:
+
+--- Item 8 ---
+Python has different **data types** for different kinds of values:
+
+| Type | Example | What it holds |
+|------|---------|---------------|
+| `int` | `42` | Whole numbers |
+| `float` | `29.99` | Decimal numbers |
+| `str` | `"Wireless Mouse"` | Text (always in quotes) |
+| `bool` | `True` / `False` | Yes/No values |
+
+You can check a variable's type with the built-in `type()` function:
+
+--- Item 9 ---
+### TO-DO 3: Create your own variables
+
+Imagine you work at a campus bookstore. Fill in the `...` placeholders to create variables for a product of your choice, then print a summary line.
+
+--- Item 10 ---
+**Question 1**
+
+In Excel, if you change a value in cell B4, any formula that references B4 automatically updates. In Python, if you update a variable after using it in a calculation, does the calculation update automatically? How would you test this?
+
+*Type your answer here.*
+
+--- Item 11 ---
+---
+## Section 4: Lists
+
+A single variable holds one value. A **list** holds many values in order. Think of it as one column from an Excel spreadsheet.
+
+```
+Excel column A:   Python list:
+  Laptop            products = ["Laptop", "Keyboard", "Monitor", "Webcam"]
+  Keyboard
+  Monitor
+  Webcam
+```
+
+Run the demo:
+
+--- Item 12 ---
+Notice that Python starts counting at **0**, not 1. So `products[0]` is `"Laptop"`, and `products[1]` is `"Keyboard"`.
+
+### TO-DO 4: Build a list and find the total
+
+A store sold the following quantities of four items this week: **12, 5, 30, 8**.
+
+Create a list called `weekly_sales`, then use Python's built-in `sum()` and `max()` functions to find the total and the highest single sale.
+
+--- Item 13 ---
+**Question 2**
+
+Excel's `SUM()` function and Python's `sum()` function both add up a range of numbers. What is one advantage of using Python lists over an Excel column for storing data? What is one advantage Excel has?
+
+*Type your answer here.*
+
+--- Item 14 ---
+---
+## Section 5: Introducing `pandas`
+
+So far we've worked with individual values and simple lists. But real-world data has **rows and columns**, just like an Excel spreadsheet.
+
+`pandas` is a Python library for working with tabular data. It gives us a **DataFrame**, which is an object that works like a spreadsheet inside Python.
+
+```
+Excel Workbook ≈ pandas DataFrame
+Excel Row      ≈ DataFrame row
+Excel Column   ≈ DataFrame Series (column)
+=SUM(B:B)      ≈ df["Units Sold"].sum()
+=AVERAGE(B:B)  ≈ df["Units Sold"].mean()
+```
+
+Run the cell below to load `pandas` and a small dataset we'll use for the rest of the lab:
+
+--- Item 15 ---
+### Viewing the data
+
+Just like scrolling through an Excel spreadsheet, pandas gives you several ways to view your data:
+
+--- Item 16 ---
+### Selecting a column
+
+To select a single column, use the column name in square brackets, the same way you'd click a column header in Excel:
+
+--- Item 17 ---
+### Creating a new column
+
+In Excel, you'd write a formula like `=B2*C2` and drag it down. In pandas, you define the whole column at once and it applies to every row automatically:
+
+--- Item 18 ---
+### TO-DO 5: Add a Discount Price column
+
+The store is running a **10% off** promotion. Add a new column called `"Discounted_Price"` that shows each product's unit price after the discount.
+
+*Hint: 10% off means multiply by 0.90.*
+
+--- Item 19 ---
+**Question 3**
+
+In Excel, applying a formula like `=B2*0.90` to 1,000 rows means dragging the formula down (or double-clicking). In pandas, you write one line and it applies to all rows automatically. Why might this matter when working with large datasets in a business setting?
+
+*Type your answer here.*
+
+--- Item 20 ---
+---
+## Section 6: Filtering Data
+
+In Excel, you use **Filters** to show only rows that meet a condition. In pandas, you write a condition directly:
+
+--- Item 21 ---
+---
+## Section 7: Your First Chart
+
+pandas can create charts directly from your data, similar to Excel's Insert Chart feature. We'll use `matplotlib`, the standard Python charting library.
+
+--- Item 22 ---
+### TO-DO 6: Chart the Revenue column
+
+Create a bar chart showing **Revenue** (not Units Sold) for each product. Copy the demo above and change:
+1. The column on the y-axis from `"Units_Sold"` to `"Revenue"`
+2. The chart title to something appropriate
+3. The bar color to any color you like (try `"coral"`, `"seagreen"`, or `"mediumpurple"`)
+
+--- Item 23 ---
+**Question 4**
+
+Look at your Revenue chart compared to the Units Sold chart. Are the rankings the same? Which product generates the most revenue even though it might not sell the most units? What does this tell you as a store manager?
+
+*Type your answer here.*
+
+--- Item 24 ---
+**Question 5**
+
+This lab used a small dataset with 8 rows. Imagine you work for a company with 50,000 product transactions per month. List two things Python/pandas could do with that data that would be difficult or impractical to do manually in Excel.
+
+*Type your answer here.*
+
+--- Item 25 ---
+---
+## That's it!
+
+Here's a quick recap of what you worked through:
+
+| Topic | What you tried |
+|-------|----------------|
+| **Jupyter Notebooks** | Running code cells, mixing code and text |
+| **Python basics** | Variables, data types, lists, arithmetic |
+| **pandas** | Loading data, selecting columns, creating new columns, filtering rows |
+| **matplotlib** | Creating and customizing a bar chart |
+
+These tools come up again in the databases and systems topics later in CIS 13, so anything you picked up here will be useful.
+
+---
+*CIS 13 · El Camino College · Prof. Hac Le*
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# Setup: check for required packages and install if missing
+import sys
+import subprocess
+
+def ensure_package(import_name, install_name=None):
+    """Import a package; install it quietly if not found."""
+    if install_name is None:
+        install_name = import_name
+    try:
+        __import__(import_name)
+        print(f"  ✓ {import_name} already installed")
+    except ImportError:
+        print(f"  ↓ Installing {install_name}...")
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", install_name, "--quiet"]
+        )
+        print(f"  ✓ {install_name} installed")
+
+print("Checking packages...")
+ensure_package("pandas")
+ensure_package("matplotlib")
+print("\nAll packages ready. You're good to go!")
+
+--- Item 2 ---
+# This is a code cell. The # symbol marks a line as a "comment" - Python ignores it.
+# Comments are notes for the human reading the code.
+
+print("Welcome to CIS 13!")
+
+--- Item 3 ---
+# TO-DO 1: Print your name
+...
+
+--- Item 4 ---
+# Demo: Python arithmetic
+print(5 + 3)     # addition
+print(10 * 2)    # multiplication
+print(9 / 3)     # division
+print(2 ** 8)    # exponentiation (2 to the power of 8)
+
+--- Item 5 ---
+# TO-DO 2: Calculate total cost (notebooks + pens)
+total_cost = ...
+print("Total cost: $", total_cost)
+
+--- Item 6 ---
+# Demo: variables
+product_name = "Wireless Mouse"
+unit_price = 29.99
+quantity = 3
+
+total = unit_price * quantity
+
+print("Product:", product_name)
+print("Unit price: $", unit_price)
+print("Quantity:", quantity)
+print("Total: $", total)
+
+--- Item 7 ---
+# Demo: checking data types
+print(type(42))          # int
+print(type(29.99))       # float
+print(type("hello"))     # str
+print(type(True))        # bool
+
+--- Item 8 ---
+# TO-DO 3: Create variables for a bookstore product
+item_name  = ...   # str: name of the product
+item_price = ...   # float: price in dollars
+in_stock   = ...   # bool: True if available, False if not
+
+print(item_name, "- $", item_price, "- In stock:", in_stock)
+
+--- Item 9 ---
+# Demo: lists
+products = ["Laptop", "Keyboard", "Monitor", "Webcam"]
+prices   = [899.99, 49.99, 299.99, 79.99]
+
+print("Products:", products)
+print("Prices:",   prices)
+print("Number of products:", len(products))
+
+# Access individual items using an index (counting starts at 0, not 1!)
+print("First product:", products[0])
+print("Last product:",  products[-1])
+
+--- Item 10 ---
+# TO-DO 4: Create the list and compute summary stats
+weekly_sales = [...]   # fill in the four values
+
+print("Total units sold:", sum(weekly_sales))
+print("Best-selling item (units):", max(weekly_sales))
+
+--- Item 11 ---
+# Import pandas - we give it the nickname "pd" by convention
+import pandas as pd
+
+# Our dataset: Spartan Office Supply Store, Q1 Sales
+data = {
+    "Product":    ["Notebook", "Ballpoint Pen", "Stapler", "USB Drive",
+                   "Desk Lamp", "Binder", "Calculator", "Highlighter Set"],
+    "Category":   ["Paper", "Writing", "Supplies", "Technology",
+                   "Furniture", "Paper", "Technology", "Writing"],
+    "Units_Sold": [120, 340, 45, 98, 27, 88, 61, 215],
+    "Unit_Price": [2.49, 0.99, 8.99, 14.99, 24.99, 3.49, 12.99, 5.99]
+}
+
+df = pd.DataFrame(data)
+print("Dataset loaded! Shape:", df.shape, "(rows, columns)")
+
+--- Item 12 ---
+# Display the full DataFrame (renders as a table in Jupyter)
+df
+
+--- Item 13 ---
+# .head() shows the first 5 rows - useful when your dataset is thousands of rows long
+df.head()
+
+--- Item 14 ---
+# .describe() gives summary statistics - like Excel's descriptive stats tool
+df.describe()
+
+--- Item 15 ---
+# Select the Units_Sold column
+print(df["Units_Sold"])
+
+print("\nTotal units sold:",   df["Units_Sold"].sum())
+print("Average units sold:",  df["Units_Sold"].mean())
+print("Most units sold:",     df["Units_Sold"].max())
+
+--- Item 16 ---
+# Demo: create a Revenue column (Units_Sold x Unit_Price)
+df["Revenue"] = df["Units_Sold"] * df["Unit_Price"]
+df
+
+--- Item 17 ---
+# TO-DO 5: Add a Discounted_Price column (10% off each Unit_Price)
+df["Discounted_Price"] = ...
+df[["Product", "Unit_Price", "Discounted_Price"]]
+
+--- Item 18 ---
+# Demo: show only Technology category products
+tech_products = df[df["Category"] == "Technology"]
+tech_products
+
+--- Item 19 ---
+# Demo: show products that sold more than 100 units
+high_sellers = df[df["Units_Sold"] > 100]
+high_sellers
+
+--- Item 20 ---
+# matplotlib was loaded in the setup cell above
+import matplotlib.pyplot as plt
+
+# Demo - bar chart of Units Sold by Product
+plt.figure(figsize=(10, 5))
+plt.bar(df["Product"], df["Units_Sold"], color="steelblue")
+plt.title("Q1 Units Sold by Product - Spartan Office Supply")
+plt.xlabel("Product")
+plt.ylabel("Units Sold")
+plt.xticks(rotation=30, ha="right")
+plt.tight_layout()
+plt.show()
+
+--- Item 21 ---
+# TO-DO 6: Bar chart of Revenue by Product
+plt.figure(figsize=(10, 5))
+plt.bar(df["Product"], ..., color=...)
+plt.title(...)
+plt.xlabel("Product")
+plt.ylabel("Revenue ($)")
+plt.xticks(rotation=30, ha="right")
+plt.tight_layout()
+plt.show()
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+import subprocess
+
+--- Item 3 ---
+import pandas as pd
+
+--- Item 4 ---
+import matplotlib.pyplot as plt
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+**Question 1**
+
+In Excel, if you change a value in cell B4, any formula that references B4 automatically updates. In Python, if you update a variable after using it in a calculation, does the calculation update automatically? How would you test this?
+
+*Type your answer here.*
+
+---
+## Section 4: Lists
+
+A single variable holds one value. A **list** holds many values in order. Think of it as one column from an Excel spreadsheet.
+
+```
+Excel column A:   Python list:
+  Laptop            products = ["
+
+--- Item 2 ---
+**Question 2**
+
+Excel's `SUM()` function and Python's `sum()` function both add up a range of numbers. What is one advantage of using Python lists over an Excel column for storing data? What is one advantage Excel has?
+
+*Type your answer here.*
+
+---
+## Section 5: Introducing `pandas`
+
+So far we've worked with individual values and simple lists. But real-world data has **rows and columns**, just like an Excel spreadsheet.
+
+`pandas` is a Python library for working with tabular data. It gives us a
+
+--- Item 3 ---
+**Question 3**
+
+In Excel, applying a formula like `=B2*0.90` to 1,000 rows means dragging the formula down (or double-clicking). In pandas, you write one line and it applies to all rows automatically. Why might this matter when working with large datasets in a business setting?
+
+*Type your answer here.*
+
+---
+## Section 6: Filtering Data
+
+In Excel, you use **Filters** to show only rows that meet a condition. In pandas, you write a condition directly:
+
+---
+## Section 7: Your First Chart
+
+pandas c
+
+--- Item 4 ---
+**Question 4**
+
+Look at your Revenue chart compared to the Units Sold chart. Are the rankings the same? Which product generates the most revenue even though it might not sell the most units? What does this tell you as a store manager?
+
+*Type your answer here.*
+
+**Question 5**
+
+This lab used a small dataset with 8 rows. Imagine you work for a company with 50,000 product transactions per month. List two things Python/pandas could do with that data that would be difficult or impractical to do manu
+
+--- Item 5 ---
+**Question 5**
+
+This lab used a small dataset with 8 rows. Imagine you work for a company with 50,000 product transactions per month. List two things Python/pandas could do with that data that would be difficult or impractical to do manually in Excel.
+
+*Type your answer here.*
+
+---
+## That's it!
+
+Here's a quick recap of what you worked through:
+
+| Topic | What you tried |
+|-------|----------------|
+| **Jupyter Notebooks** | Running code cells, mixing code and text |
+| **Python basics** | Variab
+
+
+=== HINTS ===
+
+--- Item 1 ---
+Hint: 10% off means multiply by 0.90.*
+
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Placeholder: 'Your Answer Here' cells found]
+
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+bar chart
+
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Introduction
+
+25 markdown cells and 21 code cells. Major sections include: Introduction to Jupyter and Python, Setup: Install and Import Packages, Section 1: Your First Cell, TO-DO 1: Your first print statement, Section 2: Python as a Calculator, TO-DO 2: Calculate a total cost, ....

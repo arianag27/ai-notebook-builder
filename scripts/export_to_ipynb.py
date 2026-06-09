@@ -9,6 +9,7 @@ Usage:
     python3 scripts/export_to_ipynb.py
     python3 scripts/export_to_ipynb.py --draft
     python3 scripts/export_to_ipynb.py --outline
+    python3 scripts/export_to_ipynb.py --llm
 """
 
 import json
@@ -20,6 +21,7 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 GENERATED_DIR = PROJECT_ROOT / "data" / "generated"
 DRAFT_PATH = GENERATED_DIR / "draft_section.md"
 OUTLINE_PATH = GENERATED_DIR / "notebook_outline.md"
+LLM_DRAFT_PATH = GENERATED_DIR / "llm_notebook_draft.md"
 OUTPUT_PATH = GENERATED_DIR / "starter_notebook.ipynb"
 
 CODE_HEADER = "# --- Starter code: customize for your lesson ---"
@@ -113,7 +115,15 @@ interact(
 
 
 def choose_input_file(prefer: str | None = None) -> Path:
-    """Pick draft or outline file. Prefer draft by default if both exist."""
+    """Pick draft, outline, or LLM draft file."""
+    if prefer == "llm":
+        if LLM_DRAFT_PATH.exists():
+            return LLM_DRAFT_PATH
+        print(f"LLM draft not found: {LLM_DRAFT_PATH}")
+        print("Generate one first:")
+        print("  python3 scripts/llm_generator.py")
+        sys.exit(1)
+
     if prefer == "outline":
         if OUTLINE_PATH.exists():
             return OUTLINE_PATH
@@ -128,11 +138,14 @@ def choose_input_file(prefer: str | None = None) -> Path:
 
     if DRAFT_PATH.exists():
         return DRAFT_PATH
+    if LLM_DRAFT_PATH.exists():
+        return LLM_DRAFT_PATH
     if OUTLINE_PATH.exists():
         return OUTLINE_PATH
 
     print("No input file found. Generate one first:")
     print("  python3 scripts/generate_notebook_outline.py")
+    print("  python3 scripts/llm_generator.py")
     print("  python3 scripts/notebook_copilot.py --draft \"Create a ...\"")
     sys.exit(1)
 
@@ -155,6 +168,25 @@ def extract_draft_body(text: str) -> str:
     if len(parts) >= 2:
         return parts[1].strip()
     return text
+
+
+def extract_llm_draft_body(text: str) -> str:
+    """
+    Pull notebook content from llm_notebook_draft.md.
+    Keeps lesson content but removes planning metadata and citations.
+    """
+    if "---" in text:
+        parts = text.split("\n---\n", 1)
+        body = parts[1] if len(parts) > 1 else text
+    else:
+        body = text
+
+    if "## Influenced By" in body:
+        body = body[: body.index("## Influenced By")].rstrip()
+
+    # Drop the LLM planning header if still present
+    body = re.sub(r"^# LLM Notebook Draft\s*\n+", "", body)
+    return body.strip()
 
 
 def extract_outline_title(text: str) -> str:
@@ -183,6 +215,8 @@ def prepare_markdown(text: str, source: Path) -> str:
     """Prepare markdown content based on source file type."""
     if source.name == "draft_section.md":
         return extract_draft_body(text)
+    if source.name == "llm_notebook_draft.md":
+        return extract_llm_draft_body(text)
     return prepare_outline_markdown(text)
 
 
@@ -228,6 +262,19 @@ def make_markdown_cell(text: str) -> dict:
     }
 
 
+def is_complete_code_cell(code: str) -> bool:
+    """True when a code block is runnable content, not a stub."""
+    if re.search(r"def \w+\(", code):
+        return True
+    if "interact(" in code or "widgets.interactive" in code:
+        return True
+    runnable_lines = [
+        line for line in code.splitlines()
+        if line.strip() and not line.strip().startswith("#")
+    ]
+    return len(runnable_lines) >= 3
+
+
 def make_code_cell(code: str, enhance: bool = True) -> dict:
     """Create a code notebook cell. Set enhance=False for ready-to-run template code."""
     final_code = enhance_code_cell(code) if enhance else code
@@ -243,7 +290,7 @@ def make_code_cell(code: str, enhance: bool = True) -> dict:
     }
 
 
-def parse_markdown_to_cells(markdown: str) -> list[dict]:
+def parse_markdown_to_cells(markdown: str, from_llm: bool = False) -> list[dict]:
     """
     Convert markdown to notebook cells.
 
@@ -275,7 +322,9 @@ def parse_markdown_to_cells(markdown: str) -> list[dict]:
             while i < len(lines) and not lines[i].strip().startswith("```"):
                 code_lines.append(lines[i])
                 i += 1
-            cells.append(make_code_cell("\n".join(code_lines)))
+            code = "\n".join(code_lines)
+            enhance = not (from_llm and is_complete_code_cell(code))
+            cells.append(make_code_cell(code, enhance=enhance))
             i += 1  # skip closing fence
             continue
 
@@ -531,9 +580,9 @@ def build_notebook(cells: list[dict], source_file: Path) -> dict:
         "nbformat_minor": 5,
         "metadata": {
             "kernelspec": {
-                "display_name": "Python 3",
+                "display_name": "AI Notebook Builder (.venv)",
                 "language": "python",
-                "name": "python3",
+                "name": "ai-notebook-builder",
             },
             "language_info": {
                 "name": "python",
@@ -559,12 +608,14 @@ def export_to_ipynb(input_path: Path, output_path: Path) -> int:
         notebook = build_notebook(cells, input_path)
     else:
         markdown = prepare_markdown(raw_text, input_path)
-        cells = parse_markdown_to_cells(markdown)
+        from_llm = input_path.name == "llm_notebook_draft.md"
+        cells = parse_markdown_to_cells(markdown, from_llm=from_llm)
 
         if input_path.name == "notebook_outline.md":
             cells = add_outline_code_stubs(cells)
 
-        cells = add_placeholder_cells(cells)
+        if not from_llm:
+            cells = add_placeholder_cells(cells)
         notebook = build_notebook(cells, input_path)
 
     GENERATED_DIR.mkdir(parents=True, exist_ok=True)
@@ -575,7 +626,9 @@ def export_to_ipynb(input_path: Path, output_path: Path) -> int:
 
 
 def parse_args() -> str | None:
-    """Return 'draft', 'outline', or None based on CLI flags."""
+    """Return 'draft', 'outline', 'llm', or None based on CLI flags."""
+    if "--llm" in sys.argv:
+        return "llm"
     if "--outline" in sys.argv:
         return "outline"
     if "--draft" in sys.argv:

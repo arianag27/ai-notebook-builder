@@ -1,6 +1,6 @@
 # Notebook Outline
 
-**Generated for:** Math — derivatives and integrals
+**Generated for:** math — derivatives and integrals
 **Uses dataset: No** | **Subject type: math**
 **Reflection questions:** No
 **Export template:** math_calculus_interactive
@@ -13,7 +13,7 @@ Exploring Derivatives and Integrals with Interactive Visualizations
 
 ## Short Introduction
 
-In this notebook, you will explore **derivatives and integrals** through **interactive widgets, visualizations, and Python code**. No external dataset is required. This activity is designed for beginner-level learners in Math and should take approximately 30 minutes to complete.
+In this notebook, you will explore **derivatives and integrals** through **interactive widgets, visualizations, and Python code**. No external dataset is required. This activity is designed for beginner-level learners in math and should take approximately 30 minutes to complete.
 
 ## Learning Objectives
 
@@ -60,7 +60,7 @@ numpy, matplotlib, ipywidgets
 - Slider for the number of rectangles in a Riemann sum
 - Dropdown to choose which function to plot (e.g. x², sin(x), x³)
 - Slider for interval bounds [a, b] on the x-axis
-- See inspiration: sums.ipynb (uses widgets in corpus)
+- See inspiration: ecc-calculus__sums.ipynb (uses widgets in corpus)
 
 ## Reflection / Discussion Questions
 
@@ -74,5 +74,6 @@ None for this length — consider adding one for a longer notebook.
 
 Use these as style references when building the notebook:
 
+- **Exploring Riemann Sums: Approximating the Area Under a Curve** (`ecc-calculus__sums.ipynb`) — Mathematics / Calculus, beginner level, pattern: Introduction → Learning Objectives → Exercise → Visualization → Conclusion → Reflection
 - **Exploring Riemann Sums: Approximating the Area Under a Curve** (`sums.ipynb`) — Mathematics / Calculus, beginner level, pattern: Introduction → Learning Objectives → Exercise → Visualization → Conclusion → Reflection
-- **Visualizing Atomic Orbitals Using Programming** (`Orbitals.ipynb`) — Chemistry / Physics, beginner level, pattern: Visualization → Background → Conclusion
+- **ecc-calculus  riemann sum** (`ecc-calculus__riemann_sum.ipynb`) — Mathematics / Calculus, beginner level, pattern: Unknown structure

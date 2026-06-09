@@ -1,0 +1,758 @@
+Notebook: ecc-cis__cis13__AI_in_Information_Systems.ipynb
+Title: AI in Information Systems
+
+=== HEADINGS ===
+
+--- Item 1 ---
+AI in Information Systems
+
+--- Item 2 ---
+Setup
+
+--- Item 3 ---
+Section 1: AI in Information Systems
+
+--- Item 4 ---
+What is artificial intelligence?
+
+--- Item 5 ---
+Where does AI fit in the information systems you have studied?
+
+--- Item 6 ---
+A practical example
+
+--- Item 7 ---
+Section 2: How a Large Language Model Works
+
+--- Item 8 ---
+Tokens
+
+--- Item 9 ---
+The context window
+
+--- Item 10 ---
+What the model actually does
+
+--- Item 11 ---
+No memory between sessions
+
+--- Item 12 ---
+Section 3: API Keys and Safety
+
+--- Item 13 ---
+What is an API?
+
+--- Item 14 ---
+What is an API key?
+
+--- Item 15 ---
+Section 4: Your First API Call
+
+--- Item 16 ---
+The message format
+
+--- Item 17 ---
+TO-DO 1: Write your own question
+
+--- Item 18 ---
+Section 5: Prompt Engineering
+
+--- Item 19 ---
+Technique 1: Give the model a persona
+
+--- Item 20 ---
+Technique 2: Specify the aim
+
+--- Item 21 ---
+Technique 3: Specify the audience
+
+--- Item 22 ---
+Technique 4: Specify the structure
+
+--- Item 23 ---
+TO-DO 2: Apply two techniques together
+
+--- Item 24 ---
+Section 6: Temperature
+
+--- Item 25 ---
+Section 7: Limitations and Responsible Use
+
+--- Item 26 ---
+TO-DO 3: Test a limitation
+
+--- Item 27 ---
+That's it!
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+in this lab are already embedded in software you use every day. Microsoft Copilot in Excel and Word, Google's AI features in Docs and Gmail, and customer service chatbots all run on the same underlying technology. Understanding how it works puts you in a better position to use it well and to evaluate it critically as an IS professional.
+
+---
+*CIS 13 · El Camino College · Prof. Hac Le*
+
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# AI in Information Systems
+
+---
+
+This labs gives you a look into how AI is built into information systems such as networks, databses, and other software systems.
+
+**What you'll practice:**
+- Learn what large language models are and where they fit in information systems
+- Make a real API call to an AI model from Python
+- Practice prompt engineering: shaping AI output by changing how you write your instructions
+
+> **Reminder:** Click on a code cell and press **Shift + Enter** to run it. Run the setup cell before anything else.
+
+--- Item 2 ---
+---
+## Setup
+
+Run the two cells below before anything else in the lab. The first installs the required package. The second loads your API key.
+
+--- Item 3 ---
+---
+## Section 1: AI in Information Systems
+
+### What is artificial intelligence?
+
+Artificial intelligence (AI) is a broad term for software that performs tasks we would normally associate with human judgment: recognizing patterns, understanding language, making recommendations, and generating text or images.
+
+The specific type of AI you interact with most often today is a **large language model** (LLM). An LLM is a software system trained on enormous amounts of text. During training, it learns statistical patterns: which words tend to follow which other words, how sentences are structured, how ideas connect. When you type a question, it uses those patterns to generate a response that is statistically likely to be relevant and coherent.
+
+This is different from how a database works. A database stores facts and retrieves them exactly. An LLM does not store facts the same way: it generates responses based on patterns. That distinction matters in practice and we will come back to it.
+
+### Where does AI fit in the information systems you have studied?
+
+Look at the systems you have worked with this semester:
+
+| System | What it does | Where AI fits in |
+|--------|-------------|-----------------|
+| Excel spreadsheet | Stores and calculates structured data | AI can analyze, summarize, or generate formulas from plain-language descriptions |
+| Access database | Stores relational records, answers queries | AI can translate plain-language questions into SQL queries, or summarize query results |
+| Information systems (Ch. 10) | Support business decisions with data | AI is increasingly embedded as a decision-support layer |
+| Systems analysis (Ch. 12) | Plan and build software systems | AI tools assist developers in writing and reviewing code |
+
+AI does not replace these systems. It sits on top of them, providing a natural language interface to data and processes that previously required specialized knowledge to access.
+
+### A practical example
+
+Suppose a manager wants to know wh...
+
+--- Item 4 ---
+---
+## Section 2: How a Large Language Model Works
+
+You do not need to understand the mathematics behind LLMs to use them effectively. But a basic mental model helps you use them better and reason about their limitations.
+
+### Tokens
+
+LLMs do not read text the way humans do, word by word. They break text into **tokens**, which are chunks of characters. A token is roughly 3-4 characters on average, so the word "information" might be one or two tokens, and "AI" is one token.
+
+This matters because:
+- API providers charge by the token (input tokens + output tokens)
+- Every model has a **context window**: a maximum number of tokens it can process in one conversation. Once you exceed it, the model can no longer "see" the earlier part of the conversation.
+
+### The context window
+
+Think of the context window as the model's working memory. Every message in a conversation, including the system instructions, your questions, and the model's previous answers, takes up space in that window. A long conversation or a very large document can fill it up.
+
+### What the model actually does
+
+When you send a message, the model:
+1. Reads all the tokens in the context window
+2. Predicts the most appropriate next token given everything it has seen
+3. Appends that token and predicts the next one
+4. Repeats until it decides the response is complete
+
+This is why LLMs sometimes produce confident-sounding but incorrect answers. The model is not checking facts against a database. It is generating tokens that are statistically likely given the input. When the training data contained a wrong pattern, the model can reproduce that pattern.
+
+### No memory between sessions
+
+This is one of the most practically important things to understand. Every time you start a new conversation, the model starts fresh with no memory of previous conversations. The only context it has is what is in the current message list.
+
+This is different from a database, which persists data indefinitely. If you want an AI applicat...
+
+--- Item 5 ---
+**Question**
+
+A coworker says: "I asked ChatGPT the same question twice and got different answers. It must be broken." Based on what you just read, how would you explain what actually happened?
+
+*Type your answer here.*
+
+--- Item 6 ---
+---
+## Section 3: API Keys and Safety
+
+### What is an API?
+
+You have already worked with the concept of an API (Application Programming Interface) in this course. An API is a defined way for one piece of software to communicate with another. When your browser loads a webpage, it makes API calls. When Excel connects to an online data source, it uses an API.
+
+An LLM API works the same way. Your Python code sends a request to a server over the internet. The server runs the model, generates a response, and sends it back. You never download the model itself: it runs on the provider's infrastructure and you pay for what you use.
+
+### What is an API key?
+
+An **API key** is a secret string that identifies your account to the API provider. It works like a password tied to a billing account. Every request you make includes the key, and the provider uses it to track usage and charge your account.
+
+This has two important implications:
+
+**Security:** If someone else gets your API key, they can make requests billed to your account. Treat it like a credit card number.
+
+**Never do this:**
+- Paste your key directly into a notebook you plan to share or upload to GitHub
+- Post it in a screenshot, email, or chat message
+- Leave it in a public repository
+
+**Safe practices:**
+- Store the key in a `.env` file that is not included in version control
+- Load it using `python-dotenv` so the key never appears in the notebook itself
+- If a key is accidentally exposed, go to the provider's website and revoke it immediately
+
+The setup cell at the top of this notebook follows these practices.
+
+--- Item 7 ---
+---
+## Section 4: Your First API Call
+
+### The message format
+
+Every chat API call sends a list of messages. Each message is a Python dictionary with two fields:
+
+- `role`: who is speaking (`"system"`, `"user"`, or `"assistant"`)
+- `content`: what they said
+
+```python
+messages = [
+    {"role": "system",  "content": "You are a helpful assistant."},
+    {"role": "user",    "content": "What is a relational database?"}
+]
+```
+
+The three roles work like this:
+
+| Role | Purpose |
+|------|---------|
+| `system` | Background instructions the model follows throughout the conversation. The user never sees this. |
+| `user` | The human's message or question. |
+| `assistant` | The model's previous replies (used when building multi-turn conversations). |
+
+Run the demo below to make your first API call:
+
+--- Item 8 ---
+A few things to notice in the response object:
+
+- `response.choices[0].message.content` is the text of the reply
+- `max_tokens=200` caps how long the response can be
+- The model used is `gpt-4o-mini`, a fast and inexpensive model suited for straightforward tasks
+
+Let's also look at what the usage data looks like:
+
+--- Item 9 ---
+### TO-DO 1: Write your own question
+
+In the cell below, change the `content` of the user message to a question of your own about information systems, databases, or any topic from the course. Run the cell and read the response.
+
+--- Item 10 ---
+---
+## Section 5: Prompt Engineering
+
+**Prompt engineering** is the practice of writing and refining the instructions you give an AI model to get more useful outputs. Because LLMs respond to natural language, the way you phrase a request has a significant effect on what you get back.
+
+This is a practical skill. People who work with AI systems in business settings spend real time on prompt design.
+
+We will look at four techniques, each demonstrated with a runnable example.
+
+### Technique 1: Give the model a persona
+
+A **persona** is a role or character you assign to the model in the system message. It shapes the tone, vocabulary, and perspective of the response.
+
+The demo below asks the same question twice, once with no persona and once with a specific one:
+
+--- Item 11 ---
+### Technique 2: Specify the aim
+
+The verb you use shapes the kind of output you get. "Explain" is different from "summarize," "compare," "list," or "write." Be specific about what you want the model to do.
+
+Run the two cells below and compare the outputs:
+
+--- Item 12 ---
+### Technique 3: Specify the audience
+
+Telling the model who the answer is for changes how it communicates. Compare these two:
+
+--- Item 13 ---
+### Technique 4: Specify the structure
+
+You can tell the model exactly how to format the output: bullet points, numbered steps, a table, a specific word count, or a particular tone.
+
+--- Item 14 ---
+### TO-DO 2: Apply two techniques together
+
+Write a prompt that uses at least two of the four techniques above: persona, aim, audience, or structure. The topic should be something from this course, such as networks, hardware, databases, information systems, or cybersecurity.
+
+Fill in the system message and user message below, then run the cell.
+
+--- Item 15 ---
+**Question**
+
+Look at the outputs you got from Technique 1 (persona). Did the persona change anything meaningful about the response, or was it mostly the same information in a different tone? When do you think a persona would actually matter in a real business application?
+
+*Type your answer here.*
+
+--- Item 16 ---
+---
+## Section 6: Temperature
+
+**Temperature** is a parameter that controls how predictable or varied the model's output is.
+
+- **Low temperature (0.0-0.3):** The model picks the most statistically likely tokens. Responses are consistent and focused. Good for factual questions, structured output, and tasks where you want the same answer every time.
+- **High temperature (0.7-1.0):** The model samples from a wider range of likely tokens. Responses are more varied and sometimes more creative, but also less predictable.
+
+Run the cells below to see the difference. We will run the same prompt three times at each temperature setting:
+
+--- Item 17 ---
+**Question**
+
+Based on what you observed, which temperature setting would you use for each of these use cases, and why?
+
+- A chatbot that answers customer questions about store hours and return policies
+- A tool that generates creative product descriptions for a marketing team
+
+*Type your answer here.*
+
+--- Item 18 ---
+---
+## Section 7: Limitations and Responsible Use
+
+LLMs are useful tools, but they have real limitations that matter in an information systems context.
+
+**Hallucination**
+
+LLMs sometimes generate information that sounds plausible but is factually wrong. This happens because the model is generating statistically likely text, not retrieving verified facts. A model might confidently state an incorrect date, invent a citation, or describe a product feature that does not exist.
+
+In practice, this means AI output should not be trusted without verification for anything consequential: legal, medical, financial, or factual claims.
+
+**No real-time knowledge**
+
+Most LLMs have a training cutoff date. They do not know about events that happened after their training data was collected. Asking a model about current stock prices, recent news, or the latest software version will often produce outdated or fabricated answers.
+
+**Bias**
+
+LLMs learn from human-generated text, which contains human biases. A model trained on internet text can reproduce gender, racial, cultural, and other biases present in that data. This is an active area of research in AI safety.
+
+**Privacy**
+
+Anything you send to an API is transmitted to and processed by the provider's servers. Do not send personal data, confidential business information, patient records, or anything sensitive through a public API unless you have reviewed the provider's data handling policies.
+
+**Responsible use in organizations**
+
+Most organizations that deploy AI tools have policies about what data can be sent to external AI services and how AI-generated content should be reviewed before use. As an IS professional, understanding these policies and their rationale is part of the job.
+
+--- Item 19 ---
+### TO-DO 3: Test a limitation
+
+Run the cell below. It asks the model a question with a false premise. Read the response carefully.
+
+--- Item 20 ---
+**Question**
+
+Did the model catch the false premise in the question? (Excel's actual row limit is about 1 million, not 10 million.) What does this tell you about relying on AI output without verification?
+
+*Type your answer here.*
+
+--- Item 21 ---
+---
+## That's it!
+
+Here's a summary of what you worked through:
+
+| Topic | Key idea |
+|-------|---------|
+| AI in IS | LLMs sit on top of existing systems as a natural language interface to data and processes |
+| How LLMs work | Pattern-based text generation, not fact retrieval; no persistent memory between sessions |
+| API keys | Secret credentials tied to a billing account; never share or expose them |
+| Message format | A list of role/content dictionaries: system, user, assistant |
+| Prompt engineering | Persona, aim, audience, and structure all shape the output |
+| Temperature | Controls consistency vs. variety in responses |
+| Limitations | Hallucination, training cutoffs, bias, and privacy are real concerns in practice |
+
+The tools and concepts in this lab are already embedded in software you use every day. Microsoft Copilot in Excel and Word, Google's AI features in Docs and Gmail, and customer service chatbots all run on the same underlying technology. Understanding how it works puts you in a better position to use it well and to evaluate it critically as an IS professional.
+
+---
+*CIS 13 · El Camino College · Prof. Hac Le*
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+
+
+--- Item 2 ---
+# Setup: install required packages
+import sys
+import subprocess
+
+def ensure_package(import_name, install_name=None):
+    """Import a package; install it quietly if not found."""
+    if install_name is None:
+        install_name = import_name
+    try:
+        __import__(import_name)
+        print(f"  ✓ {import_name} already installed")
+    except ImportError:
+        print(f"  ↓ Installing {install_name}...")
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", install_name, "--quiet"]
+        )
+        print(f"  ✓ {install_name} installed")
+
+print("Checking packages...")
+ensure_package("openai")
+ensure_package("python-dotenv", "python-dotenv")
+print("\nAll packages ready.")
+
+--- Item 3 ---
+# API KEY SETUP - update this cell before distributing
+
+# Option A: shared institutional key on DataHub (ask instructor)
+# from dotenv import load_dotenv
+# load_dotenv('/home/jovyan/shared/.env')
+# api_key = os.getenv('OPENAI_API_KEY')
+
+# Option B: individual key (paste directly, never share the notebook)
+# api_key = "sk-REPLACE_ME"
+
+import os
+api_key = #api key here
+
+# Basic check
+if "REPLACE_ME" in api_key:
+    print("⚠ Replace the placeholder above with a real API key before continuing.")
+else:
+    from openai import OpenAI
+    client = OpenAI(api_key=api_key)
+    print("Client ready.")
+
+--- Item 4 ---
+# Demo: a basic API call
+messages = [
+    {
+        "role": "system",
+        "content": "You are a helpful assistant for a college information systems course. Keep your answers clear and concise."
+    },
+    {
+        "role": "user",
+        "content": "In one paragraph, what is an information system?"
+    }
+]
+
+response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=messages,
+    max_tokens=200
+)
+
+print(response.choices[0].message.content)
+
+--- Item 5 ---
+# Check how many tokens were used
+print("Input tokens: ", response.usage.prompt_tokens)
+print("Output tokens:", response.usage.completion_tokens)
+print("Total tokens: ", response.usage.total_tokens)
+
+--- Item 6 ---
+# TO-DO 1: Ask the model a question of your own
+my_messages = [
+    {
+        "role": "system",
+        "content": "You are a helpful assistant for a college information systems course. Keep your answers clear and concise."
+    },
+    {
+        "role": "user",
+        "content": "..."  # Replace this with your own question
+    }
+]
+
+my_response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=my_messages,
+    max_tokens=200
+)
+
+print(my_response.choices[0].message.content)
+
+--- Item 7 ---
+# Demo: without a persona
+no_persona = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "Explain what a database is."}
+    ],
+    max_tokens=150
+)
+
+print("Without persona:")
+print(no_persona.choices[0].message.content)
+
+--- Item 8 ---
+# Demo: with a persona
+with_persona = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are an IT manager explaining technology concepts to new employees who have no technical background. Use simple language and a workplace analogy."
+        },
+        {"role": "user", "content": "Explain what a database is."}
+    ],
+    max_tokens=150
+)
+
+print("With persona:")
+print(with_persona.choices[0].message.content)
+
+--- Item 9 ---
+# Demo: "explain" vs "list"
+explain_response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "Explain the difference between a spreadsheet and a database."}
+    ],
+    max_tokens=150
+)
+print("Explain:")
+print(explain_response.choices[0].message.content)
+
+--- Item 10 ---
+list_response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "List three differences between a spreadsheet and a database. Use bullet points."}
+    ],
+    max_tokens=150
+)
+print("List:")
+print(list_response.choices[0].message.content)
+
+--- Item 11 ---
+# Demo: same question, different audience
+general_audience = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "What is cloud computing? Explain it to a general audience in two sentences."}
+    ],
+    max_tokens=100
+)
+print("General audience:")
+print(general_audience.choices[0].message.content)
+print()
+
+technical_audience = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {"role": "user", "content": "What is cloud computing? Explain it to an IT professional in two sentences."}
+    ],
+    max_tokens=100
+)
+print("Technical audience:")
+print(technical_audience.choices[0].message.content)
+
+--- Item 12 ---
+# Demo: structured output
+structured_response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "You are a concise technical writer."
+        },
+        {
+            "role": "user",
+            "content": """Compare Excel and a relational database using a table with three rows.
+The columns should be: Feature, Excel, Database.
+Rows: best use case, data size limit, multi-user access."""
+        }
+    ],
+    max_tokens=200
+)
+print(structured_response.choices[0].message.content)
+
+--- Item 13 ---
+# TO-DO 2: Prompt using at least two techniques
+todo2_response = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "..."  # Your persona or background instruction here
+        },
+        {
+            "role": "user",
+            "content": "..."  # Your question or task here
+        }
+    ],
+    max_tokens=200
+)
+print(todo2_response.choices[0].message.content)
+
+--- Item 14 ---
+# Demo: low temperature (deterministic)
+print("Temperature = 0.0 (run three times):")
+print()
+for i in range(3):
+    r = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "In one sentence, what does an information system do?"}],
+        max_tokens=60,
+        temperature=0.0
+    )
+    print(f"Run {i+1}:", r.choices[0].message.content)
+
+--- Item 15 ---
+# Demo: high temperature (varied)
+print("Temperature = 1.0 (run three times):")
+print()
+for i in range(3):
+    r = client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[{"role": "user", "content": "In one sentence, what does an information system do?"}],
+        max_tokens=60,
+        temperature=1.0
+    )
+    print(f"Run {i+1}:", r.choices[0].message.content)
+
+--- Item 16 ---
+# TO-DO 3: Test how the model handles a false premise
+false_premise = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+        {
+            "role": "system",
+            "content": "Answer the question directly and accurately. If the question contains a false assumption, correct it."
+        },
+        {
+            "role": "user",
+            "content": "Since Excel can store up to 10 million rows per sheet, what is the best way to use it as a primary database for a large company?"
+        }
+    ],
+    max_tokens=200
+)
+print(false_premise.choices[0].message.content)
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+import subprocess
+
+--- Item 3 ---
+import os
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+**Question**
+
+A coworker says: "I asked ChatGPT the same question twice and got different answers. It must be broken." Based on what you just read, how would you explain what actually happened?
+
+*Type your answer here.*
+
+---
+## Section 3: API Keys and Safety
+
+### What is an API?
+
+You have already worked with the concept of an API (Application Programming Interface) in this course. An API is a defined way for one piece of software to communicate with another. When your browser loads a webpage, i
+
+--- Item 2 ---
+**Question**
+
+Look at the outputs you got from Technique 1 (persona). Did the persona change anything meaningful about the response, or was it mostly the same information in a different tone? When do you think a persona would actually matter in a real business application?
+
+*Type your answer here.*
+
+---
+## Section 6: Temperature
+
+**Temperature** is a parameter that controls how predictable or varied the model's output is.
+
+- **Low temperature (0.0-0.3):** The model picks the most statistically
+
+--- Item 3 ---
+**Question**
+
+Based on what you observed, which temperature setting would you use for each of these use cases, and why?
+
+- A chatbot that answers customer questions about store hours and return policies
+- A tool that generates creative product descriptions for a marketing team
+
+*Type your answer here.*
+
+---
+## Section 7: Limitations and Responsible Use
+
+LLMs are useful tools, but they have real limitations that matter in an information systems context.
+
+**Hallucination**
+
+LLMs sometimes generat
+
+--- Item 4 ---
+**Question**
+
+Did the model catch the false premise in the question? (Excel's actual row limit is about 1 million, not 10 million.) What does this tell you about relying on AI output without verification?
+
+*Type your answer here.*
+
+---
+## That's it!
+
+Here's a summary of what you worked through:
+
+| Topic | Key idea |
+|-------|---------|
+| AI in IS | LLMs sit on top of existing systems as a natural language interface to data and processes |
+| How LLMs work | Pattern-based text generation, not fac
+
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Placeholder: 'Your Answer Here' cells found]
+
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Exercise
+
+21 markdown cells and 16 code cells. Major sections include: AI in Information Systems, Setup, Section 1: AI in Information Systems, What is artificial intelligence?, Where does AI fit in the information systems you have studied?, A practical example, ....

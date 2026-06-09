@@ -1,0 +1,354 @@
+Notebook: ecc-biology__mrsa__MRSA_Data_Analysis_PreNursing.ipynb
+Title: ecc-biology  mrsa  MRSA Data Analysis PreNursing
+
+=== HEADINGS ===
+
+--- Item 1 ---
+1) Load the data
+
+--- Item 2 ---
+2) Quick data checks (helpful hints)
+
+--- Item 3 ---
+3) Mathematical modeling — why and what
+
+--- Item 4 ---
+3) Fit models interactively
+
+--- Item 5 ---
+4) Data analysis with interactive regression (population vs infections)
+
+--- Item 6 ---
+5) Exercises (short) — tailored for pre‑nursing students
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+- Understand the MRSA dataset and key variables (counts, county, year, population).
+- Use Python (pandas, numpy) to explore and visualize health data.
+- Apply simple mathematical models (exponential and logistic) to infection counts and interpret parameters in a public health context.
+- Use interactive widgets to explore how models and data change by county and year.
+
+--- Item 2 ---
+- `County`, `Year`, and `Infections` (or a similar count column) are the key columns used below. If your dataset uses different column names, rename them accordingly before proceeding.
+- If `population` is provided, we will calculate rates per 100,000 people for fair comparisons between counties.
+
+--- Item 3 ---
+## 1) Load the data
+Run the cell below to load the provided CSV files. If a file is missing, update the path to where the data files are stored on your machine.
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+**Estimated time**: 45–75 minutes
+
+
+**Learning goals:**
+- Understand the MRSA dataset and key variables (counts, county, year, population).
+- Use Python (pandas, numpy) to explore and visualize health data.
+- Apply simple mathematical models (exponential and logistic) to infection counts and interpret parameters in a public health context.
+- Use interactive widgets to explore how models and data change by county and year.
+
+--- Item 2 ---
+## 1) Load the data
+Run the cell below to load the provided CSV files. If a file is missing, update the path to where the data files are stored on your machine.
+
+--- Item 3 ---
+## 2) Quick data checks (helpful hints)
+- `County`, `Year`, and `Infections` (or a similar count column) are the key columns used below. If your dataset uses different column names, rename them accordingly before proceeding.
+- If `population` is provided, we will calculate rates per 100,000 people for fair comparisons between counties.
+
+--- Item 4 ---
+## 3) Mathematical modeling — why and what
+
+In public health, simple models help summarize how infections grow and what controls them. Two common, easy‑to‑understand models are:
+- Exponential growth: early outbreaks often look exponential when unconstrained. Parameters: initial scale and growth rate.
+- Logistic growth: growth that saturates because of limited susceptible population or interventions. Parameters: carrying capacity, growth rate, and midpoint.
+
+Below we define both models and provide code to fit them to county‑level yearly MRSA counts. Interpretation tips are included in the markdown cells that follow the fits.
+
+--- Item 5 ---
+### 3) Fit models interactively
+Use the widget below to select a county and fit both exponential and logistic models. Click the "Run" button after choosing a county. Interpretations of parameters are provided after the output.
+
+--- Item 6 ---
+## 4) Data analysis with interactive regression (population vs infections)
+
+We often compare infection counts to population size to compute per‑capita rates. The widget below shows a scatter plot for a selected year with a linear best fit line. Use the slider to change the year and inspect how the relationship evolves.
+
+--- Item 7 ---
+## 5) Exercises (short) — tailored for pre‑nursing students
+- Exercise 1: Select an urban county and a rural county. Use the model widget to fit both counties. Which model (exponential or logistic) seems to describe each county better? What do the parameter values suggest about control of MRSA in each county?
+- Exercise 2: Using the population vs infection widget, pick two years and compare the slope of the population–infections regression. How did the per‑capita infection trend change?
+- Exercise 3 (optional, challenge): Modify the `fit_and_plot_models` function to fit only the years 2013–2016 and compare parameters to the full time range. What changed?
+
+Write short answers in new markdown cells below each question.
+
+
+--- Item 8 ---
+---
+If you'd like, I can also:
+- Add more step‑by‑step explanations for the code cells for students newer to programming, or
+- Export a PDF copy of this adjusted notebook for distribution.
+
+Tell me which you'd prefer next.
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# Imports
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import plotly.express as px
+from scipy.optimize import curve_fit
+import ipywidgets as widgets
+from IPython.display import display
+
+plt.style.use('seaborn')
+print('Libraries loaded')
+
+--- Item 2 ---
+# Try common relative paths used in the original notebook
+import os
+base = 'data'
+files = {
+    'mrsa_merged': 'mrsa_merged.csv',
+    'infec_pop_merge': 'infec_pop_merge.csv',
+    'mrsa_2013': 'mrsa_2013.csv'
+}
+datasets = {}
+for name, fname in files.items():
+    p = os.path.join(base, fname)
+    if os.path.exists(p):
+        try:
+            datasets[name] = pd.read_csv(p)
+            print(f'Loaded {p} — {datasets[name].shape[0]} rows, {datasets[name].shape[1]} cols')
+        except Exception as e:
+            print('Failed to read', p, e)
+    else:
+        print('Missing file:', p)
+
+# Fall back to empty DataFrames for safety if files missing
+mrsa_merged = datasets.get('mrsa_merged', pd.DataFrame())
+infec_pop_merge = datasets.get('infec_pop_merge', pd.DataFrame())
+mrsa_2013 = datasets.get('mrsa_2013', pd.DataFrame())
+
+# Quick preview
+preview_datasets = [
+    ("mrsa_merged", mrsa_merged),
+    ("infec_pop_merge", infec_pop_merge),
+    ("mrsa_2013", mrsa_2013),
+]
+
+for name, df in preview_datasets:
+    print(f"\n== {name} ==")
+    display(df.head())
+
+--- Item 3 ---
+# Define models
+def exp_model(t, a, b):
+    return a * np.exp(b * t)
+
+def logistic_model(t, K, r, t0):
+    return K / (1 + np.exp(-r * (t - t0)))
+
+print('Model functions defined')
+
+--- Item 4 ---
+# Helper: prepare a county time series of total infections per year
+def county_time_series(df, county_name, year_col='Year', county_col='County', count_col=None):
+    # Try to guess the count column if not provided
+    if count_col is None:
+        candidates = [c for c in df.columns if 'infect' in c.lower() or 'count' in c.lower() or 'reports' in c.lower()]
+        count_col = candidates[0] if candidates else None
+    if count_col is None:
+        raise ValueError('Could not infer count column; provide count_col explicitly')
+    sub = df[df[county_col] == county_name].groupby(year_col)[count_col].sum().reset_index()
+    sub = sub.sort_values(year_col)
+    years = sub[year_col].astype(int).values
+    counts = sub[count_col].astype(float).values
+    return years, counts
+
+# Fit function that attempts both models and plots results
+def fit_and_plot_models(df, county, count_col=None):
+    years, counts = county_time_series(df, county, count_col=count_col)
+    if len(years) < 3:
+        print('Not enough data points for reliable fitting for', county)
+        return
+    t = years - years.min()
+
+    # Fit exponential (linearize with log for initial guess)
+    try:
+        # provide initial guesses to help convergence
+        p0 = [max(1.0, counts[0]), 0.1]
+        popt_exp, _ = curve_fit(exp_model, t, counts, p0=p0, maxfev=10000)
+    except Exception as e:
+        popt_exp = None
+        print('Exponential fit failed:', e)
+
+    # Fit logistic: need a good initial guess for K, r, t0
+ ...
+
+--- Item 5 ---
+# Build a dropdown of available counties from the merged dataset if present
+if not mrsa_merged.empty:
+    counties = sorted(mrsa_merged['County'].dropna().unique().tolist())
+elif not mrsa_2013.empty:
+    counties = sorted(mrsa_2013['County'].dropna().unique().tolist())
+else:
+    counties = ['Los Angeles', 'San Francisco', 'Sonoma']
+
+county_dd = widgets.Dropdown(options=counties, value=counties[0], description='County:')
+run_btn = widgets.Button(description='Run fit')
+out = widgets.Output()
+
+def on_run(b):
+    with out:
+        out.clear_output()
+        try:
+            # try common column name 'Infections' first, otherwise infer inside helper
+            if 'Infections' in (mrsa_merged.columns if not mrsa_merged.empty else []):
+                res = fit_and_plot_models(mrsa_merged, county_dd.value, count_col='Infections')
+            elif 'Infections' in (mrsa_2013.columns if not mrsa_2013.empty else []):
+                res = fit_and_plot_models(mrsa_2013, county_dd.value, count_col='Infections')
+            else:
+                # try generic dataframe if available
+                target_df = mrsa_merged if not mrsa_merged.empty else mrsa_2013
+                res = fit_and_plot_models(target_df, county_dd.value)
+            print('
+Parameter summary:')
+            print(res)
+            print('
+Interpretation tips:
+- Exponential growth rate (b): positive values indicate growth; larger values mean faster increases.
+- Logistic carrying capacity (K): approximate upper limit o...
+
+--- Item 6 ---
+def plot_pop_vs_inf(year):
+    # Attempt to find county totals for the given year
+    df = infec_pop_merge if not infec_pop_merge.empty else mrsa_merged
+    if df.empty:
+        print('No population+infection merged dataset available in `infec_pop_merge` or `mrsa_merged`.')
+        return
+    # Expect columns like 'Year', 'County', 'Population', 'Infections' or similar
+    if 'Population' not in df.columns or 'Infections' not in df.columns:
+        # try to infer names
+        pop_col = [c for c in df.columns if 'pop' in c.lower() or 'population' in c.lower()]
+        inf_col = [c for c in df.columns if 'infect' in c.lower() or 'count' in c.lower()]
+        if pop_col:
+            pop_col = pop_col[0]
+        else:
+            print('Could not find a population column')
+            return
+        if inf_col:
+            inf_col = inf_col[0]
+        else:
+            print('Could not find an infection count column')
+            return
+    else:
+        pop_col = 'Population'
+        inf_col = 'Infections'
+
+    sub = df[df['Year'] == year].groupby('County')[[pop_col, inf_col]].sum().reset_index()
+    sub['rate_per_100k'] = 100000 * sub[inf_col] / sub[pop_col]
+    fig = px.scatter(sub, x=pop_col, y=inf_col, hover_name='County', size='rate_per_100k',
+                     title=f'Population vs Infections — {year}',
+                     labels={pop_col: 'Population', inf_col: 'Infections'})
+    # add linear fit line
+    x = sub[pop_col].values
+    y = sub[inf_col].values
+    if len...
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import numpy as np
+
+--- Item 2 ---
+import pandas as pd
+
+--- Item 3 ---
+import matplotlib.pyplot as plt
+
+--- Item 4 ---
+import plotly.express as px
+
+--- Item 5 ---
+from scipy.optimize import curve_fit
+
+--- Item 6 ---
+import ipywidgets as widgets
+
+--- Item 7 ---
+from IPython.display import display
+
+--- Item 8 ---
+import os
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+plotly express
+
+--- Item 3 ---
+pandas/matplotlib .plot()
+
+--- Item 4 ---
+scatter plot
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+--- Item 2 ---
+@interact decorator / interact()
+
+--- Item 3 ---
+widgets API
+
+--- Item 4 ---
+dropdown widget
+
+--- Item 5 ---
+slider widget
+
+--- Item 6 ---
+button widget
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Dataset → Hint → Analysis → Interactive Widget → Exercise
+
+8 markdown cells and 6 code cells. Major sections include: 1) Load the data, 2) Quick data checks (helpful hints), 3) Mathematical modeling — why and what, 3) Fit models interactively, 4) Data analysis with interactive regression (population vs infections), 5) Exercises (short) — tailored for pre‑nursing students.

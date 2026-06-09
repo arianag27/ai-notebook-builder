@@ -1,0 +1,370 @@
+Notebook: ecc-cis__cis119__rsa_quantum_lesson.ipynb
+Title: From Checkout to Quantum Risk
+
+=== HEADINGS ===
+
+--- Item 1 ---
+From Checkout to Quantum Risk
+
+--- Item 2 ---
+The story we will follow
+
+--- Item 3 ---
+Visual anchor: what you should picture
+
+--- Item 4 ---
+Learning Goals
+
+--- Item 5 ---
+Part 1: Hashing warm-up
+
+--- Item 6 ---
+Quick check (1-2 sentences)
+
+--- Item 7 ---
+Part 2: RSA
+
+--- Item 8 ---
+Step A: The RSA algorithm (general form)
+
+--- Item 9 ---
+Step B: Worked example (small numbers for learning)
+
+--- Item 10 ---
+Part 3: Intermediate RSA steps
+
+--- Item 11 ---
+Pair activity (5-7 min)
+
+--- Item 12 ---
+Part 4: Where RSA fits in checkout security
+
+--- Item 13 ---
+Part 5: Quantum risk
+
+--- Item 14 ---
+Reflection check
+
+--- Item 15 ---
+Part 6: What should teams do? (PQC vs QKD)
+
+--- Item 16 ---
+Exit memo (6-8 sentences)
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+By the end, you should be able to:
+- explain hashing vs encryption without mixing them up
+- walk through a toy RSA example from key creation to decryption
+- describe where RSA fits in modern web security
+- explain why quantum computing creates migration pressure
+- recommend one practical next step for a security team
+
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# From Checkout to Quantum Risk
+
+## The story we will follow
+You are helping secure an online store checkout page. A customer types card details and clicks **Pay**.
+
+Your job is to explain:
+1. what cryptography protects this flow today
+2. what RSA is doing in that picture
+3. why quantum computing changes long-term risk planning
+
+
+--- Item 2 ---
+## Visual anchor: what you should picture
+![How RSA encryption works](rsa-encryption.png)
+
+We will return to this same checkout story in every section, so concepts do not feel disconnected.
+
+
+--- Item 3 ---
+## Learning Goals
+By the end, you should be able to:
+- explain hashing vs encryption without mixing them up
+- walk through a toy RSA example from key creation to decryption
+- describe where RSA fits in modern web security
+- explain why quantum computing creates migration pressure
+- recommend one practical next step for a security team
+
+
+--- Item 4 ---
+## Part 1: Hashing warm-up
+At checkout, passwords and data fingerprints often use hashing, not encryption.
+
+**Prediction pause:** Before running code, predict what will happen if we change only one character in input text.
+
+
+--- Item 5 ---
+### Quick check (1-2 sentences)
+- Why is this avalanche behavior useful for integrity checking?
+- Why would encryption (not hashing) still be needed for card data in transit?
+
+
+--- Item 6 ---
+_Type your answer here_
+
+--- Item 7 ---
+## Part 2: RSA
+
+### Step A: The RSA algorithm (general form)
+
+1. Choose two prime numbers: $p$ and $q$
+2. Compute:
+   $$n = p \cdot q$$
+3. Compute the coprime count:
+   $$\varphi(n) = (p-1)(q-1)$$
+4. Choose a public exponent $e$ such that:
+   $$1 < e < \varphi(n), \quad \gcd(e,\varphi(n))=1$$
+
+* (gcd = greatest common divisor)
+
+5. Compute private exponent $d$ such that:
+   $$e \cdot d \equiv 1 \pmod{\varphi(n)}$$
+6. Public key is $(e,n)$, private key is $(d,n)$
+7. Encrypt message $m$:
+   $$c = m^e \bmod n$$
+8. Decrypt ciphertext $c$:
+   $$m = c^d \bmod n$$
+
+---
+
+--- Item 8 ---
+### Step B: Worked example (small numbers for learning)
+
+Let:
+- $p=61$, $q=53$
+- choose $e=17$
+
+Now compute:
+
+$$n = 61 \cdot 53 = 3233$$
+$$\varphi(n) = (61-1)(53-1) = 60 \cdot 52 = 3120$$
+
+Find $d$ such that:
+
+$$17d \equiv 1 \pmod{3120}$$
+
+This gives:
+
+$$d = 2753$$
+
+So:
+- public key: $(17, 3233)$
+- private key: $(2753, 3233)$
+
+If message is $m=42$:
+
+$$c = 42^{17} \bmod 3233 = 2557$$
+
+Decrypt:
+
+$$m = 2557^{2753} \bmod 3233 = 42$$
+
+So the original message is recovered.
+
+--- Item 9 ---
+## Part 3: Intermediate RSA steps
+We still want transparency. This cell prints the key intermediate rows so you can trace exactly what happened.
+
+**Prediction pause:** Which changes when message $m$ changes: keys, ciphertext, decrypted value, or all three?
+
+
+--- Item 10 ---
+### Pair activity (5-7 min)
+In pairs, change `message` to two new values and answer:
+1. Which rows changed in encryption trace?
+2. Which values stayed constant across runs?
+3. Why is this toy demo educational but not secure in production?
+
+
+--- Item 11 ---
+## Part 4: Where RSA fits in checkout security
+Use this statement carefully:
+- RSA is often used for identity/signature/certificate trust paths.
+- Bulk data transfer is typically protected by symmetric session keys.
+
+So the checkout flow depends on a stack of cryptographic pieces, not one algorithm alone.
+
+
+--- Item 12 ---
+## Part 5: Quantum risk
+If large fault-tolerant quantum computers become practical, RSA assumptions can weaken dramatically.
+
+Security teams worry about **harvest now, decrypt later**:
+- attackers can steal encrypted traffic today
+- they may decrypt it years later if crypto breaks
+
+### Reflection check
+Name one kind of data that must stay secret long enough to make this a current planning issue.
+
+
+--- Item 13 ---
+_Type your answer here_
+
+--- Item 14 ---
+## Part 6: What should teams do? (PQC vs QKD)
+- **Post-quantum cryptography (PQC):** software/protocol migration path for existing systems
+- **Quantum key distribution (QKD):** specialized hardware/link environments
+
+For most organizations, first action is crypto-agility + PQC migration planning.
+
+
+--- Item 15 ---
+## Exit memo (6-8 sentences)
+You are advising an online retailer. Write a short memo that answers:
+1. What is the main cryptographic risk over the next decade?
+2. What should be migrated first?
+3. Why is waiting risky?
+4. How would you explain this to non-technical leadership?
+
+--- Item 16 ---
+
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import hashlib
+
+def sha256_hex(text):
+    return hashlib.sha256(text.encode('utf-8')).hexdigest()
+
+samples = ["card1234", "card1235", "Card1234"]
+for s in samples:
+    print(f"{s:10} -> {sha256_hex(s)}")
+
+
+--- Item 2 ---
+from utils import generate_toy_rsa, rsa_encrypt, rsa_decrypt
+
+params = generate_toy_rsa(p=61, q=53, e=17)
+print('n =', params['n'])
+print('phi(n) =', params['phi_n'])
+print('public key =', params['public_key'])
+print('private key =', params['private_key'])
+
+m = 42
+c = rsa_encrypt(m, params['e'], params['n'])
+restored = rsa_decrypt(c, params['d'], params['n'])
+print('message =', m)
+print('ciphertext =', c)
+print('decrypted =', restored)
+
+
+--- Item 3 ---
+from utils import rsa_steps
+
+message = 42
+info = rsa_steps(message)
+
+print('--- key setup ---')
+print('p, q =', info['p'], info['q'])
+print('n =', info['n'], 'phi(n) =', info['phi_n'])
+print('e =', info['e'], 'd =', info['d'])
+
+print('\n--- modular inverse trace (first 5 rows) ---')
+for i, row in enumerate(info['inverse_rows'][:5]):
+    print(i, row)
+
+print('\n--- encryption square-and-multiply trace ---')
+for i, row in enumerate(info['encrypt_rows']):
+    print(i, row)
+
+print('\n--- decryption square-and-multiply trace ---')
+for i, row in enumerate(info['decrypt_rows']):
+    print(i, row)
+
+print('\nFinal: m -> c -> m\' =', info['message'], '->', info['ciphertext'], '->', info['recovered'])
+
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import hashlib
+
+--- Item 2 ---
+from utils import generate_toy_rsa, rsa_encrypt, rsa_decrypt
+
+--- Item 3 ---
+from utils import rsa_steps
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Placeholder: 'Your Answer Here' cells found]
+
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Reflection check
+Name one kind of data that must stay secret long enough to make this a current planning issue.
+
+
+_Type your answer here_
+
+## Part 6: What should teams do? (PQC vs QKD)
+- **Post-quantum cryptography (PQC):** software/protocol migration path for existing systems
+- **Quantum key distribution (QKD):** specialized hardware/link environments
+
+For most organizations, first action is crypto-agility + PQC migration planning.
+
+
+## Exit memo (6-8 sentences)
+You are advising an online retailer. Write a short memo that answers:
+1. What is the main cryptographic risk over the next decade?
+2
+
+--- Item 2 ---
+## Reflection check
+Name one kind of data that must stay secret long enough to make this a current planning issue.
+
+
+_Type your answer here_
+
+## Part 6: What should teams do? (PQC vs QKD)
+- **Post-quantum cryptography (PQC):** software/protocol migration path for existing systems
+- **Quantum key distribution (QKD):** specialized hardware/link environments
+
+For most organizations, first action is crypto-agility + PQC migration planning.
+
+
+## Exit memo (6-8 sentences)
+You are advising an online retailer. Write a short memo that answers:
+1. What is the main cryptographic risk over the next decade
+
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Reflection
+
+16 markdown cells and 3 code cells. Major sections include: From Checkout to Quantum Risk, The story we will follow, Visual anchor: what you should picture, Learning Goals, Part 1: Hashing warm-up, Quick check (1-2 sentences), ....

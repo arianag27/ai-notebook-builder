@@ -1,0 +1,156 @@
+Notebook: ecc-calculus__riemann_sum.ipynb
+Title: ecc-calculus  riemann sum
+
+=== HEADINGS ===
+
+(none found)
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+(none found)
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+obscure_packages = ["sympy"]
+
+for pkg in obscure_packages:
+    try:
+        __import__(pkg)  # check if installed
+    except ImportError:
+        print(f":warning: {pkg} not found. Installing...")
+        !pip install {pkg}
+        __import__(pkg)
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Rectangle
+from ipywidgets import interact
+import ipywidgets as widgets
+from sympy import Symbol, Eq, solve_undetermined_coeffs, apart
+
+--- Item 2 ---
+def f(x):
+    return x * (x - 1) * (x - 2)
+
+--- Item 3 ---
+approx_type_dropdown = widgets.Dropdown(options=['Left Endpoints', 'Right Endpoints', 'Center Points', 'Trapezoids'])
+num_rects_slider = widgets.IntSlider(description='Points', min=1, max=50, step=1)
+
+def render_riemann_sum(approx_type, num_rects):
+    fig, ax = plt.subplots()
+    
+    xs = np.arange(0, 2.51, 0.05)
+    ys = f(xs)
+    ax.plot(xs, ys)
+
+    rectangle_width = 2.5 / num_rects
+    rectangle_xs = np.arange(0, 2.5, rectangle_width)
+    area_approx = 0
+    for x in rectangle_xs:
+        if approx_type == 'Trapezoids':
+            x1 = x
+            x2 = x + rectangle_width
+            y1 = f(x1)
+            y2 = f(x2)
+
+            color = 'r' if y1 + y2 < 0 else 'b'
+            ax.add_patch(plt.Polygon([[x1, 0], [x1, y1], [x2, y2], [x2, 0]], alpha=0.5, facecolor=color))
+            area_approx += 0.5 * rectangle_width * (y1 + y2)
+        else:
+            match approx_type:
+                case 'Left Endpoints':
+                    y = f(x)
+                case 'Right Endpoints':
+                    y = f(x + rectangle_width)
+                case 'Center Points':
+                    y = f(x + rectangle_width * 0.5)
+            color = 'r' if y < 0 else 'b'
+            ax.add_patch(Rectangle((x, 0), rectangle_width, y, alpha=0.5, facecolor=color))
+            area_approx += rectangle_width * y
+
+    print('approximated area', area_approx)
+    actual_area = 0.25 * 2.5 ** 4 - 2.5 ** 3 + 2.5 ** 2
+    print('actual area', actual_area)
+    print('error', area_approx - actual...
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import numpy as np
+
+--- Item 2 ---
+import matplotlib.pyplot as plt
+
+--- Item 3 ---
+from matplotlib.patches import Rectangle
+
+--- Item 4 ---
+from ipywidgets import interact
+
+--- Item 5 ---
+import ipywidgets as widgets
+
+--- Item 6 ---
+from sympy import Symbol, Eq, solve_undetermined_coeffs, apart
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+pandas/matplotlib .plot()
+
+--- Item 3 ---
+subplots
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+--- Item 2 ---
+@interact decorator / interact()
+
+--- Item 3 ---
+widgets API
+
+--- Item 4 ---
+dropdown widget
+
+--- Item 5 ---
+slider widget
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Unknown structure
+
+0 markdown cells and 3 code cells. Major sections include: none detected.

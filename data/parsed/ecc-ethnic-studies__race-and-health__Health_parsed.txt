@@ -1,0 +1,548 @@
+Notebook: ecc-ethnic-studies__race-and-health__Health.ipynb
+Title: Race and Health
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Race and Health
+
+--- Item 2 ---
+Topics Covered
+
+--- Item 3 ---
+Notebook Walk through
+
+--- Item 4 ---
+Maternal Mortality Rates
+
+--- Item 5 ---
+Question 1
+
+--- Item 6 ---
+Question 2
+
+--- Item 7 ---
+Explain the Data
+
+--- Item 8 ---
+Reflect on Impact
+
+--- Item 9 ---
+Breast Cancer
+
+--- Item 10 ---
+Question 3
+
+--- Item 11 ---
+Insurance
+
+--- Item 12 ---
+Introduction
+
+--- Item 13 ---
+Question 4
+
+--- Item 14 ---
+Question 5
+
+--- Item 15 ---
+Question 6
+
+--- Item 16 ---
+Final Reflection: Answer the following questions
+
+--- Item 17 ---
+📋 Post-Notebook Reflection Form
+
+--- Item 18 ---
+🧠 Why it matters:
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+In this notebook, you will explore how race impacts health outcomes and access to healthcare in the United States.
+
+**Estimated Time:** ~30 minutes
+
+---
+
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+The following dataset, collected by the CDC over several years, shows the maternal mortality rate (per 100,000 live births) broken down by race and year.  
+Run the cell below to view the data.
+
+
+Now let’s take a closer look at two visualizations of this data.  
+Run the cell below to display two interactive graphs, and use the tools provided to explore patterns and trends more deeply.
+
+**Note:** The peak in the data occurs in 2021 due to the impacts of COVID-19, so keep that in mind when interpreting the results.
+
+
+### Question 2  
+**Why is this happening?**
+
+After reviewing the following article:  
+[Black Women and Maternal Mortality – AP News (2023)](https://projects.apnews.com/features/2023/from-birth-to-death/black-women-maternal-mortality-rate.html),  
+please respond to the prompts be
+
+--- Item 2 ---
+Now, explore the different displays of data provided in the following report to better understand what our dataset is capturing — and what it might be missing:  
+[Breast Cancer Facts & Figures 2024 – American Cancer Society (PDF)](https://www.cancer.org/content/dam/cancer-org/research/cancer-facts-and-statistics/breast-cancer-facts-and-figures/2024/breast-cancer-facts-and-figures-2024.pdf)
+
+Afterward, choose one display from the article that you found most interesting.  
+Connect it to the data shown above, and write a short summary of your findings.
+
+--- Item 3 ---
+In this next dataset, we’re looking at information from a report by KFF (Kaiser Family Foundation), based on their analysis of American Community Survey (ACS) data collected by the U.S. Census Bureau. The analysis focuses on individuals under age 65 and covers the years 2010 through 2023.
+
+Run the next cells to display our two datasets:  
+- The first shows uninsured rates by race from 2010 to 2023.  
+- The second shows the average percentage of people in each racial group covered by various types of insurance.
+
+
+play the next cell to see a visuliziations of the data 
+
+### Question 5
+
+What do the differences in uninsured rates and types of insurance coverage suggest about systemic barriers in the U.S. healthcare system?  
+How might these barriers impact people's health outcomes across diff
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Race and Health
+
+---
+
+In this notebook, you will explore how race impacts health outcomes and access to healthcare in the United States.
+
+**Estimated Time:** ~30 minutes
+
+---
+
+## Topics Covered
+
+1. Maternal Mortality Rates  
+2. Breast Cancer  
+3. Insurance  
+
+
+--- Item 2 ---
+## Notebook Walk through 
+In addition to the instructions in the notebook, we also have a video walkthrough of the entire process. We encourage you to refer to the video if you need help or even follow along with the instructor as you complete the task.
+
+--- Item 3 ---
+## Maternal Mortality Rates
+
+In this section, we’re exploring maternal mortality rates by race to better understand the deeper racial inequalities embedded in the U.S. healthcare system.
+
+### Question 1
+
+To begin, what do you know about how maternal mortality rates vary across different racial or ethnic groups (or other racial issues in the healthcare system)?  
+Have you heard or learned about this issue before? If so, where did you first come across it?
+
+
+--- Item 4 ---
+The following dataset, collected by the CDC over several years, shows the maternal mortality rate (per 100,000 live births) broken down by race and year.  
+Run the cell below to view the data.
+
+
+--- Item 5 ---
+Now let’s take a closer look at two visualizations of this data.  
+Run the cell below to display two interactive graphs, and use the tools provided to explore patterns and trends more deeply.
+
+**Note:** The peak in the data occurs in 2021 due to the impacts of COVID-19, so keep that in mind when interpreting the results.
+
+
+--- Item 6 ---
+### Question 2  
+**Why is this happening?**
+
+After reviewing the following article:  
+[Black Women and Maternal Mortality – AP News (2023)](https://projects.apnews.com/features/2023/from-birth-to-death/black-women-maternal-mortality-rate.html),  
+please respond to the prompts below in the next cell:
+
+#### Explain the Data  
+Interpret the maternal mortality statistics you’ve observed, incorporating the context and insights provided by the article.  
+Consider factors such as racial disparities, systemic healthcare issues, and any historical or societal influences discussed.
+
+#### Reflect on Impact  
+How does this information influence your perception of the healthcare system?  
+Does it affect you personally or change your understanding of racism in healthcare and how different patients are treated?  
+Share your thoughts on how these revelations might shape your views or actions regarding healthcare equity.
+
+
+--- Item 7 ---
+## Breast Cancer
+
+First, read the following article to get more background on racial disparities in healthcare:  
+[Breast Cancer Racial Disparities – BCRF](https://www.bcrf.org/about-breast-cancer/breast-cancer-racial-disparities/)
+
+Then, run the cell below to display breast cancer death rates by state.  
+Compare different states and make some initial observations.
+ 
+
+--- Item 8 ---
+### Question 3
+
+Now, explore the different displays of data provided in the following report to better understand what our dataset is capturing — and what it might be missing:  
+[Breast Cancer Facts & Figures 2024 – American Cancer Society (PDF)](https://www.cancer.org/content/dam/cancer-org/research/cancer-facts-and-statistics/breast-cancer-facts-and-figures/2024/breast-cancer-facts-and-figures-2024.pdf)
+
+Afterward, choose one display from the article that you found most interesting.  
+Connect it to the data shown above, and write a short summary of your findings.
+
+
+--- Item 9 ---
+## Insurance
+
+### Introduction  
+Health insurance plays a major role in determining how easily someone can access healthcare services in the U.S.  
+But not everyone has equal access to insurance. Across racial and ethnic groups, there are large gaps in both coverage rates and the types of insurance people rely on—such as employer-sponsored plans, private insurance, or government programs like Medicaid.  
+These differences can significantly impact maternal health outcomes and the overall quality of care people receive.
+
+### Question 4  
+What types of health insurance are you familiar with, and who do you think has the hardest time accessing them?  
+Why do you think some groups are more likely to be uninsured?
+
+
+--- Item 10 ---
+In this next dataset, we’re looking at information from a report by KFF (Kaiser Family Foundation), based on their analysis of American Community Survey (ACS) data collected by the U.S. Census Bureau. The analysis focuses on individuals under age 65 and covers the years 2010 through 2023.
+
+Run the next cells to display our two datasets:  
+- The first shows uninsured rates by race from 2010 to 2023.  
+- The second shows the average percentage of people in each racial group covered by various types of insurance.
+
+
+--- Item 11 ---
+play the next cell to see a visuliziations of the data 
+
+--- Item 12 ---
+### Question 5
+
+What do the differences in uninsured rates and types of insurance coverage suggest about systemic barriers in the U.S. healthcare system?  
+How might these barriers impact people's health outcomes across different communities?  
+Did anything stand out to you?
+
+
+--- Item 13 ---
+### Question 6
+
+#### Final Reflection: Answer the following questions
+
+- How do racial disparities in healthcare show up in both the numbers and the lived experiences described in the article?  
+- What are some limits of using just data to understand these issues?  
+- How do racial disparities in female health outcomes, like breast cancer death rates, reflect larger patterns of social inequality and systemic racism in the healthcare system?  
+- In what ways do structural factors (like access to insurance, quality of care, and early diagnosis) help explain why women of different racial backgrounds experience different health outcomes — even when they have the same diseases?
+
+
+--- Item 14 ---
+## 📋 Post-Notebook Reflection Form
+
+Thank you for completing the notebook! We’d love to hear your thoughts so we can continue improving and creating content that supports your learning.
+
+Please take a few minutes to fill out this short reflection form:
+
+👉 **[Click here to fill out the Reflection Form](https://docs.google.com/forms/d/e/1FAIpQLScTa5vPzgOcrjpTiJAqjUv-le9_OsSE1iEdcr_MJbreEA7AOA/viewform?usp=header)**
+
+---
+
+### 🧠 Why it matters:
+Your feedback helps us understand:
+- How clear and helpful the notebook was
+- What you learned from the experience
+- How your views on data science may have changed
+- What topics you’d like to see in the future
+
+This form is anonymous and should take less than 8 minutes to complete.
+
+We appreciate your time and honest input! 💬
+
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+from datascience import * # Loads functions from the datascience library into our current environment
+import numpy as np # Loads numerical functions
+import math, random # Loads math and random functions
+import pandas as pd 
+import matplotlib.pyplot as plt
+import seaborn as sns
+from IPython.display import display, Latex, Markdown
+%matplotlib inline
+import plotly.express as px
+import ipywidgets as widgets
+from IPython.display import display
+from ipywidgets import interact
+import warnings
+warnings.filterwarnings('ignore')
+import helper as hp
+
+--- Item 2 ---
+from IPython.display import YouTubeVideo
+
+YouTubeVideo("c_jACM5MUeo", width=560, height=315)
+
+--- Item 3 ---
+hp.maternal
+
+--- Item 4 ---
+hp.Mortality_Rate_bar()
+hp.Mortality_Rate_line()
+
+--- Item 5 ---
+display(widgets.interactive(lambda state : hp.update_plot(state), state= hp.state_selector))
+
+--- Item 6 ---
+hp.Uninsured_Rate
+
+--- Item 7 ---
+hp.insurance
+
+--- Item 8 ---
+hp.Uninsured()
+
+--- Item 9 ---
+hp.insurance_type()
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+from datascience import * # Loads functions from the datascience library into our current environment
+
+--- Item 2 ---
+import numpy as np # Loads numerical functions
+
+--- Item 3 ---
+import math, random # Loads math and random functions
+
+--- Item 4 ---
+import pandas as pd
+
+--- Item 5 ---
+import matplotlib.pyplot as plt
+
+--- Item 6 ---
+import seaborn as sns
+
+--- Item 7 ---
+from IPython.display import display, Latex, Markdown
+
+--- Item 8 ---
+import plotly.express as px
+
+--- Item 9 ---
+import ipywidgets as widgets
+
+--- Item 10 ---
+from IPython.display import display
+
+--- Item 11 ---
+from ipywidgets import interact
+
+--- Item 12 ---
+import warnings
+
+--- Item 13 ---
+import helper as hp
+
+--- Item 14 ---
+from IPython.display import YouTubeVideo
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+### Question 1
+
+To begin, what do you know about how maternal mortality rates vary across different racial or ethnic groups (or other racial issues in the healthcare system)?  
+Have you heard or learned about this issue before? If so, where did you first come across it?
+
+
+The following dataset, collected by the CDC over several years, shows the maternal mortality rate (per 100,000 live births) broken down by race and year.  
+Run the cell below to view the data.
+
+
+Now let’s take a closer look at
+
+--- Item 2 ---
+### Question 2  
+**Why is this happening?**
+
+After reviewing the following article:  
+[Black Women and Maternal Mortality – AP News (2023)](https://projects.apnews.com/features/2023/from-birth-to-death/black-women-maternal-mortality-rate.html),  
+please respond to the prompts below in the next cell:
+
+#### Explain the Data  
+Interpret the maternal mortality statistics you’ve observed, incorporating the context and insights provided by the article.  
+Consider factors such as racial disparities, s
+
+--- Item 3 ---
+### Question 3
+
+Now, explore the different displays of data provided in the following report to better understand what our dataset is capturing — and what it might be missing:  
+[Breast Cancer Facts & Figures 2024 – American Cancer Society (PDF)](https://www.cancer.org/content/dam/cancer-org/research/cancer-facts-and-statistics/breast-cancer-facts-and-figures/2024/breast-cancer-facts-and-figures-2024.pdf)
+
+Afterward, choose one display from the article that you found most interesting.  
+Connect
+
+--- Item 4 ---
+### Question 4  
+What types of health insurance are you familiar with, and who do you think has the hardest time accessing them?  
+Why do you think some groups are more likely to be uninsured?
+
+
+In this next dataset, we’re looking at information from a report by KFF (Kaiser Family Foundation), based on their analysis of American Community Survey (ACS) data collected by the U.S. Census Bureau. The analysis focuses on individuals under age 65 and covers the years 2010 through 2023.
+
+Run the next
+
+--- Item 5 ---
+### Question 5
+
+What do the differences in uninsured rates and types of insurance coverage suggest about systemic barriers in the U.S. healthcare system?  
+How might these barriers impact people's health outcomes across different communities?  
+Did anything stand out to you?
+
+
+### Question 6
+
+#### Final Reflection: Answer the following questions
+
+- How do racial disparities in healthcare show up in both the numbers and the lived experiences described in the article?  
+- What are some limits of
+
+--- Item 6 ---
+### Question 6
+
+#### Final Reflection: Answer the following questions
+
+- How do racial disparities in healthcare show up in both the numbers and the lived experiences described in the article?  
+- What are some limits of using just data to understand these issues?  
+- How do racial disparities in female health outcomes, like breast cancer death rates, reflect larger patterns of social inequality and systemic racism in the healthcare system?  
+- In what ways do structural factors (like access to
+
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Reflection: Answer the following questions
+
+- How do racial disparities in healthcare show up in both the numbers and the lived experiences described in the article?  
+- What are some limits of using just data to understand these issues?  
+- How do racial disparities in female health outcomes, like breast cancer death rates, reflect larger patterns of social inequality and systemic racism in the healthcare system?  
+- In what ways do structural factors (like access to insurance, quality of care, and early diagnosis) help explain why women of different racial backgrounds experience different he
+
+--- Item 2 ---
+Reflection Form
+
+Thank you for completing the notebook! We’d love to hear your thoughts so we can continue improving and creating content that supports your learning.
+
+Please take a few minutes to fill out this short reflection form:
+
+👉 **[Click here to fill out the Reflection Form](https://docs.google.com/forms/d/e/1FAIpQLScTa5vPzgOcrjpTiJAqjUv-le9_OsSE1iEdcr_MJbreEA7AOA/viewform?usp=header)**
+
+---
+
+### 🧠 Why it matters:
+Your feedback helps us understand:
+- How clear and helpful the notebook was
+- What you learned from the experience
+- How your views on data science may have changed
+- What to
+
+--- Item 3 ---
+reflection form:
+
+👉 **[Click here to fill out the Reflection Form](https://docs.google.com/forms/d/e/1FAIpQLScTa5vPzgOcrjpTiJAqjUv-le9_OsSE1iEdcr_MJbreEA7AOA/viewform?usp=header)**
+
+---
+
+### 🧠 Why it matters:
+Your feedback helps us understand:
+- How clear and helpful the notebook was
+- What you learned from the experience
+- How your views on data science may have changed
+- What topics you’d like to see in the future
+
+This form is anonymous and should take less than 8 minutes to complete.
+
+We appreciate your time and honest input! 💬
+
+--- Item 4 ---
+Reflection Form](https://docs.google.com/forms/d/e/1FAIpQLScTa5vPzgOcrjpTiJAqjUv-le9_OsSE1iEdcr_MJbreEA7AOA/viewform?usp=header)**
+
+---
+
+### 🧠 Why it matters:
+Your feedback helps us understand:
+- How clear and helpful the notebook was
+- What you learned from the experience
+- How your views on data science may have changed
+- What topics you’d like to see in the future
+
+This form is anonymous and should take less than 8 minutes to complete.
+
+We appreciate your time and honest input! 💬
+
+--- Item 5 ---
+## Final Reflection: Answer the following questions
+
+- How do racial disparities in healthcare show up in both the numbers and the lived experiences described in the article?  
+- What are some limits of using just data to understand these issues?  
+- How do racial disparities in female health outcomes, like breast cancer death rates, reflect larger patterns of social inequality and systemic racism in the healthcare system?  
+- In what ways do structural factors (like access to insurance, quality of care, and early diagnosis) help explain why women of different racial backgrounds experience dif
+
+--- Item 6 ---
+## 📋 Post-Notebook Reflection Form
+
+Thank you for completing the notebook! We’d love to hear your thoughts so we can continue improving and creating content that supports your learning.
+
+Please take a few minutes to fill out this short reflection form:
+
+👉 **[Click here to fill out the Reflection Form](https://docs.google.com/forms/d/e/1FAIpQLScTa5vPzgOcrjpTiJAqjUv-le9_OsSE1iEdcr_MJbreEA7AOA/viewform?usp=header)**
+
+---
+
+### 🧠 Why it matters:
+Your feedback helps us understand:
+- How clear and helpful the notebook was
+- What you learned from the experience
+- How your views on data science may hav
+
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+bar chart
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+--- Item 2 ---
+widgets API
+
+--- Item 3 ---
+embedded YouTube video
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Exercise → Reflection → Introduction
+
+14 markdown cells and 9 code cells. Major sections include: Race and Health, Topics Covered, Notebook Walk through, Maternal Mortality Rates, Question 1, Question 2, ....

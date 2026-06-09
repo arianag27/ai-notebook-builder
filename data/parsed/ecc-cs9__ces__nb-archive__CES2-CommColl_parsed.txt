@@ -1,0 +1,101 @@
+Notebook: ecc-cs9__ces__nb-archive__CES2-CommColl.ipynb
+Title: ecc-cs9  ces  nb-archive  CES2-CommColl
+
+=== HEADINGS ===
+
+(none found)
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+(none found)
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import pandas as pd
+
+
+--- Item 2 ---
+#cd EnviroScreen4
+CES4 = pd.read_excel("calenviroscreen40resultsdatadictionary_F_2021.xlsx", sheet_name='CES4.0FINAL_results')
+
+--- Item 3 ---
+CES4
+
+--- Item 4 ---
+!ls
+
+
+--- Item 5 ---
+CollegeCodes= pd.read_excel("College_codes_EVDtype.xlsx")
+CollegeCodes
+
+--- Item 6 ---
+#count if EVDCode = 1
+CollegeCodes['EVDCode'].value_counts()
+
+
+--- Item 7 ---
+#drop rows where EVDCode = 4
+CollegeCodes_Public = CollegeCodes[CollegeCodes['EVDCode'] != 4]
+
+--- Item 8 ---
+#merge CollegeCodes_Public with CES4
+CES4_Public = pd.merge(CES4, CollegeCodes_Public, how='inner', left_on='ZIP', right_on='Zip')
+
+--- Item 9 ---
+# Find the most polluted zip codes and show the college there
+CES4_Public.sort_values(by='CES 4.0 Score', ascending=False).head(10)
+
+--- Item 10 ---
+# Find the least polluted zip codes and show the college there
+CES4_Public.sort_values(by='CES 4.0 Score', ascending=True).head(10)
+
+--- Item 11 ---
+# what is the score at El Camino College
+CES4_Public[CES4_Public['College'] == 'EL CAMINO COLLEGE']
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import pandas as pd
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Unknown structure
+
+0 markdown cells and 11 code cells. Major sections include: none detected.

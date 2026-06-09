@@ -1,0 +1,5 @@
+# Optional: OpenAI provider instead of Ollama
+# Install: pip install -r requirements-openai.txt
+
+-r requirements-llm.txt
+openai>=1.0.0

@@ -3,6 +3,7 @@
 Run the full AI Notebook Builder workflow from one command.
 
 Steps:
+  0. sync_notebooks_from_repo.py (optional) — sync ecc-* notebooks from GitHub
   1. parse_notebooks.py      — parse corpus notebooks
   2. analyze_corpus.py       — build curriculum patterns report
   3. generate_notebook_outline.py — interactive outline (you answer prompts)
@@ -11,6 +12,8 @@ Steps:
 
 Usage:
     python3 scripts/run_pipeline.py
+    python3 scripts/run_pipeline.py --skip-sync
+    python3 scripts/run_pipeline.py --repo-url https://github.com/ds-modules/ecc-textbook.git
 """
 
 import subprocess
@@ -20,6 +23,8 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SCRIPTS_DIR = PROJECT_ROOT / "scripts"
 GENERATED_DIR = PROJECT_ROOT / "data" / "generated"
+
+DEFAULT_REPO_URL = "https://github.com/ds-modules/ecc-textbook.git"
 
 # Each step: (description, script name, extra CLI args)
 PIPELINE_STEPS = [
@@ -35,6 +40,26 @@ FINAL_OUTPUTS = [
     GENERATED_DIR / "starter_notebook.ipynb",
     GENERATED_DIR / "validation_report.md",
 ]
+
+
+def parse_pipeline_args() -> tuple[bool, str]:
+    """
+    Parse --skip-sync and --repo-url from command line.
+    Returns (skip_sync, repo_url).
+    """
+    skip_sync = "--skip-sync" in sys.argv
+    repo_url = DEFAULT_REPO_URL
+
+    args = sys.argv[1:]
+    i = 0
+    while i < len(args):
+        if args[i] == "--repo-url" and i + 1 < len(args):
+            repo_url = args[i + 1]
+            i += 2
+        else:
+            i += 1
+
+    return skip_sync, repo_url
 
 
 def run_step(step_number: int, total: int, description: str, script_name: str, args: list[str]) -> int:
@@ -80,23 +105,48 @@ def show_final_outputs() -> None:
 
 
 def main() -> None:
-    total = len(PIPELINE_STEPS)
+    skip_sync, repo_url = parse_pipeline_args()
+
+    sync_step_count = 0 if skip_sync else 1
+    total = sync_step_count + len(PIPELINE_STEPS)
+    step_number = 1
 
     print()
     print("AI Notebook Builder — Full Pipeline")
     print()
-    print("This will run 5 steps. Step 3 will ask you questions")
-    print("(discipline, topic, dataset, coding level, etc.).")
+
+    if skip_sync:
+        print("Sync skipped — using existing notebooks in data/notebooks/.")
+    else:
+        print(f"Step 0: Sync notebooks from {repo_url}")
+
+    print("Later steps will parse, analyze, ask outline questions, export, and validate.")
     print()
 
-    for i, (description, script_name, args) in enumerate(PIPELINE_STEPS, 1):
-        exit_code = run_step(i, total, description, script_name, args)
+    if not skip_sync:
+        exit_code = run_step(
+            step_number,
+            total,
+            "Sync notebooks from GitHub",
+            "sync_notebooks_from_repo.py",
+            ["--repo-url", repo_url],
+        )
+        if exit_code != 0:
+            print()
+            print("Pipeline stopped because sync failed.")
+            print("Fix the issue above, or rerun with --skip-sync to use local notebooks.")
+            sys.exit(exit_code)
+        step_number += 1
+
+    for description, script_name, args in PIPELINE_STEPS:
+        exit_code = run_step(step_number, total, description, script_name, args)
         if exit_code != 0:
             print()
             print("Pipeline stopped because a step failed.")
             print("Fix the issue above, then run the pipeline again.")
             show_final_outputs()
             sys.exit(exit_code)
+        step_number += 1
 
     print()
     print("=" * 60)

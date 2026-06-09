@@ -1,0 +1,63 @@
+Notebook: ecc-ethnic-studies__Incarceration__otter.ipynb
+Title: ecc-ethnic-studies  Incarceration  otter
+
+=== HEADINGS ===
+
+(none found)
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+(none found)
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+!pip install otter-grader
+
+--- Item 2 ---
+
+
+
+=== IMPORTS / LIBRARIES ===
+
+(none found)
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Otter autograder checks present in code cells]
+
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Unknown structure
+
+0 markdown cells and 2 code cells. Major sections include: none detected.

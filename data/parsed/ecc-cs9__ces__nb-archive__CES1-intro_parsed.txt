@@ -1,0 +1,99 @@
+Notebook: ecc-cs9__ces__nb-archive__CES1-intro.ipynb
+Title: ecc-cs9  ces  nb-archive  CES1-intro
+
+=== HEADINGS ===
+
+(none found)
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+(none found)
+
+=== MARKDOWN CELLS ===
+
+(none found)
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import pandas as pd
+
+
+--- Item 2 ---
+
+CES4 = pd.read_excel("calenviroscreen40resultsdatadictionary_F_2021.xlsx", sheet_name='CES4.0FINAL_results')
+
+--- Item 3 ---
+CES4
+
+--- Item 4 ---
+CES4.columns
+
+--- Item 5 ---
+CES4.shape
+
+--- Item 6 ---
+#How many missging values are there in each column?
+CES4.isnull().sum()
+
+
+--- Item 7 ---
+# count the number of counties in the data
+CES4['California County'].nunique()
+
+--- Item 8 ---
+# count the number of unique census tracts in the data
+CES4['Census Tract'].nunique()
+
+--- Item 9 ---
+# count the number of ZIP codes in the data
+CES4['ZIP'].nunique()
+
+--- Item 10 ---
+# count the number of cities in the data
+CES4['Approximate Location'].nunique()
+
+--- Item 11 ---
+# how many censustracts are in each city
+CES4['Approximate Location'].value_counts()
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import pandas as pd
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+(none found)
+
+=== ANSWERS / SOLUTIONS ===
+
+(none found)
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Unknown structure
+
+0 markdown cells and 11 code cells. Major sections include: none detected.

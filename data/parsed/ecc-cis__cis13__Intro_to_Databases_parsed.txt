@@ -1,0 +1,702 @@
+Notebook: ecc-cis__cis13__Intro_to_Databases.ipynb
+Title: Introduction to Databases and SQL
+
+=== HEADINGS ===
+
+--- Item 1 ---
+Introduction to Databases and SQL
+
+--- Item 2 ---
+Setup
+
+--- Item 3 ---
+Section 1: Spreadsheets vs. Databases
+
+--- Item 4 ---
+Section 2: Creating a Database and Tables
+
+--- Item 5 ---
+Section 3: Adding Data
+
+--- Item 6 ---
+TO-DO 1: Add a new employee
+
+--- Item 7 ---
+TO-DO 1: Insert the new employee
+
+--- Item 8 ---
+Verify: show all Engineering employees
+
+--- Item 9 ---
+Section 4: Retrieving Data with SELECT
+
+--- Item 10 ---
+Filtering with WHERE
+
+--- Item 11 ---
+Sorting with ORDER BY
+
+--- Item 12 ---
+TO-DO 2: Filter and sort
+
+--- Item 13 ---
+TO-DO 2: Employees hired in 2021 or later, sorted by start year descending
+
+--- Item 14 ---
+Section 5: Summarizing Data
+
+--- Item 15 ---
+TO-DO 3: Summarize by start year
+
+--- Item 16 ---
+TO-DO 3: Headcount by start year
+
+--- Item 17 ---
+Section 6: Combining Tables with JOIN
+
+--- Item 18 ---
+TO-DO 4: List employees in Building A
+
+--- Item 19 ---
+TO-DO 4: All employees in Building A
+
+--- Item 20 ---
+That's it!
+
+--- Item 21 ---
+Submit to Canvas
+
+
+=== LEARNING OBJECTIVES ===
+
+(none found)
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+We'll go through each of these. The dataset for this lab is a small **employee directory** for a fictional company, split across two tables: one for employees and one for departments. This is the same structure you set up in Access Module 2 when you created a relationship between two tables.
+
+---
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# Introduction to Databases and SQL
+
+---
+
+Database software typically lets you build tables and run queries through a graphical interface. This notebook shows the same ideas written out as SQL, the language that most database tools run underneath. 
+
+**What you'll practice:**
+- Creating a database and adding data to it
+- Retrieving and filtering records with `SELECT` and `WHERE`
+- Sorting results with `ORDER BY`
+- Summarizing data with `COUNT` and `AVG`
+- Combining two tables with a `JOIN`
+
+> **Reminder:** Click on a code cell and press **Shift + Enter** to run it. Run the setup cell first.
+
+--- Item 2 ---
+---
+## Setup
+
+SQLite is built into Python, so there is nothing to install. We just import it along with `pandas`, which we use to display results as a readable table.
+
+--- Item 3 ---
+---
+## Section 1: Spreadsheets vs. Databases
+
+You already know how to organize data in Excel: rows of records, columns of fields, formulas to calculate things, filters to narrow down what you see. A database works on the same basic idea.
+
+The difference is that a database is designed to handle **multiple related tables** and to answer questions across all of them efficiently, even when the data grows to millions of rows.
+
+| What you do in Excel / Access | What that looks like in SQL |
+|-------------------------------|-----------------------------|
+| Open a workbook / .accdb file | Connect to a database |
+| Create a table in Design view | `CREATE TABLE` |
+| Type rows into the datasheet | `INSERT INTO` |
+| Apply AutoFilter | `WHERE` clause |
+| Sort A-Z or Z-A | `ORDER BY` |
+| Use `=COUNTA()`, `=AVERAGE()` | `COUNT()`, `AVG()` |
+| Link two tables in Relationships | `JOIN` |
+
+We'll go through each of these. The dataset for this lab is a small **employee directory** for a fictional company, split across two tables: one for employees and one for departments. This is the same structure you set up in Access Module 2 when you created a relationship between two tables.
+
+--- Item 4 ---
+---
+## Section 2: Creating a Database and Tables
+
+First, we create a database. `sqlite3.connect(":memory:")` opens a temporary database that lives in RAM for the duration of this session, so nothing is saved to disk. That is fine for practice.
+
+--- Item 5 ---
+`conn` is the open connection to our database. `cursor` is what we use to send SQL commands to it.
+
+Now let's create our two tables. In Access, you would do this in Table Design view by typing field names and choosing data types. In SQL, you write it out:
+
+--- Item 6 ---
+A few things worth noting:
+
+- `INTEGER PRIMARY KEY` is the same concept as setting a Primary Key field in Access. It uniquely identifies each row and cannot be repeated.
+- `NOT NULL` means the field is required. Access has a similar "Required" property in field settings.
+- `FOREIGN KEY (dept_id) REFERENCES Departments (dept_id)` is the SQL way of drawing the relationship line you see in the Access Relationships panel. It tells the database that `dept_id` in Employees must match an existing `dept_id` in Departments.
+- `REAL` is the data type for decimal numbers (like Access's "Number" field with Double precision).
+
+--- Item 7 ---
+---
+## Section 3: Adding Data
+
+In Access you type directly into the datasheet or import from Excel. In SQL, you use `INSERT INTO`.
+
+--- Item 8 ---
+`executemany` runs the same `INSERT` statement once for each row in the list, rather than writing out ten separate statements.
+
+### TO-DO 1: Add a new employee
+
+A new hire just joined the Engineering department. Add them to the Employees table:
+
+- `emp_id`: 11
+- `first_name`: your choice
+- `last_name`: your choice  
+- `dept_id`: 2 (Engineering)
+- `job_title`: "Junior Developer"
+- `salary`: 72000
+- `start_year`: 2024
+
+--- Item 9 ---
+<details>
+<summary><b>Show one possible solution (TO-DO 1)</b></summary>
+
+```python
+# TO-DO 1: Insert the new employee
+cursor.execute("""
+    INSERT INTO Employees VALUES (11, 'Alex', 'Rivera', 2, 'Junior Developer', 72000, 2024)
+""")
+
+conn.commit()
+
+# Verify: show all Engineering employees
+pd.read_sql_query(
+    "SELECT * FROM Employees WHERE dept_id = 2",
+    conn
+)
+```
+
+</details>
+
+--- Item 10 ---
+---
+## Section 4: Retrieving Data with SELECT
+
+`SELECT` is how you read data from a table. It works the same way you open a spreadsheet and look at the data, or run a query in Access Query Design view.
+
+The basic structure is:
+
+```sql
+SELECT  column1, column2
+FROM    table_name
+WHERE   condition
+ORDER BY column1;
+```
+
+We'll use `pd.read_sql_query()` throughout this section to display results as a table.
+
+--- Item 11 ---
+### Filtering with WHERE
+
+In Excel, you use AutoFilter to show only rows that match certain conditions. In SQL, you use `WHERE`. The result is the same: only matching rows come through.
+
+--- Item 12 ---
+### Sorting with ORDER BY
+
+In Excel, you click the column header and choose Sort A-Z or Sort Z-A. In SQL, you add `ORDER BY` at the end of your query. `ASC` means ascending (low to high, A to Z), `DESC` means descending.
+
+--- Item 13 ---
+### TO-DO 2: Filter and sort
+
+Write a query that returns only employees who joined in **2021 or later**, showing their full name, job title, and start year. Sort by start year, most recent first.
+
+*Hint: use `start_year >= 2021` in your `WHERE` clause.*
+
+--- Item 14 ---
+<details>
+<summary><b>Show one possible solution (TO-DO 2)</b></summary>
+
+```python
+# TO-DO 2: Employees hired in 2021 or later, sorted by start year descending
+q("""
+    SELECT first_name,
+           last_name,
+           job_title,
+           start_year
+    FROM   Employees
+    WHERE  start_year >= 2021
+    ORDER BY start_year DESC
+""")
+```
+
+</details>
+
+--- Item 15 ---
+**Question 1**
+
+In Excel, you would use AutoFilter dropdowns to narrow down rows, then click a column header to sort. In SQL, you write `WHERE` and `ORDER BY` in the query. What do you see as one advantage of the SQL approach? What is one thing the Excel interface makes easier?
+
+*Type your answer here.*
+
+--- Item 16 ---
+---
+## Section 5: Summarizing Data
+
+Excel has functions like `=COUNTA()` and `=AVERAGE()` to calculate summary values. SQL has equivalent **aggregate functions** that work across rows in a table.
+
+| Excel function | SQL equivalent | What it does |
+|----------------|---------------|--------------|
+| `=COUNTA(A:A)` | `COUNT(*)` | Count the number of rows |
+| `=AVERAGE(B:B)` | `AVG(column)` | Average of a numeric column |
+| `=SUM(B:B)` | `SUM(column)` | Total of a numeric column |
+| `=MAX(B:B)` | `MAX(column)` | Largest value |
+| `=MIN(B:B)` | `MIN(column)` | Smallest value |
+
+Used with `GROUP BY`, these functions let you compute summaries for each group, the same as the Totals row in an Access query.
+
+--- Item 17 ---
+### TO-DO 3: Summarize by start year
+
+Write a query that shows how many employees started each year. Show the year and the count, sorted from most recent year to oldest.
+
+This is the same question you could answer in Excel by using `=COUNTIF()` for each year, but `GROUP BY` does it for all years at once.
+
+--- Item 18 ---
+<details>
+<summary><b>Show one possible solution (TO-DO 3)</b></summary>
+
+```python
+# TO-DO 3: Headcount by start year
+q("""
+    SELECT   start_year,
+             COUNT(*) AS headcount
+    FROM     Employees
+    GROUP BY start_year
+    ORDER BY start_year DESC
+""")
+```
+
+</details>
+
+--- Item 19 ---
+**Question 2**
+
+Look at the department summary query above. The `dept_id` column shows numbers (1, 2, 3, 4), not department names. Why does that happen, and what would you need to do to see the actual department names?
+
+*Type your answer here.*
+
+--- Item 20 ---
+---
+## Section 6: Combining Tables with JOIN
+
+The department summary you wrote in Section 5 shows `dept_id` numbers, not names. To get the actual names, we need to pull data from the Departments table at the same time.
+
+This is what `JOIN` does. It combines rows from two tables by matching a shared column, exactly like the relationship you draw between tables in the Access Relationships panel.
+
+```sql
+SELECT ...
+FROM   TableA
+JOIN   TableB ON TableA.shared_column = TableB.shared_column
+```
+
+The `ON` clause tells SQL which columns connect the two tables.
+
+--- Item 21 ---
+The `e.` and `d.` prefixes are shorthand aliases that tell SQL which table each column comes from. `e` stands for Employees, `d` for Departments. This avoids confusion when both tables have a column with the same name (like `dept_id`).
+
+Now let's revisit the department summary from Section 5, this time showing the real department names:
+
+--- Item 22 ---
+### TO-DO 4: List employees in Building A
+
+Write a query that returns the full name, job title, and department name for every employee located in **Building A**. Use a JOIN to get the building location from the Departments table.
+
+*Hint: the `location` column is in the Departments table, so you'll need the JOIN before you can filter on it.*
+
+--- Item 23 ---
+<details>
+<summary><b>Show one possible solution (TO-DO 4)</b></summary>
+
+```python
+# TO-DO 4: All employees in Building A
+q("""
+    SELECT e.first_name,
+           e.last_name,
+           e.job_title,
+           d.dept_name
+    FROM   Employees e
+    JOIN   Departments d ON e.dept_id = d.dept_id
+    WHERE  d.location = 'Building A'
+    ORDER BY d.dept_name, e.last_name
+""")
+```
+
+</details>
+
+--- Item 24 ---
+**Question 3**
+
+In Access, you create a relationship between two tables in the Relationships panel, and then drag fields from both tables into a query in Design view to combine them. In SQL, you write a `JOIN`. 
+
+Look at the JOIN query you just wrote. Which part of it corresponds to the relationship line in Access? Which part corresponds to dragging fields from the field list into the query grid?
+
+*Type your answer here.*
+
+--- Item 25 ---
+---
+## That's it!
+
+Here's a summary of what you practiced and how each SQL concept maps to something you've already used:
+
+| SQL | Excel / Access equivalent |
+|-----|--------------------------|
+| `CREATE TABLE` | Table Design view |
+| `INSERT INTO` | Typing into the datasheet or importing |
+| `SELECT ... FROM` | Opening a table or query to view data |
+| `WHERE` | AutoFilter |
+| `ORDER BY` | Sort A-Z / Z-A |
+| `COUNT()`, `AVG()`, `SUM()` | `=COUNTA()`, `=AVERAGE()`, `=SUM()` |
+| `GROUP BY` | Totals row in Access query / PivotTable |
+| `JOIN ... ON` | Table relationships + dragging fields into a query |
+
+SQL is not a replacement for Access. For many tasks, the Access interface is faster and more visual. But knowing SQL helps you understand what Access is doing behind the scenes, and it's the same language used in larger systems you'll encounter in IT work.
+
+---
+*CIS 13 · El Camino College · Prof. Hac Le*
+
+--- Item 26 ---
+---
+## Submit to Canvas
+
+When you are finished:
+
+1. Save this notebook.
+2. Go to **File > Download > Web PDF**.
+3. Upload the downloaded PDF to the Canvas assignment.
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+# Setup: import required libraries
+import sys
+import subprocess
+
+def ensure_package(import_name, install_name=None):
+    """Import a package; install it quietly if not found."""
+    if install_name is None:
+        install_name = import_name
+    try:
+        __import__(import_name)
+        print(f"  ✓ {import_name} already installed")
+    except ImportError:
+        print(f"  ↓ Installing {install_name}...")
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", install_name, "--quiet"]
+        )
+        print(f"  ✓ {install_name} installed")
+
+print("Checking packages...")
+ensure_package("pandas")
+print("\nAll packages ready.")
+
+# sqlite3 is built into Python - no install needed
+import sqlite3
+import pandas as pd
+
+print("SQLite version:", sqlite3.sqlite_version)
+
+--- Item 2 ---
+# Open a connection to an in-memory database
+conn   = sqlite3.connect(":memory:")
+cursor = conn.cursor()
+
+print("Database connection open.")
+
+--- Item 3 ---
+# Create the Departments table
+cursor.execute("""
+    CREATE TABLE Departments (
+        dept_id   INTEGER PRIMARY KEY,
+        dept_name TEXT NOT NULL,
+        location  TEXT NOT NULL
+    )
+""")
+
+# Create the Employees table
+# dept_id here is a Foreign Key - it references Departments
+cursor.execute("""
+    CREATE TABLE Employees (
+        emp_id    INTEGER PRIMARY KEY,
+        first_name TEXT NOT NULL,
+        last_name  TEXT NOT NULL,
+        dept_id    INTEGER NOT NULL,
+        job_title  TEXT NOT NULL,
+        salary     REAL NOT NULL,
+        start_year INTEGER NOT NULL,
+        FOREIGN KEY (dept_id) REFERENCES Departments (dept_id)
+    )
+""")
+
+conn.commit()
+print("Tables created: Departments, Employees")
+
+--- Item 4 ---
+# Add departments
+departments = [
+    (1, "Sales",       "Building A"),
+    (2, "Engineering", "Building B"),
+    (3, "HR",          "Building A"),
+    (4, "Marketing",   "Building C"),
+]
+
+cursor.executemany(
+    "INSERT INTO Departments VALUES (?, ?, ?)",
+    departments
+)
+
+# Add employees
+employees = [
+    (1,  "Priya",   "Nair",      2, "Software Engineer",  88000, 2019),
+    (2,  "Carlos",  "Mendez",    1, "Sales Representative",52000, 2021),
+    (3,  "Aisha",   "Johnson",   3, "HR Coordinator",      61000, 2020),
+    (4,  "Wei",     "Zhang",     2, "Software Engineer",   92000, 2018),
+    (5,  "Sofia",   "Reyes",     4, "Marketing Analyst",   67000, 2022),
+    (6,  "James",   "Okonkwo",   1, "Sales Manager",       75000, 2017),
+    (7,  "Lin",     "Torres",    2, "Data Analyst",        79000, 2021),
+    (8,  "Maria",   "Chen",      4, "Marketing Coordinator",58000, 2023),
+    (9,  "David",   "Park",      3, "HR Manager",          72000, 2016),
+    (10, "Fatima",  "Ali",       1, "Sales Representative", 54000, 2022),
+]
+
+cursor.executemany(
+    "INSERT INTO Employees VALUES (?, ?, ?, ?, ?, ?, ?)",
+    employees
+)
+
+conn.commit()
+print("Inserted", len(departments), "departments and", len(employees), "employees.")
+
+--- Item 5 ---
+# TO-DO 1: Insert the new employee
+# Replace the ... placeholders, then remove the comment marks from cursor.execute.
+# cursor.execute("""
+#     INSERT INTO Employees VALUES (11, '...', '...', 2, 'Junior Developer', 72000, 2024)
+# """)
+
+conn.commit()
+
+# Verify: show all Engineering employees
+pd.read_sql_query(
+    "SELECT * FROM Employees WHERE dept_id = 2",
+    conn
+)
+
+--- Item 6 ---
+# Helper: run a query and return a DataFrame
+def q(sql):
+    return pd.read_sql_query(sql, conn)
+
+# See all employees
+q("SELECT * FROM Employees")
+
+--- Item 7 ---
+# Select specific columns only - same as hiding columns in Excel
+q("SELECT first_name, last_name, job_title, salary FROM Employees")
+
+--- Item 8 ---
+# WHERE: employees in the Engineering department (dept_id = 2)
+q("""
+    SELECT first_name, last_name, job_title, salary
+    FROM   Employees
+    WHERE  dept_id = 2
+""")
+
+--- Item 9 ---
+# WHERE with a number: employees earning more than $70,000
+q("""
+    SELECT first_name, last_name, salary
+    FROM   Employees
+    WHERE  salary > 70000
+""")
+
+--- Item 10 ---
+# Sort by salary, highest first
+q("""
+    SELECT first_name, last_name, job_title, salary
+    FROM   Employees
+    ORDER BY salary DESC
+""")
+
+--- Item 11 ---
+# TO-DO 2: Employees hired in 2021 or later, sorted by start year descending
+q("""
+    ...
+""")
+
+--- Item 12 ---
+# How many employees are there in total?
+q("SELECT COUNT(*) AS total_employees FROM Employees")
+
+--- Item 13 ---
+# Average salary across all employees
+q("SELECT ROUND(AVG(salary), 2) AS avg_salary FROM Employees")
+
+--- Item 14 ---
+# GROUP BY: count employees in each department
+# This is like using a PivotTable in Excel to count rows by category
+q("""
+    SELECT   dept_id,
+             COUNT(*) AS headcount
+    FROM     Employees
+    GROUP BY dept_id
+    ORDER BY headcount DESC
+""")
+
+--- Item 15 ---
+# GROUP BY: average salary per department
+q("""
+    SELECT   dept_id,
+             COUNT(*)                AS headcount,
+             ROUND(AVG(salary), 2)   AS avg_salary,
+             MAX(salary)             AS top_salary
+    FROM     Employees
+    GROUP BY dept_id
+    ORDER BY avg_salary DESC
+""")
+
+--- Item 16 ---
+# TO-DO 3: Headcount by start year
+q("""
+    ...
+""")
+
+--- Item 17 ---
+# JOIN Employees with Departments to see the department name
+q("""
+    SELECT e.first_name,
+           e.last_name,
+           d.dept_name,
+           e.job_title,
+           e.salary
+    FROM   Employees e
+    JOIN   Departments d ON e.dept_id = d.dept_id
+    ORDER BY d.dept_name, e.last_name
+""")
+
+--- Item 18 ---
+# GROUP BY with JOIN: average salary per department, showing name not ID
+q("""
+    SELECT   d.dept_name,
+             d.location,
+             COUNT(*)              AS headcount,
+             ROUND(AVG(e.salary), 2) AS avg_salary
+    FROM     Employees e
+    JOIN     Departments d ON e.dept_id = d.dept_id
+    GROUP BY d.dept_name, d.location
+    ORDER BY avg_salary DESC
+""")
+
+--- Item 19 ---
+# TO-DO 4: All employees in Building A
+q("""
+    ...
+""")
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+import subprocess
+
+--- Item 3 ---
+import sqlite3
+
+--- Item 4 ---
+import pandas as pd
+
+
+=== EXERCISES ===
+
+--- Item 1 ---
+**Question 1**
+
+In Excel, you would use AutoFilter dropdowns to narrow down rows, then click a column header to sort. In SQL, you write `WHERE` and `ORDER BY` in the query. What do you see as one advantage of the SQL approach? What is one thing the Excel interface makes easier?
+
+*Type your answer here.*
+
+---
+## Section 5: Summarizing Data
+
+Excel has functions like `=COUNTA()` and `=AVERAGE()` to calculate summary values. SQL has equivalent **aggregate functions** that work across rows in a tabl
+
+--- Item 2 ---
+**Question 2**
+
+Look at the department summary query above. The `dept_id` column shows numbers (1, 2, 3, 4), not department names. Why does that happen, and what would you need to do to see the actual department names?
+
+*Type your answer here.*
+
+---
+## Section 6: Combining Tables with JOIN
+
+The department summary you wrote in Section 5 shows `dept_id` numbers, not names. To get the actual names, we need to pull data from the Departments table at the same time.
+
+This is what `JOIN` does. It comb
+
+--- Item 3 ---
+**Question 3**
+
+In Access, you create a relationship between two tables in the Relationships panel, and then drag fields from both tables into a query in Design view to combine them. In SQL, you write a `JOIN`. 
+
+Look at the JOIN query you just wrote. Which part of it corresponds to the relationship line in Access? Which part corresponds to dragging fields from the field list into the query grid?
+
+*Type your answer here.*
+
+---
+## That's it!
+
+Here's a summary of what you practiced and how each S
+
+
+=== HINTS ===
+
+--- Item 1 ---
+Hint: use `start_year >= 2021` in your `WHERE` clause.*
+
+--- Item 2 ---
+Hint: the `location` column is in the Departments table, so you'll need the JOIN before you can filter on it.*
+
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Placeholder: 'Your Answer Here' cells found]
+
+
+=== REFLECTION QUESTIONS ===
+
+(none found)
+
+=== VISUALIZATION PATTERNS ===
+
+(none found)
+
+=== WIDGET PATTERNS ===
+
+(none found)
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Introduction
+
+26 markdown cells and 19 code cells. Major sections include: Introduction to Databases and SQL, Setup, Section 1: Spreadsheets vs. Databases, Section 2: Creating a Database and Tables, Section 3: Adding Data, TO-DO 1: Add a new employee, ....

@@ -1,0 +1,633 @@
+Notebook: ecc-biology__SARS-CoV2__wastewater_covid_notebook.ipynb
+Title: 1 PCR Data Analysis using Wastewater Monitoring
+
+=== HEADINGS ===
+
+--- Item 1 ---
+1 PCR Data Analysis using Wastewater Monitoring
+
+--- Item 2 ---
+1.0.1 Professor Polly Parks
+
+--- Item 3 ---
+1.0.2 Watch Me!
+
+--- Item 4 ---
+1.0.3 Notebook goals
+
+--- Item 5 ---
+1.0.4 Import Dataset into Jupyter
+
+--- Item 6 ---
+1.0.5 What do these columns mean?
+
+--- Item 7 ---
+1.0.6 Discussion Question 1
+
+--- Item 8 ---
+1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewater Site
+
+--- Item 9 ---
+1.1.1 Discussion Question 2
+
+--- Item 10 ---
+1.1.2 Graph 2: New Cases
+
+--- Item 11 ---
+1.1.3 Discussion Question 2
+
+--- Item 12 ---
+1.1.4 Graph 3: Overlay Graph
+
+--- Item 13 ---
+1.1.5 Discussion Question 3
+
+--- Item 14 ---
+1.2 Simple prediction model
+
+--- Item 15 ---
+1.2.4 Discussion Question 4
+
+
+=== LEARNING OBJECTIVES ===
+
+--- Item 1 ---
+In this notebook, we will analyze the normalized amount of SARS-CoV2 over time in the wastewater samples then compare this to the number of new cases that were occurring during the same time period. We will discuss the benefits and drawbacks to using wastewater sampling as a method to determine disease spread.
+
+
+### 1.0.3 Notebook goals
+
+In this notebook, students will: - explore a wastewater surveillance dataset - build two time-series
+plots step by step - compare wastewater concentration trends to reported case trends - use a simple
+regression model to test how wastewater measurements might relate to case counts
+
+
+### 1.0.4 Import Dataset into Jupyter
+
+***Click play/run on the section below.***
+
+### 1.0.5 What do these columns mean?
+
+Run the section below. Then use the dropdown below to review each column. When you select a column name, a short explanation will appear.
+
+### 1.0.6 Discussion Question 1
+
+**In the context of wastewater sampling to determine disease spread, which three columns should we focus on? Why?**
+
+
+*Type your answer here, replacing this text.*
+
+### 1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewater Site
+
+Instead of graphing all sampling sites together, you will now focus on **one wastewater sampling site at a time**. This makes the graph easier to read and helps us compare trends more clearly over time.
+
+Each site is identified by a `fig1_label` value (examples: `"A1"`, `"B4"`, etc.).
+
+You will build a line graph of:
+
+- **x-axis:** `sampling_date`
+- **y-axis:** `normalized_conc_copies_per_L`
+
+First, choose a single site label. Then create a filtered dataframe containing only data from that site before plotting the graph.
+
+Fill in the code below with the correct x-axis label, y-axis label, and graph title. Then click run.
+
+If needed, click **Hint** to view an example structure.
+
+<details>
+<summary><strong>Hint:</strong></summary>
+
+```python
+label = "B4"  # pick one fig1_label from df["fig1_label"].unique()
+site_df = df[df["fig1_label"] == l
+
+
+=== DATASET DESCRIPTIONS ===
+
+--- Item 1 ---
+Today we will be examining a dataset (i.e. a table) and building a few graphs to demonstrate how using wastewater samples can monitor the spreading of diseases. Specifically, we are investigating the use of measuring RNA concentrations in wastewater to determine the spread of SARS-CoV2 during the pandemic. SARS-CoV2 is the ssRNA virus that causes COVID-19, which means there is ssRNA in its capsid. When people are infected with SARS-CoV2, some of the virus exits their body through their urine and fecal matter ending up in our wastewater systems (i.e. sewage). Epidemiologists figured out that if we sampled the wastewater we could predict the level of infected individuals in a location and potentially use this information to help prepare the local healthcare facilities for an increase in the
+
+--- Item 2 ---
+In this notebook, students will: - explore a wastewater surveillance dataset - build two time-series
+plots step by step - compare wastewater concentration trends to reported case trends - use a simple
+regression model to test how wastewater measurements might relate to case counts
+
+
+### 1.0.4 Import Dataset into Jupyter
+
+***Click play/run on the section below.***
+
+### 1.0.5 What do these columns mean?
+
+Run the section below. Then use the dropdown below to review each column. When you select a column name, a short explanation will appear.
+
+### 1.0.6 Discussion Question 1
+
+**In the context of wastewater sampling to determine disease spread, which three columns should we focus on? Why?**
+
+
+*Type your answer here, replacing this text.*
+
+### 1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewa
+
+--- Item 3 ---
+### 1.0.4 Import Dataset into Jupyter
+
+***Click play/run on the section below.***
+
+### 1.0.5 What do these columns mean?
+
+Run the section below. Then use the dropdown below to review each column. When you select a column name, a short explanation will appear.
+
+### 1.0.6 Discussion Question 1
+
+**In the context of wastewater sampling to determine disease spread, which three columns should we focus on? Why?**
+
+
+*Type your answer here, replacing this text.*
+
+### 1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewater Site
+
+Instead of graphing all sampling sites together, you will now focus on **one wastewater sampling site at a time**. This makes the graph easier to read and helps us compare trends more clearly over time.
+
+Each site is identified by a `fig1_label` value (examples: `"A1"`, `"B
+
+
+=== MARKDOWN CELLS ===
+
+--- Item 1 ---
+# 1 PCR Data Analysis using Wastewater Monitoring
+
+#### 1.0.1 Professor Polly Parks
+
+##### **Estimated Time:** 30-40 minutes  
+##### **Databook created by:** Ariana Ghimire   
+##### **Article Citation:** ACS EST Water 2022, 2, 11, 1899–1909  
+https://pubs.acs.org/doi/10.1021/acsestwater.1c00434
+
+Today we will be examining a dataset (i.e. a table) and building a few graphs to demonstrate how using wastewater samples can monitor the spreading of diseases. Specifically, we are investigating the use of measuring RNA concentrations in wastewater to determine the spread of SARS-CoV2 during the pandemic. SARS-CoV2 is the ssRNA virus that causes COVID-19, which means there is ssRNA in its capsid. When people are infected with SARS-CoV2, some of the virus exits their body through their urine and fecal matter ending up in our wastewater systems (i.e. sewage). Epidemiologists figured out that if we sampled the wastewater we could predict the level of infected individuals in a location and potentially use this information to help prepare the local healthcare facilities for an increase in the number of patients.
+
+The viruses are floating around in the wastewater, maybe whole or maybe in pieces. The water samples are filtered to remove all of the large fecal matter materials and cells, including bacteria. The filtered liquid would only contain viruses and small molecules (like DNA, RNA, and proteins). Researchers perform a RNA isolation to remove all of the RNA from the sample. This step is similar to a DNA isolation but instead purifies RNA molecules only. Next, the researchers perform a two step fancy PCR called **RT-qPCR**. Step one involves using the enzyme **reverse transcriptase (RT)** to convert the RNA in the sample into DNA molecules. Step two is a variation on PCR in which the specific amount of original pieces of DNA (previously the RNA) can be measured called **quantitative PCR (qPCR)**.
+
+The researchers use specific primers that base pair to a gene found only in SARS...
+
+--- Item 2 ---
+#### 1.0.2 Watch Me!
+
+**Video title:** <a href="https://youtu.be/iu4s3Hbc_bw?si=NZ4FdK0s3-X92kyo" style="color:#1f3d2a; font-weight:600;">How does qPCR work?</a>
+
+As mentioned in the video, when there is a high amount of DNA to begin with then the threshold (Ct) is met earlier. This would mean there is a high amount of SARS-CoV2 in that sample. If there is a low amount of DNA to begin with, then the threshold is met after more cycles relating to a lower amount of SARS-CoV2 in the wastewater.
+
+In this notebook, we will analyze the normalized amount of SARS-CoV2 over time in the wastewater samples then compare this to the number of new cases that were occurring during the same time period. We will discuss the benefits and drawbacks to using wastewater sampling as a method to determine disease spread.
+
+
+--- Item 3 ---
+### 1.0.3 Notebook goals
+
+In this notebook, students will: - explore a wastewater surveillance dataset - build two time-series
+plots step by step - compare wastewater concentration trends to reported case trends - use a simple
+regression model to test how wastewater measurements might relate to case counts
+
+
+--- Item 4 ---
+### 1.0.4 Import Dataset into Jupyter
+
+***Click play/run on the section below.***
+
+--- Item 5 ---
+### 1.0.5 What do these columns mean?
+
+Run the section below. Then use the dropdown below to review each column. When you select a column name, a short explanation will appear.
+
+--- Item 6 ---
+### 1.0.6 Discussion Question 1
+
+**In the context of wastewater sampling to determine disease spread, which three columns should we focus on? Why?**
+
+
+--- Item 7 ---
+*Type your answer here, replacing this text.*
+
+--- Item 8 ---
+### 1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewater Site
+
+Instead of graphing all sampling sites together, you will now focus on **one wastewater sampling site at a time**. This makes the graph easier to read and helps us compare trends more clearly over time.
+
+Each site is identified by a `fig1_label` value (examples: `"A1"`, `"B4"`, etc.).
+
+You will build a line graph of:
+
+- **x-axis:** `sampling_date`
+- **y-axis:** `normalized_conc_copies_per_L`
+
+First, choose a single site label. Then create a filtered dataframe containing only data from that site before plotting the graph.
+
+Fill in the code below with the correct x-axis label, y-axis label, and graph title. Then click run.
+
+If needed, click **Hint** to view an example structure.
+
+<details>
+<summary><strong>Hint:</strong></summary>
+
+```python
+label = "B4"  # pick one fig1_label from df["fig1_label"].unique()
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["x_column_name"], site_df["y_column_name"])
+plt.xlabel("x_column_name")
+plt.ylabel("y_column_name")
+plt.title(f"Normalized SARS-CoV-2 concentration over time — {label}")
+plt.show()
+```
+
+</details>
+
+<details>
+<summary><strong>Answer:</strong></summary>
+
+```python
+label = "B4"  # pick one fig1_label from df["fig1_label"].unique()
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["sampling_date"], site_df["normalized_conc_copies_per_L"])
+plt.xlabel("sampling_date")
+plt.ylabel("normalized_conc_copies_per_L")
+plt.title(f"Normalized SARS-CoV-2 concentration over time — {label}")
+plt.show()
+```
+
+</details>
+
+--- Item 9 ---
+### 1.1.1 Discussion Question 2
+
+**Describe the change over time in this data. What does it tell us about the amount of SARS-CoV2 in these samples? In addition from your understanding of PCR, how specific and accurate do you feel these results are?**
+
+
+--- Item 10 ---
+*Type your answer here, replacing this text.*
+
+--- Item 11 ---
+### 1.1.2 Graph 2: New Cases
+
+Now, let’s build a second line graph but for the average number of new cases of COVID-19.
+
+- **x-axis:** `sampling_date`
+- **y-axis:** `rolling_average_new_cases_centered`
+
+Use the **same `fig1_label`** as Graph 1 so you are comparing two trends for one location, not all sites mixed together.
+
+The goal will be to compare the shape of this graph to the wastewater graph above. Edit the code then click run.
+
+If needed, click Hint to drop down code for extra assistance.
+
+<details>
+<summary><strong>Hint:</strong></summary>
+
+```python
+label = "B4"  # use the same fig1_label as Graph 1
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["x_column_name"], site_df["y_column_name"])
+plt.xlabel("x_column_name")
+plt.ylabel("y_column_name")
+plt.title(f"Average new cases over time — {label}")
+plt.show()
+```
+
+</details>
+
+<details>
+<summary><strong>Answer:</strong></summary>
+
+```python
+label = "B4"  # use the same fig1_label as Graph 1
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["sampling_date"], site_df["rolling_average_new_cases_centered"])
+plt.xlabel("sampling_date")
+plt.ylabel("rolling_average_new_cases_centered")
+plt.title(f"Average new cases over time — {label}")
+plt.show()
+```
+
+</details>
+
+--- Item 12 ---
+### 1.1.3 Discussion Question 2
+
+**Describe the change over time in this data. What does it tell us about the amount of new cases in these areas? How does it compare to your first graph?**
+
+*Type your answer here, replacing this text.*
+
+--- Item 13 ---
+### 1.1.4 Graph 3: Overlay Graph
+
+The graph below places both trends on one figure so the pattern is easier to compare.
+
+Because the two variables are on different scales, this graph uses two y-axes:
+
+- left y-axis for wastewater concentration
+- right y-axis for rolling average new cases
+
+Click run on the section below.
+
+--- Item 14 ---
+### 1.1.5 Discussion Question 3
+
+Use this overlay graph to evaluate whether wastewater monitoring appears useful for tracking community COVID-19 trends.
+
+**In your response, address:** - whether wastewater concentration and reported case counts move
+in a similar direction - whether higher wastewater measurements seem to line up with higher case
+counts - whether wastewater might offer an earlier signal for community spread - how this could
+help hospitals or public-health teams prepare - one limitation or caution when interpreting these
+graphs
+
+Write **3 to 5 sentences** and use evidence from your plots.
+
+--- Item 15 ---
+*Type your answer here, replacing this text.*
+
+--- Item 16 ---
+### 1.2 Simple prediction model
+
+In this section, we will explore a basic regression model. This is a statistical tool to estimate a relationship between two variables. We will play with using wastewater concentration to estimate the rolling average of new reported cases.
+
+This is **not** a clinical forecast tool.  
+It is a simple classroom model for pattern-finding and interpretation.
+
+Click run on the next section to explain the regression model we are using.
+
+--- Item 17 ---
+### 1.2.4 Discussion Question 4
+
+Use the regression graph and prediction explorer above to answer the questions below.
+
+1. What happens to predicted case counts when the wastewater signal increases?
+2. How could hospitals or local health committees prepare if they start seeing those trends?
+3. Does wastewater monitoring seem like a useful way to estimate case trends in a community?
+4. What are some limits of this method?
+
+Write 4 to 6 sentences.
+
+
+--- Item 18 ---
+*Type your answer here, replacing this text.*
+
+
+=== CODE CELLS ===
+
+--- Item 1 ---
+import sys
+from pathlib import Path
+import importlib
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from IPython.display import display, Markdown, YouTubeVideo
+import ipywidgets as widgets
+
+# Load backend_data from SARS-CoV2 (works from repo root or this folder)
+for _path in (Path.cwd(), Path.cwd() / "SARS-CoV2"):
+    if (_path / "backend_data.py").is_file():
+        if str(_path) not in sys.path:
+            sys.path.insert(0, str(_path))
+        break
+
+import backend_data as _backend_data
+importlib.reload(_backend_data)
+
+from backend_data import (
+    load_and_clean_wastewater_data,
+    show_column_blurb_widget,
+    plot_overlay_for_label,
+    prepare_regression_model,
+    explain_regression_for_students,
+    plot_regression_fit,
+    explain_regression_plot_for_students,
+    show_prediction_explorer_widget,
+)
+
+plt.rcParams["figure.figsize"] = (10, 5)
+plt.rcParams["axes.grid"] = True
+
+df, raw_path, clean_path = load_and_clean_wastewater_data(save_cleaned=True)
+print("Loaded raw file:", raw_path)
+print("Cleaned dataset shape:", df.shape)
+print("Saved cleaned file as:", clean_path)
+df.head()
+
+
+--- Item 2 ---
+show_column_blurb_widget()
+
+--- Item 3 ---
+# Student exercise: replace the placeholder strings, then re-run.
+label = "B4"  # pick one fig1_label from df["fig1_label"].unique()
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["..."], site_df["..."])
+plt.xlabel("...")
+plt.ylabel("...")
+plt.title(f"Normalized SARS-CoV-2 concentration over time — {label}")
+plt.show()
+
+
+--- Item 4 ---
+# Student exercise: use the same site label as Graph 1, then fill in column names.
+label = "B4"  # pick one fig1_label from df["fig1_label"].unique()
+site_df = df[df["fig1_label"] == label].sort_values("sampling_date")
+
+plt.plot(site_df["..."], site_df["..."])
+plt.xlabel("...")
+plt.ylabel("...")
+plt.title(f"Average new cases over time — {label}")
+plt.show()
+
+
+--- Item 5 ---
+if "label_dropdown" in globals():
+    selected_label = label_dropdown.value
+else:
+    selected_label = sorted(df["fig1_label"].dropna().unique().tolist())[0]
+
+plot_overlay_for_label(df, selected_label)
+
+
+--- Item 6 ---
+model_df, x, y, slope, intercept, r2 = prepare_regression_model(df)
+explain_regression_for_students(slope, intercept, r2)
+
+--- Item 7 ---
+if not all(name in globals() for name in ["model_df", "slope", "intercept"]):
+    model_df, x, y, slope, intercept, r2 = prepare_regression_model(df)
+
+plot_regression_fit(model_df, slope, intercept)
+explain_regression_plot_for_students()
+
+
+
+=== IMPORTS / LIBRARIES ===
+
+--- Item 1 ---
+import sys
+
+--- Item 2 ---
+from pathlib import Path
+
+--- Item 3 ---
+import importlib
+
+--- Item 4 ---
+import pandas as pd
+
+--- Item 5 ---
+import numpy as np
+
+--- Item 6 ---
+import matplotlib.pyplot as plt
+
+--- Item 7 ---
+from IPython.display import display, Markdown, YouTubeVideo
+
+--- Item 8 ---
+import ipywidgets as widgets
+
+--- Item 9 ---
+import backend_data as _backend_data
+
+--- Item 10 ---
+from backend_data import (
+
+
+=== EXERCISES ===
+
+(none found)
+
+=== HINTS ===
+
+--- Item 1 ---
+Hint:</strong></summary>
+
+--- Item 2 ---
+Hint:</strong></summary>
+
+
+=== ANSWERS / SOLUTIONS ===
+
+--- Item 1 ---
+[Placeholder: 'Your Answer Here' cells found]
+
+
+=== REFLECTION QUESTIONS ===
+
+--- Item 1 ---
+Discussion Question 1
+
+**In the context of wastewater sampling to determine disease spread, which three columns should we focus on? Why?**
+
+
+*Type your answer here, replacing this text.*
+
+### 1.1 Graph 1: Amount of SARS-CoV2 at a Single Wastewater Site
+
+Instead of graphing all sampling sites together, you will now focus on **one wastewater sampling site at a time**. This makes the graph easier to read and helps us compare trends more clearly over time.
+
+Each site is identified by a `fig1_label` value (examples: `"A1"`, `"B4"`, etc.).
+
+You will build a line graph of:
+
+- **x-axis:** `sampling_da
+
+--- Item 2 ---
+Discussion Question 2
+
+**Describe the change over time in this data. What does it tell us about the amount of SARS-CoV2 in these samples? In addition from your understanding of PCR, how specific and accurate do you feel these results are?**
+
+
+*Type your answer here, replacing this text.*
+
+### 1.1.2 Graph 2: New Cases
+
+Now, let’s build a second line graph but for the average number of new cases of COVID-19.
+
+- **x-axis:** `sampling_date`
+- **y-axis:** `rolling_average_new_cases_centered`
+
+Use the **same `fig1_label`** as Graph 1 so you are comparing two trends for one location, not all sites mi
+
+--- Item 3 ---
+Discussion Question 2
+
+**Describe the change over time in this data. What does it tell us about the amount of new cases in these areas? How does it compare to your first graph?**
+
+*Type your answer here, replacing this text.*
+
+### 1.1.4 Graph 3: Overlay Graph
+
+The graph below places both trends on one figure so the pattern is easier to compare.
+
+Because the two variables are on different scales, this graph uses two y-axes:
+
+- left y-axis for wastewater concentration
+- right y-axis for rolling average new cases
+
+Click run on the section below.
+
+### 1.1.5 Discussion Question 3
+
+Use this overlay
+
+--- Item 4 ---
+Discussion Question 3
+
+Use this overlay graph to evaluate whether wastewater monitoring appears useful for tracking community COVID-19 trends.
+
+**In your response, address:** - whether wastewater concentration and reported case counts move
+in a similar direction - whether higher wastewater measurements seem to line up with higher case
+counts - whether wastewater might offer an earlier signal for community spread - how this could
+help hospitals or public-health teams prepare - one limitation or caution when interpreting these
+graphs
+
+Write **3 to 5 sentences** and use evidence from your plots.
+
+--- Item 5 ---
+Discussion Question 4
+
+Use the regression graph and prediction explorer above to answer the questions below.
+
+1. What happens to predicted case counts when the wastewater signal increases?
+2. How could hospitals or local health committees prepare if they start seeing those trends?
+3. Does wastewater monitoring seem like a useful way to estimate case trends in a community?
+4. What are some limits of this method?
+
+Write 4 to 6 sentences.
+
+
+*Type your answer here, replacing this text.*
+
+
+=== VISUALIZATION PATTERNS ===
+
+--- Item 1 ---
+matplotlib pyplot calls
+
+--- Item 2 ---
+pandas/matplotlib .plot()
+
+
+=== WIDGET PATTERNS ===
+
+--- Item 1 ---
+ipywidgets library
+
+--- Item 2 ---
+embedded YouTube video
+
+
+=== NOTEBOOK STRUCTURE ===
+
+Detected pattern: Analysis → Dataset → Exercise
+
+18 markdown cells and 7 code cells. Major sections include: 1 PCR Data Analysis using Wastewater Monitoring, 1.0.1 Professor Polly Parks, 1.0.2 Watch Me!, 1.0.3 Notebook goals, 1.0.4 Import Dataset into Jupyter, 1.0.5 What do these columns mean?, ....
